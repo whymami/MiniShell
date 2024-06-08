@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = 
 RLFLAGS = -lreadline
 NAME = minishell
 SRCS = main.c

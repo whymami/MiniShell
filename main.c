@@ -1,7 +1,12 @@
 #include "stdio.h"
 #include "unistd.h"
-#include "string.h"
 #include "lib/libft/libft.h"
+#include "readline/readline.h"
+#include "string.h"
+
+#define COLOR_YELLOW  "\x1b[33m"
+#define COLOR_RESET   "\x1b[0m"
+#define STYLE_BOLD    "\x1b[1m"
 
 void free_split(char **split)
 {
@@ -10,15 +15,17 @@ void free_split(char **split)
 		free(split[i]);
 	free(split);
 }
-void execute_cmd(char *path, char **command)
+void execute_cmd(char *path, char *command)
 {
-	if (execve(path, command, NULL) == -1)
+	char *args[] = {command, NULL};
+	if (execve(path, args, NULL) == -1)
 	{
-		printf("Error");
+		perror("Error");
 	}
 }
 
-static void command_path(char **command, char *env)
+
+static void command_path(char *command, char *env)
 {
 	char **cmds;
 	char *cmd;
@@ -26,7 +33,7 @@ static void command_path(char **command, char *env)
 	int i = -1;
 
 	cmds = ft_split(env, ':');
-	cmd = ft_strjoin("/", *command);
+	cmd = ft_strjoin("/", command);
 	while (cmds[++i])
 	{
 		path = ft_strjoin(cmds[i], cmd);
@@ -41,25 +48,20 @@ static void command_path(char **command, char *env)
 	execute_cmd(path , command);
 }
 
-void find_path(char **cmd, char **env)
+int main()
 {
-	while (*env)
-	{
-		if (strstr(*env, "PATH=") == *env)
-		{
-			command_path(cmd, *env);
-			break;
-		}
-		env++;
-	}
-}
+	char *line;
+	char *env;
 
-int main(int argc, char **argv, char **env)
-{
-	if (argc != 2 && printf("Error"))
-		return 1;
-	char **cmds;
-	cmds = ft_split(argv[1], ' ');
-	find_path(cmds, env);
+	env = getenv("PATH");
+	while (1)
+	{
+		line = readline(STYLE_BOLD COLOR_YELLOW"minishell> "COLOR_RESET);
+		if (!line)
+			break;
+		command_path(line, env);
+		free(line);
+	}
 	return 0;
 }
+
