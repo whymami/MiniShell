@@ -13,6 +13,7 @@ all: $(LIBFT) $(NAME)
 
 $(LIBFT):
 	@make -C $(LIBFT_DIR)
+
 # $(READLINE):
 # 	@curl -O https://ftp.gnu.org/gnu/readline/readline-8.2-rc1.tar.gz
 # 	@tar -xvf readline-8.2-rc1.tar.gz
