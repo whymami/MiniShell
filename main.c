@@ -1,14 +1,16 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include "lib/libft/libft.h"
-#include <readline/readline.h>
-#include <string.h>
-#include <sys/wait.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/10 15:48:50 by muguveli          #+#    #+#             */
+/*   Updated: 2024/07/01 15:10:52 by btanir           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#define COLOR_YELLOW  "\x1b[33m"
-#define COLOR_RESET   "\x1b[0m"
-#define STYLE_BOLD    "\x1b[1m"
+#include "minishell.h"
 
 void free_split(char **split)
 {
@@ -40,13 +42,13 @@ void create_fork(char *path, char **command)
         waitpid(pid, &status, 0);
 }
 
-static void command_path(char *command, char *env)
+void command_path(t_minishell *mini)
 {
-	if (ft_strncmp(command, "clear", ft_strlen(command)) == 0 && printf("\033[H\033[J"))
+	if (ft_strncmp(mini->line, "clear", ft_strlen(mini->line)) == 0 && printf("\033[H\033[J"))
         return;
 
-    char **paths = ft_split(env, ':');
-    char **cmds = ft_split(command, ' ');
+    char **paths = ft_split(mini->env, ':');
+    char **cmds = ft_split(mini->line, ' ');
     char *cmd_with_slash = ft_strjoin("/", cmds[0]);
 	char *path;
 
@@ -65,21 +67,32 @@ static void command_path(char *command, char *env)
 	printf(COLOR_YELLOW STYLE_BOLD"minishell>" COLOR_RESET " %s: command not found\n", cmds[0]);
 }
 
+void pipe_count(t_minishell *mini)
+{
+	int i = -1;
+	while (mini->line[++i])
+		if (mini->line[i] == '|')
+			mini->pipe->pipe_count++;
+}
+
 int main()
 {
-    char *line;
-    char *env = getenv("PATH");
+	t_minishell *mini;
 
+	mini = ft_calloc(1, sizeof(t_minishell));
+	mini->pipe = ft_calloc(1, sizeof(t_pipe));
+	
+	mini->env = getenv("PATH");
     while (1)
     {
-        line = readline(STYLE_BOLD COLOR_YELLOW "minishell> " COLOR_RESET);
-        if (*line)
+        mini->line = readline(STYLE_BOLD COLOR_YELLOW "minishell> " COLOR_RESET);
+		if (str)
+        if (*mini->line && ft_strlen(mini->line) > 0) 
 		{
-			add_history(line);
-            command_path(line, env);
+			add_history(mini->line);
+            command_path(mini);
 		}
-        free(line);
+        free(mini->line);
     }
-
-    return 0;
+    return (0);
 }
