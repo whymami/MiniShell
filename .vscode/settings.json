@@ -1,5 +1,15 @@
 {
 	"files.associations": {
-		"stdlib.h": "c"
+		"*.c": "c",
+		"stdlib.h": "c",
+		"libft.h": "c",
+		"ft_printf.h": "c",
+		"history.h": "c",
+		"__bit_reference": "c",
+		"algorithm": "c",
+		"bitset": "c",
+		"chrono": "c",
+		"unordered_map": "c",
+		"string.h": "c"
 	}
 }

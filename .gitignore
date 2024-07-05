@@ -1,6 +1,15 @@
-.o
+*.o
 minishell
-.a
+*.a
+.DS_Store
+.vscode
+*.out
+*.dSYM
+*.swp
+*.swo
+*.swp
+*.swn
+*.swo
 #ignore contributers
 batu
 haluk
