@@ -1,19 +1,33 @@
 NAME = minishell
 
 SRC = src/main.c src/parser.c
-OBJ = ${SRC:.c=.o}
+OBJ := $(SRC:.c=.o)
 CFLAGS = -Wall -Wextra -Werror
 RLFLAGS = -lreadline
 
-all:$(NAME)
+LIBFT_DIR = lib/libft
+LIBFT = $(LIBFT_DIR)/libft.a
 
-$(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(RLFLAGS) $(OBJ) -o $(NAME)
+PRINTF_DIR = lib/ft_printf
+PRINTF = $(PRINTF_DIR)/libftprintf.a
 
+all:$(NAME) 
+
+$(NAME): $(OBJ) $(LIBFT) $(PRINTF)
+	$(CC) $(CFLAGS) $(LIBFT) $(PRINTF) $(RLFLAGS) $(OBJ) -o $(NAME)
+
+$(LIBFT):
+	make -C $(LIBFT_DIR)
+
+$(PRINTF):
+	make -C $(PRINTF_DIR)
 clean:
 	rm -f $(OBJ)
+	make -C $(LIBFT_DIR) clean
 fclean: clean
 	rm -f $(NAME)
+	make -C $(LIBFT_DIR) fclean
+	make -C $(PRINTF_DIR) fclean
 
 re: fclean all
 
