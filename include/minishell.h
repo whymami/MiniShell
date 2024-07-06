@@ -26,4 +26,5 @@ int					parser(t_minishell *minishell);
 int					quote_handler(t_minishell *minishell, int pipe_i, int sign);
 void				lexer(t_minishell *minishell);
 
+
 #endif
