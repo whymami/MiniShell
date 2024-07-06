@@ -3,6 +3,7 @@ minishell
 *.a
 .DS_Store
 .vscode
+settings.json
 *.out
 *.dSYM
 *.swp
