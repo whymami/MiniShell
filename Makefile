@@ -1,6 +1,6 @@
 NAME = minishell
 
-SRC = src/main.c src/parser.c
+SRC = src/main.c src/parser.c src/lexer.c
 OBJ := $(SRC:.c=.o)
 CFLAGS = -Wall -Wextra -Werror
 RLFLAGS = -lreadline
