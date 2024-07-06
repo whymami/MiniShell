@@ -31,5 +31,7 @@ typedef struct s_minishell
 void		parser(t_minishell *minishell);
 int			quote_handler(t_minishell *minishell, int pipe_i, int sign);
 void		lexer(t_minishell *minishell);
+void		executor(t_minishell *minishell);
+void		execute_command(char **args);
 
 #endif

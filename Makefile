@@ -1,6 +1,6 @@
 NAME = minishell
 
-SRC = src/main.c src/parser.c src/lexer.c
+SRC = src/main.c src/parser.c src/lexer.c src/executor.c
 OBJ := $(SRC:.c=.o)
 CFLAGS = -Wall -Wextra -Werror
 RLFLAGS = -lreadline
@@ -11,7 +11,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 PRINTF_DIR = lib/ft_printf
 PRINTF = $(PRINTF_DIR)/libftprintf.a
 
-all:$(NAME) 
+all:$(NAME)
 
 $(NAME): $(OBJ) $(LIBFT) $(PRINTF)
 	$(CC) $(CFLAGS) $(LIBFT) $(PRINTF) $(RLFLAGS) $(OBJ) -o $(NAME)
