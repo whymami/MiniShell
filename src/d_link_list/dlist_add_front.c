@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dlist_add_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 14:42:28 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/06 14:42:39 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/06 20:22:58 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

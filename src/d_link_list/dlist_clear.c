@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dlist_clear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 14:49:06 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/06 18:16:16 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/06 20:23:03 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 00:40:49 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/06 15:40:20 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/06 21:34:39 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int	main(void)
 		minishell->line = readline("minishell> ");
 		if (ft_strlen(minishell->line) != 0)
 			add_history(minishell->line);
-		parser(minishell);
-		lexer(minishell);
+		if(!parser(minishell))
+			lexer(minishell); // lexer parserin içine taşıncak ve bu kısıma executor gelcek.
 	}
 	return (EXIT_SUCCESS);
 }
