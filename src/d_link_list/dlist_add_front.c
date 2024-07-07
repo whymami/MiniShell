@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isascii.c                                       :+:      :+:    :+:   */
+/*   dlist_add_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/05 14:25:25 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/06 20:15:37 by btanir           ###   ########.fr       */
+/*   Created: 2024/07/06 14:42:28 by muguveli          #+#    #+#             */
+/*   Updated: 2024/07/06 20:22:58 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isascii(int c)
+#include "../../include/minishell.h"
+
+void	dlinked_list_add_front(t_dlinked_list **lst, t_dlinked_list *new)
 {
-	if (c >= 0 && c <= 127)
-		return (1);
-	return (0);
+	if (!lst || !new)
+		return ;
+	if (!*lst)
+	{
+		*lst = new;
+		return ;
+	}
+	new->next = *lst;
+	(*lst)->prev = new;
+	*lst = new;
 }

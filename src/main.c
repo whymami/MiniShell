@@ -24,9 +24,10 @@ int	main(void)
 		minishell->line = readline("minishell> ");
 		if (ft_strlen(minishell->line) != 0)
 			add_history(minishell->line);
-		parser(minishell);
-		lexer(minishell);
-		executor(minishell);
+
+		if(!parser(minishell))
+			lexer(minishell); // lexer parserin içine taşıncak ve bu kısıma executor gelcek.
+    executor(minishell);
 	}
 	return (EXIT_SUCCESS);
 }

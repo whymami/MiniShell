@@ -1,18 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isascii.c                                       :+:      :+:    :+:   */
+/*   dlist_new.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/05 14:25:25 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/06 20:15:37 by btanir           ###   ########.fr       */
+/*   Created: 2024/07/06 14:40:55 by muguveli          #+#    #+#             */
+/*   Updated: 2024/07/06 21:04:09 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_isascii(int c)
+#include "../../include/minishell.h"
+
+t_dlinked_list	*dlinked_list_new(void *data)
 {
-	if (c >= 0 && c <= 127)
-		return (1);
-	return (0);
+	t_dlinked_list	*new;
+
+	new = malloc(sizeof(t_dlinked_list));
+	if (!new)
+		return (NULL);
+	new->data = data;
+	new->next = NULL;
+	new->prev = NULL;
+	return (new);
 }
