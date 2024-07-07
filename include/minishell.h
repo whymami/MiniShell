@@ -1,6 +1,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "dlink_list.h"
 # include "ft_printf.h"
 # include "libft.h"
 # include "readline/history.h"
@@ -8,28 +9,28 @@
 # include "stdlib.h"
 # include "string.h"
 
-typedef struct s_token
+typedef struct s_env
 {
-	int		type;
-	char	*data;
-}			t_token;
+	char *key;
+	char *value;
+}	t_env;
 
 typedef struct s_minishell
 {
-	char	*env;
-	char	*line;
-	char	**tokens;
-	int		pipe_count;
-	t_token	*tokenizer;
-}			t_minishell;
+	t_list *env;
+	char			*line;
+	int				pipe_count;
+	t_dlinked_list	*tokenizer;
+}					t_minishell;
 
 # define EXIT_SUCCESS 0
 # define EXIT_FAILURE 1
 # define ERR_TITLE "minishell: "
 # define SYNTAX_ERR "syntax error near unexpected token"
 
-void		parser(t_minishell *minishell);
-int			quote_handler(t_minishell *minishell, int pipe_i, int sign);
-void		lexer(t_minishell *minishell);
+int					parser(t_minishell *minishell);
+int					quote_handler(t_minishell *minishell, int pipe_i, int sign);
+void				lexer(t_minishell *minishell);
+void				parse_env(t_minishell *minishell, char **env);
 
 #endif
