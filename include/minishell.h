@@ -13,11 +13,21 @@
 # define TRUE 1
 # define FALSE 0
 
+typedef enum	e_meta_type
+{
+	NONE,
+	L_RED,
+	R_RED,
+	DL_RED,
+	DR_RED,
+	DOLLAR,
+}				t_meta_type;
+
 typedef struct s_token
 {
 	char			*command;
 	char			**args;
-	int			meta_char;
+	int				*meta_char;
 }					t_token;
 
 typedef struct s_env
@@ -31,7 +41,7 @@ typedef struct s_minishell
 	t_list			*env;
 	char			*line;
 	int				pipe_count;
-	t_dlist	*tokens;
+	t_dlist			*tokens;
 }					t_minishell;
 
 # define SUCCESS 0
@@ -44,7 +54,7 @@ int					quote_handler(t_minishell *minishell, int pipe_i, int sign);
 void				lexer(t_minishell *minishell);
 void				parse_env(t_minishell *minishell, char **env);
 
-void				export(t_minishell *minishell, char *key, char *value);
+void				add_env(t_minishell *minishell, char *key, char *value);
 void				print_env(t_minishell *minishell);
 t_list	*search_env(t_minishell *minishell, char *key);
 void				get_pwd();
