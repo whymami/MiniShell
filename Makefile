@@ -1,14 +1,15 @@
 NAME = minishell
 
 
-SRC = src/main.c src/parser.c src/lexer.c src/parse_env.c
+SRC = src/main.c src/parser.c src/lexer.c \
+	src/builtin/env.c src/builtin/pwd.c src/builtin/unset.c src/builtin/export.c
 OBJ := $(SRC:.c=.o)
 CFLAGS = -Wall -Wextra -Werror
 
 LIBFT_DIR = lib/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-DLINK_DIR = src/d_link_list
+DLINK_DIR = src/dlist
 DLINK = $(DLINK_DIR)/dlist.a
 
 PRINTF_DIR = lib/ft_printf

@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dlist_clear.c                                      :+:      :+:    :+:   */
+/*   dlist_add_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/06 14:49:06 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/06 20:23:03 by btanir           ###   ########.fr       */
+/*   Created: 2024/07/06 14:42:28 by muguveli          #+#    #+#             */
+/*   Updated: 2024/07/07 17:38:05 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	dlinked_list_clear(t_dlinked_list **lst, void (*del)(void *))
+void	dlist_add_front(t_dlist **lst, t_dlist *new)
 {
-	t_dlinked_list	*tmp;
-
-	if (!lst || !*lst)
+	if (!lst || !new)
 		return ;
-	while (*lst)
+	if (!*lst)
 	{
-		tmp = (*lst)->next;
-		dlist_delone(*lst, del);
-		*lst = tmp;
+		*lst = new;
+		return ;
 	}
-	*lst = NULL;
+	new->next = *lst;
+	(*lst)->prev = new;
+	*lst = new;
 }
