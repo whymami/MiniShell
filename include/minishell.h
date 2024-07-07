@@ -9,9 +9,15 @@
 # include "stdlib.h"
 # include "string.h"
 
+typedef struct s_env
+{
+	char *key;
+	char *value;
+}	t_env;
+
 typedef struct s_minishell
 {
-	char			*env;
+	t_list *env;
 	char			*line;
 	int				pipe_count;
 	t_dlinked_list	*tokenizer;
@@ -25,5 +31,6 @@ typedef struct s_minishell
 int					parser(t_minishell *minishell);
 int					quote_handler(t_minishell *minishell, int pipe_i, int sign);
 void				lexer(t_minishell *minishell);
+void				parse_env(t_minishell *minishell, char **env);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dlist_delone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
+/*   By: halozdem <halozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 18:16:33 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/06 20:23:06 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/07 14:37:14 by halozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

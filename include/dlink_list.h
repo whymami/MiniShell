@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dlink_list.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: halozdem <halozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 18:00:25 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/06 18:18:46 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/07 14:37:31 by halozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
