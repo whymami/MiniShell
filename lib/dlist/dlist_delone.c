@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isascii.c                                       :+:      :+:    :+:   */
+/*   dlist_delone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
+/*   By: halozdem <halozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/05 14:25:25 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/06 20:15:37 by btanir           ###   ########.fr       */
+/*   Created: 2024/07/06 18:16:33 by muguveli          #+#    #+#             */
+/*   Updated: 2024/07/07 19:48:34 by halozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int ft_isascii(int c)
+#include "../../include/minishell.h"
+
+void	dlist_delone(t_dlinked_list *lst, void (*del)(void *))
 {
-	if ((c >= 0) & (c <= 127))
-	{
-		return (1);
-		return (0);
-	}
+	if (!lst || !del)
+		return ;
+	del(lst->data);
+	free(lst);
+}

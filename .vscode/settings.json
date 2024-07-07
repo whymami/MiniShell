@@ -11,7 +11,9 @@
 		"chrono": "c",
 		"unordered_map": "c",
 		"string.h": "c",
+		"minishell.h": "c",
 		"readline.h": "c",
-		"minishell.h": "c"
+		"dlink_list.h": "c",
+		"wait.h": "c"
 	}
 }

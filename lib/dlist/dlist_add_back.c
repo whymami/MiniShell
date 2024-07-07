@@ -1,19 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isascii.c                                       :+:      :+:    :+:   */
+/*   dlist_add_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/05 14:25:25 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/06 20:15:37 by btanir           ###   ########.fr       */
+/*   Created: 2024/07/06 14:43:22 by muguveli          #+#    #+#             */
+/*   Updated: 2024/07/07 17:38:05 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int ft_isascii(int c)
+#include "../../include/minishell.h"
+
+void	dlist_add_back(t_dlist **lst, t_dlist *new)
 {
-	if ((c >= 0) & (c <= 127))
+	t_dlist	*last;
+
+	if (!lst || !new)
+		return ;
+	if (!*lst)
 	{
-		return (1);
-		return (0);
+		*lst = new;
+		return ;
 	}
+	last = *lst;
+	while (last->next)
+		last = last->next;
+	last->next = new;
+	new->prev = last;
+}

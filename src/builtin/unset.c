@@ -1,19 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isascii.c                                       :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
+/*   By: halozdem <halozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/05 14:25:25 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/06 20:15:37 by btanir           ###   ########.fr       */
+/*   Created: 2024/07/07 18:57:09 by halozdem          #+#    #+#             */
+/*   Updated: 2024/07/07 19:43:58 by halozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int ft_isascii(int c)
+#include "../../include/minishell.h"
+
+void	unset(t_minishell *mini, char *key)
 {
-	if ((c >= 0) & (c <= 127))
+	t_list *lst;
+
+	lst = search_env(mini, key);
+	if(lst)
 	{
-		return (1);
-		return (0);
+		ft_lstdelone(lst, (void(*))del);
+	
 	}
+
+}

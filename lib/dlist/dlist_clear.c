@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isascii.c                                       :+:      :+:    :+:   */
+/*   dlist_clear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/05 14:25:25 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/06 20:15:37 by btanir           ###   ########.fr       */
+/*   Created: 2024/07/06 14:49:06 by muguveli          #+#    #+#             */
+/*   Updated: 2024/07/07 17:38:05 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int ft_isascii(int c)
+#include "../../include/minishell.h"
+
+void	dlist_clear(t_dlist **lst, void (*del)(void *))
 {
-	if ((c >= 0) & (c <= 127))
+	t_dlist	*tmp;
+
+	if (!lst || !*lst)
+		return ;
+	while (*lst)
 	{
-		return (1);
-		return (0);
+		tmp = (*lst)->next;
+		dlist_delone(*lst, del);
+		*lst = tmp;
 	}
+	*lst = NULL;
+}
