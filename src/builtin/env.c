@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: halozdem <halozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:37:13 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/07 17:48:15 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/07 19:41:53 by halozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static t_env	*parse_equals(char *env)
 	return (env_data);
 }
 
-void	search_env(t_minishell *minishell, char *key)
+t_list	*search_env(t_minishell *minishell, char *key)
 {
 	t_list	*tmp;
 
@@ -45,24 +45,10 @@ void	search_env(t_minishell *minishell, char *key)
 	while (tmp)
 	{
 		if (ft_strnstr(((t_env *)tmp->content)->key, key, ft_strlen(key)))
-		{
-			ft_printf("%s\n", ((t_env *)tmp->content)->value);
-			break ;
-		}
+			return (tmp);
 		tmp = tmp->next;
 	}
-}
-
-void	add_env(t_minishell *minishell, char *key, char *value)
-{
-	t_env	*env_data;
-	t_list	*new;
-
-	env_data = malloc(sizeof(env_data));
-	env_data->key = key;
-	env_data->value = value;
-	new = ft_lstnew(env_data);
-	ft_lstadd_back(&minishell->env, new);
+	return (NULL);
 }
 
 void	print_env(t_minishell *minishell)
@@ -88,5 +74,4 @@ void	parse_env(t_minishell *minishell, char **env)
 		ft_lstadd_back(&minishell->env, ft_lstnew(parse_equals(env[i])));
 
 
-	print_env(minishell);
 }
