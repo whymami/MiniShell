@@ -6,15 +6,15 @@
 /*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 14:49:06 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/06 20:23:03 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/07 17:38:05 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	dlinked_list_clear(t_dlinked_list **lst, void (*del)(void *))
+void	dlist_clear(t_dlist **lst, void (*del)(void *))
 {
-	t_dlinked_list	*tmp;
+	t_dlist	*tmp;
 
 	if (!lst || !*lst)
 		return ;

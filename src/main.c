@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 00:40:49 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/07 12:56:40 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/07 17:31:59 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ int	main(void)
 		if(!parser(minishell))
 			lexer(minishell); // lexer parserin içine taşıncak ve bu kısıma executor gelcek.
 	}
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
