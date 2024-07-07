@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dlist_delone.c                                     :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: halozdem <halozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/06 18:16:33 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/07 19:48:34 by halozdem         ###   ########.fr       */
+/*   Created: 2024/07/07 18:31:42 by halozdem          #+#    #+#             */
+/*   Updated: 2024/07/07 18:53:42 by halozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	dlist_delone(t_dlinked_list *lst, void (*del)(void *))
+void	get_pwd()
 {
-	if (!lst || !del)
-		return ;
-	del(lst->data);
-	free(lst);
+	char pwd[4096];
+
+	ft_printf("%s\n", getcwd(pwd, 4096));
 }

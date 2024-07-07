@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
+/*   By: halozdem <halozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 00:40:49 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/07 18:36:12 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/07 19:47:47 by halozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,17 @@ int	main(int argc, char **argv, char **env)
 {
 	(void)argc;
 	(void)argv;
+	(void)env;
 	t_minishell	*minishell;
 
 	minishell = malloc(sizeof(t_minishell));
 	if (!minishell)
 		return (EXIT_FAILURE); //hata mesajı
 	parse_env(minishell, env);
+	// get_pwd();
+	unset(minishell, "PATH");
+	print_env(minishell);
+
 	while (1)
 	{
 		minishell->line = readline("minishell> ");
