@@ -1,7 +1,7 @@
 NAME = minishell
 
 
-SRC = src/main.c src/parser.c src/lexer.c 
+SRC = src/main.c src/parser.c src/lexer.c src/parse_env.c
 OBJ := $(SRC:.c=.o)
 CFLAGS = -Wall -Wextra -Werror
 
@@ -25,7 +25,8 @@ $(NAME): $(OBJ) $(LIBFT) $(PRINTF) $(DLINK)
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
-	
+	make -C $(LIBFT_DIR) bonus
+
 $(DLINK):
 	make -C $(DLINK_DIR)
 

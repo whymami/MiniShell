@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
+/*   By: halozdem <halozdem@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 00:40:49 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/07 12:56:40 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/07 14:36:52 by halozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,16 @@
 #include "stdio.h"
 #include "stdlib.h"
 
-int	main(void)
+int	main(int argc, char **argv, char **env)
 {
+	(void)argc;
+	(void)argv;
 	t_minishell	*minishell;
 
 	minishell = malloc(sizeof(t_minishell));
+	if (!minishell)
+		return (EXIT_FAILURE); //hata mesajı
+	parse_env(minishell, env);
 	while (1)
 	{
 		minishell->line = readline("minishell> ");
