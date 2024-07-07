@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
+/*   By: halozdem <halozdem@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 00:40:49 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/06 21:34:39 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/06 16:37:57 by halozdem         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,10 @@ int	main(void)
 		minishell->line = readline("minishell> ");
 		if (ft_strlen(minishell->line) != 0)
 			add_history(minishell->line);
+
 		if(!parser(minishell))
 			lexer(minishell); // lexer parserin içine taşıncak ve bu kısıma executor gelcek.
+    executor(minishell);
 	}
 	return (EXIT_SUCCESS);
 }
