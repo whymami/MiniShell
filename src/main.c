@@ -6,10 +6,11 @@
 /*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 00:40:49 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/07 12:54:03 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/07 12:56:40 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/minishell.h"
 #include "stdio.h"
 #include "stdlib.h"
 
@@ -23,9 +24,6 @@ int	main(void)
 		minishell->line = readline("minishell> ");
 		if (ft_strlen(minishell->line) != 0)
 			add_history(minishell->line);
-		parser(minishell);
-		lexer(minishell);
-		executor(minishell);
 		if(!parser(minishell))
 			lexer(minishell); // lexer parserin içine taşıncak ve bu kısıma executor gelcek.
 	}
