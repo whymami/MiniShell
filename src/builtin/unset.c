@@ -12,15 +12,20 @@
 
 #include "../../include/minishell.h"
 
-void	unset(t_minishell *mini, char *key)
+void *del(void *content)
 {
-	t_list *lst;
+	if (content)
+		free(content);
+}
+
+void unset(t_minishell *mini, char *key)
+{
+	t_dlist *lst;
 
 	lst = search_env(mini, key);
-	if(lst)
+	if (lst)
 	{
-		ft_lstdelone(lst, (void(*))del);
-	
+		dlist_delone(lst, (void(*))del);
 	}
-
+	
 }

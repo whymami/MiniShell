@@ -12,10 +12,16 @@
 
 #include "../../include/minishell.h"
 
-void	dlist_delone(t_dlinked_list *lst, void (*del)(void *))
+void dlist_delone(t_dlist *lst, void (*del)(void *))
 {
 	if (!lst || !del)
-		return ;
-	del(lst->data);
-	free(lst);
+        return;
+
+    if (lst->prev)
+        lst->prev->next = lst->next;
+    if (lst->next)
+        lst->next->prev = lst->prev;
+
+    del(lst->data);
+    free(lst);
 }
