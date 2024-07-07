@@ -26,7 +26,8 @@ int	main(int argc, char **argv, char **env)
 		return (EXIT_FAILURE); //hata mesajı
 	parse_env(minishell, env);
 	// get_pwd();
-	unset(minishell, "PATH");
+	print_env(minishell);
+	unset(minishell, "LOGNAME");
 	print_env(minishell);
 
 	while (1)

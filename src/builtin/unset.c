@@ -24,8 +24,7 @@ void unset(t_minishell *mini, char *key)
 
 	lst = search_env(mini, key);
 	if (lst)
-	{
 		dlist_delone(lst, (void(*))del);
-	}
-	
+	else
+		ft_printf("key not found: %s", key);
 }
