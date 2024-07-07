@@ -11,13 +11,13 @@
 
 typedef struct s_env
 {
-	char *key;
-	char *value;
-}	t_env;
+	char			*key;
+	char			*value;
+}					t_env;
 
 typedef struct s_minishell
 {
-	t_list *env;
+	t_list			*env;
 	char			*line;
 	int				pipe_count;
 	t_dlinked_list	*tokenizer;
@@ -32,5 +32,9 @@ int					parser(t_minishell *minishell);
 int					quote_handler(t_minishell *minishell, int pipe_i, int sign);
 void				lexer(t_minishell *minishell);
 void				parse_env(t_minishell *minishell, char **env);
+
+void				add_env(t_minishell *minishell, char *key, char *value);
+void				print_env(t_minishell *minishell);
+void				search_env(t_minishell *minishell, char *key);
 
 #endif
