@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: halozdem <halozdem@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 00:40:49 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/07 14:36:52 by halozdem         ###   ########.fr       */
+/*   Updated: 2024/07/07 15:48:24 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int	main(int argc, char **argv, char **env)
 		minishell->line = readline("minishell> ");
 		if (ft_strlen(minishell->line) != 0)
 			add_history(minishell->line);
-		if(!parser(minishell))
-			lexer(minishell); // lexer parserin içine taşıncak ve bu kısıma executor gelcek.
+		// if(!parser(minishell))
+		// 	lexer(minishell); // lexer parserin içine taşıncak ve bu kısıma executor gelcek.
 	}
 	return (EXIT_SUCCESS);
 }
