@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 15:34:45 by btanir            #+#    #+#             */
-/*   Updated: 2024/07/07 17:38:05 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/07 18:31:56 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,13 @@ static int	lexer_split_pipe(t_minishell *minishell, int *i, int *pipe_count,
 		if (!token)
 			return (FAILURE);
 		args = ft_split(temp_line, ' ');
-		token->args = 
+		// token->args = 
 		free(temp_line);
-		dlist_add_back(&minishell->tokens, dlist_new());
+		// dlist_add_back(&minishell->tokens, dlist_new());
 		(*pipe_count)++;
 		*last_pipe = *i + 1;
 	}
+	return(SUCCESS);
 }
 
 static void	create_head(t_minishell *minishell, int *i, int *last_pipe)

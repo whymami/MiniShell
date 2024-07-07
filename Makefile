@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wextra -Werror
 LIBFT_DIR = lib/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-DLINK_DIR = src/d_link_list
+DLINK_DIR = src/dlist
 DLINK = $(DLINK_DIR)/dlist.a
 
 PRINTF_DIR = lib/ft_printf

@@ -1,7 +1,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "dlink_list.h"
+# include "dlist.h"
 # include "ft_printf.h"
 # include "libft.h"
 # include "readline/history.h"
@@ -16,7 +16,7 @@ typedef struct s_token
 {
 	char			*command;
 	char			**args;
-	bool			meta_char;
+	int			meta_char;
 }					t_token;
 
 typedef struct s_minishell
