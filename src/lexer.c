@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 15:34:45 by btanir            #+#    #+#             */
-/*   Updated: 2024/07/08 20:46:39 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/08 21:19:39 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	create_token(t_minishell *minishell, int *i, int *last_pipe)
 			temp_str = ft_substr(line, *last_pipe, (*i) - (*last_pipe));
 			temp_line = ft_strtrim(temp_str, " ");
 			free(temp_str);
-			if (!minishell->tokens)
+			if (minishell->tokens)
 				minishell->tokens = dlist_new(temp_line);
 			else
 				dlist_add_back(&minishell->tokens, dlist_new(temp_line));
@@ -49,7 +49,7 @@ void	lexer(t_minishell *minishell)
 	i = 0;
 	last_pipe = 0;
 	minishell->pipe_count = 0;
-	if (minishell->tokens)
+	if (!minishell->tokens)
 		dlist_clear(&minishell->tokens, &del);
 	create_token(minishell, &i, &last_pipe);
 }
