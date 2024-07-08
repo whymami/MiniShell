@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 03:46:08 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/07 17:32:08 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/08 20:49:14 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	quote_handler(t_minishell *minishell, int pipe_i, int sign)
 			quote = line[i];
 		else if (quote != 0 && quote == line[i])
 			quote = 0;
-		if (quote == 0 && '|' == line[i] && line[i + 1] && line[i + 1] == '|')
+		if (quote == 0 && line[i] && '|' == line[i] && line[i + 1] && line[i
+			+ 1] == '|')
 			return (ft_printf("%s%s `%s`\n", ERR_TITLE, SYNTAX_ERR, "||"),
 				FAILURE);
 	}
@@ -54,14 +55,13 @@ static int	real_pipe(t_minishell *minishell)
 	else
 		return (FAILURE);
 	return (SUCCESS);
-	
 }
 int	parser(t_minishell *minishell)
 {
 	char *line;
 
 	line = minishell->line;
-	
+
 	if ((*line == '|' && *(line + 1) && *(line + 1) == '|')
 		&& ft_printf("%s%s `%s`\n", ERR_TITLE, SYNTAX_ERR, "||"))
 		return (FAILURE);
@@ -70,5 +70,4 @@ int	parser(t_minishell *minishell)
 	else if (real_pipe(minishell))
 		return (FAILURE);
 	return (SUCCESS);
-	// ilk önce real pipeın indeksini bulup orasını linedan çıkartırız
 }

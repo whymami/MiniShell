@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 16:47:01 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/05 18:25:04 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/08 20:11:47 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

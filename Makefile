@@ -16,7 +16,7 @@ DLINK = $(DLINK_DIR)/dlist.a
 PRINTF_DIR = lib/ft_printf
 PRINTF = $(PRINTF_DIR)/libftprintf.a
 
-RLFLAGS = -lreadline
+RLFLAGS = -lreadline -g
 LDFLAGS = -L$(LIBFT_DIR) -L$(PRINTF_DIR)
 
 all: $(NAME)
