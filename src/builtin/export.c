@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: halozdem <halozdem@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:55:17 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/07 18:56:45 by halozdem         ###   ########.fr       */
+/*   Updated: 2024/07/08 16:14:36 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 void	export(t_minishell *minishell, char *key, char *value)
 {
 	t_env	*env_data;
-	t_list	*new;
+	t_dlist	*new;
 
 	env_data = malloc(sizeof(env_data));
 	env_data->key = key;
 	env_data->value = value;
-	new = ft_lstnew(env_data);
-	ft_lstadd_back(&minishell->env, new);
+	new = dlist_new(env_data);
+	dlist_add_back(&minishell->env, new);
 }
