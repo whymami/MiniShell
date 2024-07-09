@@ -53,4 +53,6 @@ void		get_pwd(void);
 void		del(void *content);
 void		unset(t_minishell *mini, char *key);
 
+void execute_command(t_minishell *minishell);
+
 #endif
