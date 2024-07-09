@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 00:40:49 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/08 21:22:16 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/09 21:18:21 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	(void)env;
-	minishell = malloc(sizeof(t_minishell));
+	minishell = ft_calloc(1, sizeof(t_minishell));
 	if (!minishell)
 		return (EXIT_FAILURE); // hata mesajı
 	while (1)
@@ -30,8 +30,8 @@ int	main(int argc, char **argv, char **env)
 		if (ft_strlen(minishell->line) != 0)
 		{
 			add_history(minishell->line);
-			// if (!parser(minishell))
-			lexer(minishell);
+			if (!parser(minishell))
+				lexer(minishell);
 			// lexer parserin içine taşıncak ve bu kısıma executor gelcek.
 		}
 	}
