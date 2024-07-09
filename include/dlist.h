@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dlist.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 18:00:25 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/07 18:14:06 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/09 20:38:13 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ void				dlist_add_front(t_dlist **lst, t_dlist *new);
 t_dlist				*dlist_new(void *data);
 void				dlist_clear(t_dlist **lst, void (*del)(void *));
 void				dlist_delone(t_dlist *lst, void (*del)(void *));
+int					dlist_size(t_dlist *lst);
 
 #endif
