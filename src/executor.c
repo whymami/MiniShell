@@ -6,22 +6,18 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/09 21:04:45 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/09 21:29:50 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
  #include <sys/wait.h>
 
-void execute_command(t_minishell *minishell)
+static	char **cpy_arg(t_minishell *minishell)
 {
-	// pid_t	pid;
-	// int		status;
-	char	**argv;
-	// char	*path;
-	int		i;
 	t_dlist *temp;
-
+	char **argv;
+	int	i;
 
 	temp = minishell->tokens;
 	i = 0;
@@ -32,5 +28,13 @@ void execute_command(t_minishell *minishell)
 		temp = temp->next;
 	}
 	argv[i] = NULL;
+	return (argv);
+}
+
+void execute_command(t_minishell *minishell)
+{
+	// pid_t	pid;
+	// int		status;
+	char	*path;
 
 }
