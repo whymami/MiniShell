@@ -1,22 +1,22 @@
 NAME = minishell
 
 
-SRC = src/main.c src/parser.c src/lexer.c \
-	src/builtin/env.c src/builtin/pwd.c src/builtin/unset.c src/builtin/export.c
+SRC = src/main.c src/parser.c src/lexer.c src/builtin/env.c src/builtin/pwd.c \
+	src/builtin/unset.c src/builtin/export.c
+
 OBJ := $(SRC:.c=.o)
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g # -fsanitize=address
 
 LIBFT_DIR = lib/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-DLINK_DIR = src/dlist
+DLINK_DIR = lib/dlist
 DLINK = $(DLINK_DIR)/dlist.a
 
 PRINTF_DIR = lib/ft_printf
 PRINTF = $(PRINTF_DIR)/libftprintf.a
 
-
-RLFLAGS = -lreadline
+RLFLAGS = -lreadline -g
 LDFLAGS = -L$(LIBFT_DIR) -L$(PRINTF_DIR)
 
 all: $(NAME)

@@ -1,21 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dlist_delone.c                                     :+:      :+:    :+:   */
+/*   dlist_add_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: halozdem <halozdem@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/06 18:16:33 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/07 19:48:34 by halozdem         ###   ########.fr       */
+/*   Created: 2024/07/06 14:43:22 by muguveli          #+#    #+#             */
+/*   Updated: 2024/07/08 19:07:31 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	dlist_delone(t_dlinked_list *lst, void (*del)(void *))
+void	dlist_add_back(t_dlist **lst, t_dlist *new)
 {
-	if (!lst || !del)
+	t_dlist	*last;
+
+	if (!lst || !new)
 		return ;
-	del(lst->data);
-	free(lst);
+	if (!*lst)
+	{
+		*lst = new;
+		return ;
+	}
+	last = *lst;
+	while (last->next)
+		last = last->next;
+	last->next = new;
+	new->prev = last;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: halozdem <halozdem@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:37:13 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/07 19:41:53 by halozdem         ###   ########.fr       */
+/*   Updated: 2024/07/08 15:51:37 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ static t_env	*parse_equals(char *env)
 	return (env_data);
 }
 
-t_list	*search_env(t_minishell *minishell, char *key)
+t_dlist	*search_env(t_minishell *minishell, char *key)
 {
-	t_list	*tmp;
+	t_dlist	*tmp;
 
 	tmp = minishell->env;
 	while (tmp)
 	{
-		if (ft_strnstr(((t_env *)tmp->content)->key, key, ft_strlen(key)))
+		if (ft_strnstr(((t_env *)tmp->data)->key, key, ft_strlen(key)))
 			return (tmp);
 		tmp = tmp->next;
 	}
@@ -53,13 +53,13 @@ t_list	*search_env(t_minishell *minishell, char *key)
 
 void	print_env(t_minishell *minishell)
 {
-	t_list	*env_data;
+	t_dlist	*env_data;
 
 	env_data = minishell->env;
 	while (env_data)
 	{
-		ft_printf("%s=%s\n", ((t_env *)env_data->content)->key,
-			((t_env *)env_data->content)->value);
+		ft_printf("%s=%s\n", ((t_env *)env_data->data)->key,
+			((t_env *)env_data->data)->value);
 		env_data = env_data->next;
 	}
 }
@@ -69,9 +69,7 @@ void	parse_env(t_minishell *minishell, char **env)
 	int	i;
 
 	i = 0;
-	minishell->env = ft_lstnew(parse_equals(env[0]));
+	minishell->env = dlist_new(parse_equals(env[0]));
 	while (env[++i])
-		ft_lstadd_back(&minishell->env, ft_lstnew(parse_equals(env[i])));
-
-
+		dlist_add_back(&minishell->env, dlist_new(parse_equals(env[i])));
 }

@@ -1,31 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dlist_add_back.c                                   :+:      :+:    :+:   */
+/*   dlist_new.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/06 14:43:22 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/07 17:38:05 by btanir           ###   ########.fr       */
+/*   Created: 2024/07/06 14:40:55 by muguveli          #+#    #+#             */
+/*   Updated: 2024/07/08 19:47:30 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	dlist_add_back(t_dlist **lst, t_dlist *new)
+t_dlist	*dlist_new(void *data)
 {
-	t_dlist	*last;
+	t_dlist	*new;
 
-	if (!lst || !new)
-		return ;
-	if (!*lst)
-	{
-		*lst = new;
-		return ;
-	}
-	last = *lst;
-	while (last->next)
-		last = last->next;
-	last->next = new;
-	new->prev = last;
+	new = malloc(sizeof(t_dlist));
+	if (!new)
+		return (NULL);
+	new->data = data;
+	new->next = NULL;
+	new->prev = NULL;
+	return (new);
 }
