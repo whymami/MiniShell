@@ -2,7 +2,7 @@ NAME = minishell
 
 
 SRC = src/main.c src/parser.c src/lexer.c src/builtin/env.c src/builtin/pwd.c \
-	src/builtin/unset.c src/builtin/export.c
+	src/builtin/unset.c src/builtin/export.c src/builtin/cd.c src/builtin/echo.c
 
 OBJ := $(SRC:.c=.o)
 CFLAGS = -Wall -Wextra -Werror -g  -fsanitize=address

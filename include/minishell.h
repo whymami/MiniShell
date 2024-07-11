@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/11 17:27:58 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/11 17:29:03 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include "dlist.h"
+# include "fcntl.h"
 # include "ft_printf.h"
 # include "libft.h"
 # include "readline/history.h"
@@ -21,7 +22,6 @@
 # include "stdlib.h"
 # include "string.h"
 # include <unistd.h>
-# include "fcntl.h"
 
 # define TRUE 1
 # define FALSE 0
@@ -67,5 +67,5 @@ void		del(void *content);
 void		unset(t_minishell *mini, char *key);
 void		echo(char **args);
 int			cd(t_minishell *mini, char *av);
-
+void		execute_command(t_minishell *minishell);
 #endif
