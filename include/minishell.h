@@ -9,6 +9,7 @@
 # include "stdlib.h"
 # include "string.h"
 # include <unistd.h>
+# include "fcntl.h"
 
 # define TRUE 1
 # define FALSE 0
@@ -18,7 +19,7 @@ typedef enum e_meta_type
 	NONE,
 	L_RED,
 	R_RED,
-	DL_RED,
+	HEREDOC,
 	DR_RED,
 	DOLLAR,
 }			t_meta_type;
