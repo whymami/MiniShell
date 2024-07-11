@@ -46,7 +46,7 @@ int			parser(t_minishell *minishell);
 int			quote_handler(t_minishell *minishell, int pipe_i, int sign);
 void		lexer(t_minishell *minishell);
 void		parse_env(t_minishell *minishell, char **env);
-void		export(t_minishell *minishell, char *key, char *value);
+void		export(t_minishell *minishell, char *env_data);
 void		print_env(t_minishell *minishell);
 t_dlist		*search_env(t_minishell *minishell, char *key);
 void		get_pwd(void);
