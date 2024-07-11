@@ -1,22 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/07 18:31:42 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/09 20:30:05 by eyasa            ###   ########.fr       */
+/*   Created: 2024/07/09 16:13:26 by eyasa             #+#    #+#             */
+/*   Updated: 2024/07/09 16:50:53 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-char	*get_pwd(void)
+void	echo(char **args)
 {
-	char	pwd[4096];
-	char	*path;
+	int	i;
 
-	path = getcwd(pwd, 4096);
-	return (ft_printf("%s\n", path), path);
+	i = -1;
+	if (ft_strncmp("-n", args[0], 3) == 0)
+	{
+		while (args[1][++i])
+			ft_putchar(args[1][i]);
+	}
+	else
+	{
+		while (args[++i])
+		{
+			ft_putstr(args[i]);
+			ft_putchar(' ');
+		}
+		ft_putchar('\n');
+	}
 }

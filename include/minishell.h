@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eyasa <eyasa@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
+/*   Updated: 2024/07/11 17:27:58 by eyasa            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -50,10 +62,10 @@ void		parse_env(t_minishell *minishell, char **env);
 void		export(t_minishell *minishell, char *env_data);
 void		print_env(t_minishell *minishell);
 t_dlist		*search_env(t_minishell *minishell, char *key);
-void		get_pwd(void);
+char		*get_pwd(void);
 void		del(void *content);
 void		unset(t_minishell *mini, char *key);
-
-void execute_command(t_minishell *minishell);
+void		echo(char **args);
+int			cd(t_minishell *mini, char *av);
 
 #endif

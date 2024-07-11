@@ -15,7 +15,6 @@
 		"readline.h": "c",
 		"dlink_list.h": "c",
 		"wait.h": "c",
-		"stdio.h": "c",
-		"dlist.h": "c"
+		"stdio.h": "c"
 	}
 }
