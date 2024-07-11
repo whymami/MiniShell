@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:13:26 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/09 16:50:53 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/11 18:16:31 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ void	echo(char **args)
 	int	i;
 
 	i = -1;
-	if (ft_strncmp("-n", args[0], 3) == 0)
+	if (ft_strncmp("-n", args[1], 3) == 0)
 	{
-		while (args[1][++i])
-			ft_putchar(args[1][i]);
+		while (args[2][++i])
+			ft_putchar(args[2][i]);
 	}
 	else
 	{

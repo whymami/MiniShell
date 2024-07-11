@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:48:57 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/09 21:29:32 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/11 18:13:03 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	cd(t_minishell *mini, char *av)
 {
 	char	*target_dir;
 	int		err;
-	t_env  	*env_data;
 
 	err = get_target_directory(mini, av, &target_dir);
 	if (err == EXIT_FAILURE)
@@ -54,10 +53,10 @@ int	cd(t_minishell *mini, char *av)
 			EXIT_FAILURE);
 	if (av && ft_strncmp(av, "-", 1) == 0)
 	{
-		target_dir = ((t_env *)search_env(mini, "PWD")->data)->value;
-		env_data = search_env(mini, "OLDPWD")->data;
-		free(env_data->value);
-		env_data->value = target_dir;
+		// target_dir = ((t_env *)search_env(mini, "PWD")->data)->value;
+		// env_data = search_env(mini, "OLDPWD")->data;
+		// free(env_data->value);
+		// env_data->value = target_dir;
 		free(target_dir);
 		target_dir = ft_strdup(get_pwd());
 	}
