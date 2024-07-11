@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/11 13:49:00 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/11 16:19:14 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,15 @@ void	get_cmd(char **argv, char **cmd, char ***args)
 	int		i;
 
 	tmp_argv = ft_split(argv[0], ' ');
-	*cmd = strdup(tmp_argv[0]);
+	*cmd = tmp_argv[0];
 	count = 0;
 	i = -1;
 	while (tmp_argv[count])
 		count++;
 	*args = malloc(sizeof(char *) * (count + 1));
-	(*args)[0] = strdup(tmp_argv[0]);
+	(*args)[0] = tmp_argv[0];
 	while (++i < count)
-		(*args)[i] = ft_strdup(tmp_argv[i]);
+		(*args)[i] = tmp_argv[i];
 	(*args)[count] = NULL;
 }
 
@@ -57,10 +57,14 @@ char	*find_path(t_minishell *minishell, char *cmd)
 	char	**path_split;
 	char	*path_cmd;
 	int		i;
+	t_dlist	*path_list;
 
 	cmd_slash = ft_strjoin("/", cmd);
-	path = ((t_env *)search_env(minishell, "PATH")->data)->value;
-	path_split = ft_split(path, ':');
+	path_list = search_env(minishell, "PATH");
+	if (!path_list)
+		return (NULL);
+	path = path_list->data;
+	path_split = ft_split(path + 5, ':');
 	i = 0;
 	while (path_split[i])
 	{
@@ -88,25 +92,21 @@ char **env(t_minishell *minishell)
 	env = ft_calloc(1, sizeof(char *) * (dlist_size(minishell->env) + 1));
 	while (env_data)
 	{
-		env[i] = ft_strjoin(((t_env *)env_data->data)->key, "=");
-		env[i] = ft_strjoin(env[i], ((t_env *)env_data->data)->value);
+		env[i++] = env_data->data;
 		env_data = env_data->next;
-		i++;
 	}
 	env[i] = NULL;
 	return (env);
 }
 int check_bultin (t_minishell *minishell, char *cmd, char **args)
 {
+	ft_printf("args: %s\n", args[0]);
 	if (ft_strncmp(cmd, "env", 3) == 0)
 		print_env(minishell);
 	else if (ft_strncmp(cmd, "export", 6) == 0)
-		export(minishell, args[0], args[1]);
+		export(minishell, args[1]);
 	else if (ft_strncmp(cmd, "unset", 5) == 0)
-	{
-		unset(minishell, args[0]);
-		print_env(minishell);
-	}
+		unset(minishell, args[1]);
 	else
 		return (0);
 	return (1);
@@ -127,6 +127,7 @@ void	execute_command(t_minishell *minishell)
 	if (check_bultin(minishell, cmd, args) == 1)
 		return ;
 	path = find_path(minishell, cmd);
+
 	pid = fork();
 	envs = env(minishell);
 	if (pid == 0)
