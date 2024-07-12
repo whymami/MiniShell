@@ -3,19 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42.fr>                +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:48:57 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/11 18:13:03 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/12 14:58:53 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+void	change_pwd(t_minishell *mini, char *pwd)
+{
+	t_dlist	*pwd_env;
+	t_dlist	*oldpwd_env;
+	char	*value;
+
+	pwd_env = search_env(mini, "PWD");
+	oldpwd_env = search_env(mini, "OLDPWD");
+	value = NULL;
+	if (oldpwd_env && pwd_env)
+	{
+		value = get_value(pwd_env->data);
+		if (value)
+		{
+			free(oldpwd_env->data);
+			oldpwd_env->data = ft_strjoin("OLDPWD=", value);
+			free(value);
+		}
+	}
+	if (pwd_env)
+	{
+		if (!oldpwd_env)
+			dlist_add_back(&mini->env, dlist_new(ft_strjoin("OLDPWD=",
+						mini->oldpwd)));
+		free(pwd_env->data);
+		pwd_env->data = ft_strjoin("PWD=", pwd);
+	}
+}
+
 static int	get_target_directory(t_minishell *mini, char *av, char **target_dir)
 {
 	t_dlist	*path;
-	t_env	*env_data;
+	char	*env_data;
 
 	path = NULL;
 	env_data = NULL;
@@ -25,16 +54,17 @@ static int	get_target_directory(t_minishell *mini, char *av, char **target_dir)
 	{
 		path = search_env(mini, "OLDPWD");
 		if (!path)
-			return (ft_printf("OLDPWD not set\n"), EXIT_FAILURE);
+			return (ft_printf("minishell: cd: OLDPWD not set\n"), EXIT_FAILURE);
 	}
 	if (path)
 	{
-		env_data = (t_env *)(path->data);
-		if (!env_data || !env_data->value)
-			return (ft_printf("Invalid environment data\n"), EXIT_FAILURE);
-		*target_dir = env_data->value;
+		env_data = get_value(path->data);
+		if (!env_data)
+			return (ft_printf("minishell: cd: Invalid environment data\n"),
+				EXIT_FAILURE);
+		*target_dir = env_data;
 	}
-	else
+	else if (av)
 		*target_dir = av;
 	return (EXIT_SUCCESS);
 }
@@ -43,22 +73,26 @@ int	cd(t_minishell *mini, char *av)
 {
 	char	*target_dir;
 	int		err;
+	char	pwd[4096];
+	char	*oldpwd_copy;
 
+	if (!getcwd(pwd, 4096))
+		return (perror("minishell: cd"), EXIT_FAILURE);
+	oldpwd_copy = ft_strdup(pwd);
+	if (!oldpwd_copy)
+		return (perror("minishell: cd"), EXIT_FAILURE);
+	if (mini->oldpwd)
+		free(mini->oldpwd);
+	mini->oldpwd = oldpwd_copy;
 	err = get_target_directory(mini, av, &target_dir);
 	if (err == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	err = chdir(target_dir);
-	if (err == -1)
-		return (ft_printf("minishell: cd: %s: No such file or directory\n", target_dir),
-			EXIT_FAILURE);
+	if (chdir(target_dir) == -1)
+		return (perror("minishell: cd"), EXIT_FAILURE);
+	if (!getcwd(pwd, 4096))
+		return (perror("minishell: cd"), EXIT_FAILURE);
+	change_pwd(mini, pwd);
 	if (av && ft_strncmp(av, "-", 1) == 0)
-	{
-		// target_dir = ((t_env *)search_env(mini, "PWD")->data)->value;
-		// env_data = search_env(mini, "OLDPWD")->data;
-		// free(env_data->value);
-		// env_data->value = target_dir;
-		free(target_dir);
-		target_dir = ft_strdup(get_pwd());
-	}
+		ft_printf("%s\n", pwd);
 	return (EXIT_SUCCESS);
 }

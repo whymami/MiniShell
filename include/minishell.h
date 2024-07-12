@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/11 18:16:39 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/12 15:11:25 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ typedef struct s_env
 typedef struct s_minishell
 {
 	t_dlist	*env;
+	char	*oldpwd;
 	char	*line;
 	int		pipe_count;
 	t_dlist	*tokens;
@@ -68,5 +69,7 @@ void		unset(t_minishell *mini, char *key);
 void		echo(char **args);
 int			cd(t_minishell *mini, char *av);
 void		execute_command(t_minishell *minishell);
-
+void		*my_realloc(void *ptr, size_t size);
+char		*get_value(char *line);
+void		ft_exit(t_minishell *mini, char *av);
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:37:13 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/11 16:16:27 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/12 14:44:37 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,20 @@ static int	get_key(char *line)
 	while (line[j] && line[j] != '=')
 		j++;
 	return (j);
+}
+
+char *get_value(char *line)
+{
+	int		i;
+	char	*value;
+
+	if (!line)
+		return (NULL);
+	i = get_key(line);
+	if (!line[i])
+		return (NULL);
+	value = ft_strdup(line + i + 1);
+	return (value);
 }
 
 t_dlist	*search_env(t_minishell *minishell, char *key)
