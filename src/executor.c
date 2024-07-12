@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/11 16:19:14 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/12 17:23:36 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ char **env(t_minishell *minishell)
 	env[i] = NULL;
 	return (env);
 }
+
 int check_bultin (t_minishell *minishell, char *cmd, char **args)
 {
 	ft_printf("args: %s\n", args[0]);
@@ -107,6 +108,12 @@ int check_bultin (t_minishell *minishell, char *cmd, char **args)
 		export(minishell, args[1]);
 	else if (ft_strncmp(cmd, "unset", 5) == 0)
 		unset(minishell, args[1]);
+	else if (ft_strncmp(cmd, "cd", 2) == 0)
+		cd(minishell, args[1]);
+	else if (ft_strncmp(cmd, "echo", 4) == 0)
+		echo(args);
+	else if (ft_strncmp(cmd, "exit", 4) == 0)
+		ft_exit(minishell, args[1]);
 	else
 		return (0);
 	return (1);
