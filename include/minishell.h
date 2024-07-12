@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/12 17:22:54 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/12 20:26:47 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,5 @@ void		execute_command(t_minishell *minishell);
 void		*my_realloc(void *ptr, size_t size);
 char		*get_value(char *line);
 void		ft_exit(t_minishell *mini, char *av);
+
 #endif
