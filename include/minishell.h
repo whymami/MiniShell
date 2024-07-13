@@ -43,7 +43,8 @@ typedef struct s_minishell
 # define SYNTAX_ERR "syntax error near unexpected token"
 
 int			parser(t_minishell *minishell);
-int			quote_handler(t_minishell *minishell, int pipe_i, int sign);
+int			check_quote(char *line, int value_i);
+int			pass_space(char *line, int *i);
 void		lexer(t_minishell *minishell);
 void		parse_env(t_minishell *minishell, char **env);
 void		export(t_minishell *minishell, char *env_data);
