@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/13 14:56:00 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/13 17:29:24 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,5 @@ int			create_fork(t_minishell *minishell, char **cmd, char ***args,
 				int *i);
 int			multiple_command(t_minishell *minishell);
 char		**env(t_minishell *minishell);
+char		*find_path(t_minishell *minishell, char *cmd);
 #endif

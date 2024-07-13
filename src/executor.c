@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/13 14:57:04 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/13 18:14:28 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@ int	cpy_arg(t_minishell *minishell, char ***cmd, char ****args)
 {
 	t_dlist	*tokens;
 	int		i;
+	int		k;
 
 	tokens = minishell->tokens;
 	i = 0;
+	k = 0;
 	*cmd = ft_calloc(1, sizeof(char *) * (dlist_size(minishell->tokens) + 1));
 	*args = ft_calloc(1, sizeof(char **) * (dlist_size(minishell->tokens) + 1));
 	while (tokens)
@@ -41,11 +43,11 @@ int	cpy_arg(t_minishell *minishell, char ***cmd, char ****args)
 		(*args)[i] = ft_split(tokens->data, ' ');
 		(*cmd)[i] = (*args)[i][0];
 		i++;
+		k++;
 		tokens = tokens->next;
-	}
+	}	
 	return (SUCCESS);
 }
-
 char	*find_path(t_minishell *minishell, char *cmd)
 {
 	char	*cmd_slash;
@@ -58,7 +60,7 @@ char	*find_path(t_minishell *minishell, char *cmd)
 	cmd_slash = ft_strjoin("/", cmd);
 	path_list = search_env(minishell, "PATH");
 	if (!path_list)
-		return (NULL);
+		return (cmd);
 	path = path_list->data;
 	path_split = ft_split(path + 5, ':');
 	i = 0;
@@ -74,7 +76,7 @@ char	*find_path(t_minishell *minishell, char *cmd)
 		i++;
 	}
 	free(cmd_slash);
-	return (NULL);
+	return (cmd);
 }
 
 char	**env(t_minishell *minishell)
@@ -154,7 +156,7 @@ int	execute_command(t_minishell *minishell)
 {
 	if (minishell->pipe_count == 0)
 		return (single_command(minishell));
-	// else
-	// 	return (multiple_command(minishell));
+	else
+		return (multiple_command(minishell));
 	return (FAILURE);
 }
