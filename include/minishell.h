@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/12 17:22:54 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/13 14:56:00 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 
 # define TRUE 1
 # define FALSE 0
+# define STD_INPUT 0
+# define STD_OUTPUT 1
 
 typedef enum e_meta_type
 {
@@ -68,8 +70,15 @@ void		del(void *content);
 void		unset(t_minishell *mini, char *key);
 void		echo(char **args);
 int			cd(t_minishell *mini, char *av);
-void		execute_command(t_minishell *minishell);
+int			execute_command(t_minishell *minishell);
 void		*my_realloc(void *ptr, size_t size);
 char		*get_value(char *line);
 void		ft_exit(t_minishell *mini, char *av);
+int			cpy_arg(t_minishell *minishell, char ***cmd, char ****args);
+int			check_bultin(t_minishell *minishell, char **cmd, char ***args,
+				int *i);
+int			create_fork(t_minishell *minishell, char **cmd, char ***args,
+				int *i);
+int			multiple_command(t_minishell *minishell);
+char		**env(t_minishell *minishell);
 #endif
