@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 20:17:02 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/14 02:58:33 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/14 12:47:02 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 int ft_pipe(t_minishell *minishell, char **cmd, char ****args, int *i)
 {
-    int     pipefd[2];
-    pid_t   pid;
-    int     status;
-    char    **envs;
-    char    *path;
-    int     in_fd;
+    int pipefd[2];
+    pid_t pid;
+    int status;
+    char **envs;
+    char *path;
+    int in_fd;
 
     in_fd = 0;
     envs = env(minishell);
@@ -27,7 +27,7 @@ int ft_pipe(t_minishell *minishell, char **cmd, char ****args, int *i)
     while ((*args)[*i])
     {
         path = find_path(minishell, (*args)[*i][0]);
-        
+
         // Bir sonraki komut olup olmadığını kontrol et
         if ((*args)[*i + 1])
         {
@@ -94,9 +94,9 @@ int ft_pipe(t_minishell *minishell, char **cmd, char ****args, int *i)
 
 int multiple_command(t_minishell *minishell)
 {
-    char    **cmd;
-    char    ***args;
-    int     i;
+    char **cmd;
+    char ***args;
+    int i;
 
     i = 0;
 
