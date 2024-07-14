@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/14 04:39:12 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/14 09:35:53 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,9 @@ int	cpy_arg(t_minishell *minishell, char ***cmd, char ****args)
 {
 	t_dlist	*tokens;
 	int		i;
-	int		k;
 
 	tokens = minishell->tokens;
 	i = 0;
-	k = 0;
 	*cmd = ft_calloc(1, sizeof(char *) * (dlist_size(minishell->tokens) + 1));
 	*args = ft_calloc(1, sizeof(char **) * (dlist_size(minishell->tokens) + 1));
 	while (tokens)
@@ -43,7 +41,6 @@ int	cpy_arg(t_minishell *minishell, char ***cmd, char ****args)
 		(*args)[i] = ft_split(tokens->data, ' ');
 		(*cmd)[i] = (*args)[i][0];
 		i++;
-		k++;
 		tokens = tokens->next;
 	}
 	return (SUCCESS);
