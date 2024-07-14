@@ -19,19 +19,19 @@ DLINK = $(DLINK_DIR)/dlist.a
 PRINTF_DIR = lib/ft_printf
 PRINTF = $(PRINTF_DIR)/libftprintf.a
 
-RLFLAGS = -lreadline -g
+RLFLAGS	= -L./lib/readline/lib -I./lib/readline/include/readline -lreadline
 LDFLAGS = -L$(LIBFT_DIR) -L$(PRINTF_DIR)
 
-all: $(NAME) $(RL)
+all: $(RL) $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT) $(PRINTF) $(DLINK) $(RL)
 	$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS) $(LIBFT) $(PRINTF) $(DLINK) $(RLFLAGS) -o $(NAME)
 
 $(RL):
-	@curl -O https://ftp.gnu.org/gnu/readline/readline-8.2.tar.gz
-	@tar -xvf readline-8.2.tar.gz
-	@rm -rf readline-8.2.tar.gz
-	@mv readline-8.2 $(RL_DIR)
+	@curl -O https://ftp.gnu.org/gnu/readline/readline-8.2-rc1.tar.gz
+	@tar -xvf readline-8.2-rc1.tar.gz
+	@rm -rf readline-8.2-rc1.tar.gz
+	@mv readline-8.2-rc1 $(RL_DIR)
 	@cd $(RL_DIR) && ./configure --prefix=$(DIR)/$(RL_DIR) && make && make install
 	make -C $(RL_DIR)
 
@@ -60,7 +60,6 @@ fclean: clean
 	make -C $(LIBFT_DIR) fclean
 	make -C $(DLINK_DIR) fclean
 	make -C $(PRINTF_DIR) fclean
-	make -C $(RL_DIR) clean
 
 re: fclean all
 
