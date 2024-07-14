@@ -11,6 +11,7 @@ settings.json
 *.swp
 *.swn
 *.swo
+readline
 #ignore contributers
 batu
 haluk
