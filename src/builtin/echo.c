@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:13:26 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/11 18:16:31 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/13 21:46:56 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,11 @@ void	echo(char **args)
 {
 	int	i;
 
-	i = -1;
+	i = 0;
+	if (!args[1] && ft_putchar('\n'))
+		return ;
 	if (ft_strncmp("-n", args[1], 3) == 0)
-	{
-		while (args[2][++i])
-			ft_putchar(args[2][i]);
-	}
+		ft_printf("%s", args[2]);
 	else
-	{
-		while (args[++i])
-		{
-			ft_putstr(args[i]);
-			ft_putchar(' ');
-		}
-		ft_putchar('\n');
-	}
+		ft_printf("%s\n", args[1]);
 }
