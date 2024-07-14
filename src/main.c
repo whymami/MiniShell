@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 00:40:49 by btanir            #+#    #+#             */
-/*   Updated: 2024/07/14 14:20:14 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/14 17:44:41 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int main(int argc, char **argv, char **env)
 	parse_env(minishell, env);
 	while (1)
 	{
-		signal(SIGINT, signal_handler);
 		minishell->line = readline("minishell> ");
+		// signal(SIGINT, signal_handler);
 		if (ft_strlen(minishell->line) != 0)
 		{
 			add_history(minishell->line);

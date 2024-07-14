@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/14 14:20:32 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/14 15:47:51 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef struct s_minishell
 	char	*line;
 	int		pipe_count;
 	t_dlist	*tokens;
-	int		err_code;
 }			t_minishell;
 
 # define SUCCESS 0
@@ -85,5 +84,4 @@ int			multiple_command(t_minishell *minishell);
 char		**env(t_minishell *minishell);
 char		*find_path(t_minishell *minishell, char *cmd);
 void		signal_handler(int signo);
-
 #endif
