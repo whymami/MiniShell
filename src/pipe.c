@@ -6,77 +6,95 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 20:17:02 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/13 21:54:12 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/14 18:35:48 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	ft_pipe(t_minishell *minishell, char **cmd, char ****args, int *i)
+int	create_pipe(t_minishell *minishell)
 {
-	int		pipefd[2];
-	pid_t	pid;
-	int		status;
-	char	**envs;
-	char	*path;
-	int		in_fd;
+	int	i;
 
-	in_fd = 0;
-	envs = env(minishell);
-	while ((*args)[*i])
+	minishell->pipe_fd = malloc(sizeof(int) * (minishell->pipe_count * 2));
+	minishell->pid = malloc(sizeof(int) * (minishell->pipe_count + 1));
+	if (!minishell->pipe_fd || !minishell->pid)
+		return (perror("Minishell: malloc error"), FAILURE);
+	for (i = 0; i < minishell->pipe_count; i++)
 	{
-		path = find_path(minishell, (*args)[*i][0]);
-		if ((*args)[*i + 1])
-			if (pipe(pipefd) == -1)
-				return (perror("pipe"), FAILURE);
-		pid = fork();
-		if (pid == -1)
-			return (perror("fork"), FAILURE);
-		else if (pid == 0)
-		{
-			if (in_fd != 0)
-			{
-				dup2(in_fd, STDIN_FILENO);
-				close(in_fd);
-			}
-			if ((*args)[*i + 1])
-			{
-				dup2(pipefd[1], STDOUT_FILENO);
-				close(pipefd[1]);
-			}
-			close(pipefd[0]);
-			if (check_bultin(minishell, cmd, *args, i) == 1)
-				exit(0);
-			if (execve(path, (*args)[*i], envs) == -1)
-			{
-				ft_printf("minishell: %s: command not found\n", cmd[*i]);
-				exit(1);
-			}
-		}
-		else
-		{
-			waitpid(pid, &status, 0);
-			if (in_fd != 0)
-				close(in_fd);
-			if ((*args)[*i + 1])
-				close(pipefd[1]);
-			in_fd = pipefd[0];
-		}
-		(*i)++;
+		if (pipe(minishell->pipe_fd + i * 2) == -1)
+			return (perror("Minishell: pipe error"), FAILURE);
 	}
 	return (SUCCESS);
+}
+
+void	pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
+{
+	if (i != 0)
+	{
+		dup2(minishell->pipe_fd[(i - 1) * 2], STDIN_FILENO);
+		close(minishell->pipe_fd[(i - 1) * 2]);
+	}
+	if (i != minishell->pipe_count)
+	{
+		dup2(minishell->pipe_fd[i * 2 + 1], STDOUT_FILENO);
+		close(minishell->pipe_fd[i * 2 + 1]);
+	}
+	for (int j = 0; j < minishell->pipe_count * 2; j++)
+	{
+		close(minishell->pipe_fd[j]);
+	}
+	if (execve(find_path(minishell, cmd[i]), args[i], env(minishell)) == -1)
+	{
+		perror("Minishell: execve error");
+		exit(1);
+	}
+}
+
+int	close_fd(t_minishell *minishell)
+{
+	int	i;
+	int	status;
+
+	for (i = 0; i < minishell->pipe_count * 2; i++)
+	{
+		close(minishell->pipe_fd[i]);
+	}
+	for (i = 0; i < minishell->pipe_count + 1; i++)
+	{
+		waitpid(minishell->pid[i], &status, 0);
+	}
+	free(minishell->pipe_fd);
+	free(minishell->pid);
+	return (SUCCESS);
+}
+
+int	ft_pipe(t_minishell *minishell, char **cmd, char ***args)
+{
+	int	i;
+
+	if (create_pipe(minishell) == FAILURE)
+		return (FAILURE);
+	for (i = 0; i < minishell->pipe_count + 1; i++)
+	{
+		minishell->pid[i] = fork();
+		if (minishell->pid[i] == -1)
+			return (perror("Minishell: fork error"), FAILURE);
+		else if (minishell->pid[i] == 0)
+			pipe_fork(minishell, i, cmd, args);
+	}
+	return (close_fd(minishell));
 }
 
 int	multiple_command(t_minishell *minishell)
 {
 	char	**cmd;
 	char	***args;
-	int		i;
 
-	i = 0;
-	if (cpy_arg(minishell, &cmd, &args))
+	if (cpy_arg(minishell, &cmd, &args) == FAILURE)
 		return (FAILURE);
-	if (ft_pipe(minishell, cmd, &args, &i))
+	if (ft_pipe(minishell, cmd, args) == FAILURE)
 		return (FAILURE);
 	return (SUCCESS);
 }
+

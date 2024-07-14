@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:13:26 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/13 21:46:56 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/14 03:09:34 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,23 @@ void	echo(char **args)
 	if (!args[1] && ft_putchar('\n'))
 		return ;
 	if (ft_strncmp("-n", args[1], 3) == 0)
-		ft_printf("%s", args[2]);
+	{
+		i++;
+		while (args[++i])
+		{
+			ft_printf("%s", args[i]);
+			if (args[i + 1])
+				ft_putchar(' ');
+		}
+	}	
 	else
-		ft_printf("%s\n", args[1]);
+	{
+		while (args[++i])
+		{
+			ft_printf("%s", args[i]);
+			if (args[i + 1])
+				ft_putchar(' ');
+		}
+		ft_putchar('\n');
+	}
 }
