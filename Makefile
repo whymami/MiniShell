@@ -1,12 +1,14 @@
 NAME = minishell
 
-
+RL_DIR = lib/readline
+RL = $(RL_DIR)/libreadline.a
 SRC = src/main.c src/parser.c src/lexer.c src/builtin/env.c src/builtin/pwd.c \
 	src/builtin/unset.c src/builtin/export.c src/builtin/cd.c src/builtin/echo.c \
 	src/builtin/exit.c src/executor.c src/pipe.c
 
 OBJ := $(SRC:.c=.o)
-CFLAGS = -Wall -Wextra -Werror -g  #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g  -fsanitize=address
+DIR = $(shell pwd)
 
 LIBFT_DIR = lib/libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -20,10 +22,21 @@ PRINTF = $(PRINTF_DIR)/libftprintf.a
 RLFLAGS = -lreadline -g
 LDFLAGS = -L$(LIBFT_DIR) -L$(PRINTF_DIR)
 
-all: $(NAME)
+all: $(NAME) $(RL)
 
-$(NAME): $(OBJ) $(LIBFT) $(PRINTF) $(DLINK)
+$(NAME): $(OBJ) $(LIBFT) $(PRINTF) $(DLINK) $(RL)
 	$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS) $(LIBFT) $(PRINTF) $(DLINK) $(RLFLAGS) -o $(NAME)
+
+$(RL):
+	@curl -O https://ftp.gnu.org/gnu/readline/readline-8.2.tar.gz
+	@tar -xvf readline-8.2.tar.gz
+	@rm -rf readline-8.2.tar.gz
+	@mv readline-8.2 $(RL_DIR)
+	@cd $(RL_DIR) && ./configure --prefix=$(DIR)/$(RL_DIR) && make && make install
+	make -C $(RL_DIR)
+
+.c.o:
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
@@ -40,12 +53,14 @@ clean:
 	make -C $(LIBFT_DIR) clean
 	make -C $(DLINK_DIR) clean
 	make -C $(PRINTF_DIR) clean
+	make -C $(RL_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
 	make -C $(LIBFT_DIR) fclean
 	make -C $(DLINK_DIR) fclean
 	make -C $(PRINTF_DIR) fclean
+	make -C $(RL_DIR) clean
 
 re: fclean all
 
