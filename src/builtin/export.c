@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:55:17 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/11 16:10:44 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/14 04:34:28 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	export(t_minishell *minishell, char *env_data)
 	if (!env_data)
 	{
 		new = minishell->env;
-		while(new && ft_printf("declare -x %s\n", new->data))
+		while (new &&ft_printf("declare -x %s\n", new->data))
 			new = new->next;
 		return ;
 	}
@@ -31,6 +31,5 @@ void	export(t_minishell *minishell, char *env_data)
 	if (env_data[i] && env_data[i - 1] && env_data[i - 1] == ' ' && env_data[i
 		+ 1] && env_data[i + 1] == ' ')
 		return ;
-	new = dlist_new(env_data);
-	dlist_add_back(&minishell->env, new);
+	dlist_add_back(&minishell->env, dlist_new(env_data));
 }

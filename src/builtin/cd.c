@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:48:57 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/12 14:58:53 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/14 03:18:01 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,24 +49,31 @@ static int	get_target_directory(t_minishell *mini, char *av, char **target_dir)
 	path = NULL;
 	env_data = NULL;
 	if (!av || ft_strncmp(av, "~", 1) == 0)
+	{
+		if (av && ft_strncmp(av, "~~", 2) == 0)
+			return (ft_printf("minishell: cd: %s: No such file or directory\n",
+					av), FAILURE);
 		path = search_env(mini, "HOME");
+		if (!path)
+			return (ft_printf("minishell: cd: HOME not set\n"), FAILURE);
+	}
 	else if (ft_strncmp(av, "-", 1) == 0)
 	{
 		path = search_env(mini, "OLDPWD");
 		if (!path)
-			return (ft_printf("minishell: cd: OLDPWD not set\n"), EXIT_FAILURE);
+			return (ft_printf("minishell: cd: OLDPWD not set\n"), FAILURE);
 	}
 	if (path)
 	{
 		env_data = get_value(path->data);
 		if (!env_data)
 			return (ft_printf("minishell: cd: Invalid environment data\n"),
-				EXIT_FAILURE);
+				FAILURE);
 		*target_dir = env_data;
 	}
 	else if (av)
 		*target_dir = av;
-	return (EXIT_SUCCESS);
+	return (SUCCESS);
 }
 
 int	cd(t_minishell *mini, char *av)

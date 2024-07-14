@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/13 17:29:24 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/14 03:21:17 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void		print_env(t_minishell *minishell);
 t_dlist		*search_env(t_minishell *minishell, char *key);
 char		*get_pwd(void);
 void		del(void *content);
-void		unset(t_minishell *mini, char *key);
+void		unset(t_minishell *mini, char **key);
 void		echo(char **args);
 int			cd(t_minishell *mini, char *av);
 int			execute_command(t_minishell *minishell);
