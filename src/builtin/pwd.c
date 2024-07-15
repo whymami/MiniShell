@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:31:42 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/09 20:30:05 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/12 20:15:58 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,7 @@ char	*get_pwd(void)
 	char	*path;
 
 	path = getcwd(pwd, 4096);
+	if (!path)
+		return (perror("minishell: pwd: "), NULL);
 	return (ft_printf("%s\n", path), path);
 }

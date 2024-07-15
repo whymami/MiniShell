@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
 /*   Updated: 2024/07/15 20:25:53 by muguveli         ###   ########.fr       */
@@ -54,6 +54,7 @@ typedef struct s_minishell
 	int		*pipe_fd;
 	int		*pid;
 	t_dlist	*tokens;
+	t_dlist *hdc_cmd;
 }			t_minishell;
 
 # define SUCCESS 0
@@ -87,6 +88,7 @@ int			multiple_command(t_minishell *minishell);
 char		**env(t_minishell *minishell);
 char		*find_path(t_minishell *minishell, char *cmd);
 void		signal_handler(int signo);
+int			heredoc(t_minishell *mini);
 int			check_direct(t_minishell *minishell, char **cmd, char ***args,
 				int *i);
 #endif
