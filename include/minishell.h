@@ -53,6 +53,7 @@ typedef struct s_minishell
 	int		*pipe_fd;
 	int		*pid;
 	t_dlist	*tokens;
+	t_dlist *hdc_cmd;
 }			t_minishell;
 
 # define SUCCESS 0
@@ -86,4 +87,6 @@ int			multiple_command(t_minishell *minishell);
 char		**env(t_minishell *minishell);
 char		*find_path(t_minishell *minishell, char *cmd);
 void		signal_handler(int signo);
+int			heredoc(t_minishell *mini);
+
 #endif

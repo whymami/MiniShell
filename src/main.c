@@ -22,7 +22,7 @@ int main(int argc, char **argv, char **env)
 	(void)argv;
 	minishell = ft_calloc(1, sizeof(t_minishell));
 	if (!minishell)
-		return (ft_putstr_fd("Error: Memory allocation error\n", 2), EXIT_FAILURE); // hata mesaj
+		return (ft_putstr_fd("Error: Memory allocation error\n", 2), EXIT_FAILURE);
 	parse_env(minishell, env);
 	while (1)
 	{
@@ -33,10 +33,13 @@ int main(int argc, char **argv, char **env)
 			add_history(minishell->line);
 			if (!parser(minishell))
 			{
-				lexer(minishell);
-				execute_command(minishell);
+				if (!heredoc(minishell))
+				{
+					// ft_printf("komut %s", minishell->line);
+					lexer(minishell);
+					execute_command(minishell);
+				}
 			}
-			// lexer parserin içine taşıncak ve bu kısıma executor gelcek.
 		}
 	}
 	return (SUCCESS);
