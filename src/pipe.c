@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 20:17:02 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/14 18:35:48 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/15 18:47:31 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,22 @@ int	create_pipe(t_minishell *minishell)
 {
 	int	i;
 
+	i = -1;
 	minishell->pipe_fd = malloc(sizeof(int) * (minishell->pipe_count * 2));
 	minishell->pid = malloc(sizeof(int) * (minishell->pipe_count + 1));
 	if (!minishell->pipe_fd || !minishell->pid)
 		return (perror("Minishell: malloc error"), FAILURE);
-	for (i = 0; i < minishell->pipe_count; i++)
-	{
+	while (++i < minishell->pipe_count)
 		if (pipe(minishell->pipe_fd + i * 2) == -1)
 			return (perror("Minishell: pipe error"), FAILURE);
-	}
 	return (SUCCESS);
 }
 
 void	pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
 {
+	int	j;
+
+	j = -1;
 	if (i != 0)
 	{
 		dup2(minishell->pipe_fd[(i - 1) * 2], STDIN_FILENO);
@@ -40,10 +42,8 @@ void	pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
 		dup2(minishell->pipe_fd[i * 2 + 1], STDOUT_FILENO);
 		close(minishell->pipe_fd[i * 2 + 1]);
 	}
-	for (int j = 0; j < minishell->pipe_count * 2; j++)
-	{
+	while (++j < minishell->pipe_count * 2)
 		close(minishell->pipe_fd[j]);
-	}
 	if (execve(find_path(minishell, cmd[i]), args[i], env(minishell)) == -1)
 	{
 		perror("Minishell: execve error");
@@ -56,14 +56,12 @@ int	close_fd(t_minishell *minishell)
 	int	i;
 	int	status;
 
-	for (i = 0; i < minishell->pipe_count * 2; i++)
-	{
+	i = -1;
+	while (++i < minishell->pipe_count * 2)
 		close(minishell->pipe_fd[i]);
-	}
-	for (i = 0; i < minishell->pipe_count + 1; i++)
-	{
+	i = -1;
+	while (++i < minishell->pipe_count + 1)
 		waitpid(minishell->pid[i], &status, 0);
-	}
 	free(minishell->pipe_fd);
 	free(minishell->pid);
 	return (SUCCESS);
@@ -73,9 +71,10 @@ int	ft_pipe(t_minishell *minishell, char **cmd, char ***args)
 {
 	int	i;
 
+	i = -1;
 	if (create_pipe(minishell) == FAILURE)
 		return (FAILURE);
-	for (i = 0; i < minishell->pipe_count + 1; i++)
+	while (++i < minishell->pipe_count + 1)
 	{
 		minishell->pid[i] = fork();
 		if (minishell->pid[i] == -1)
@@ -97,4 +96,3 @@ int	multiple_command(t_minishell *minishell)
 		return (FAILURE);
 	return (SUCCESS);
 }
-

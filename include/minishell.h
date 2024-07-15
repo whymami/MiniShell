@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/14 18:36:23 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/15 20:25:53 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include "readline/readline.h"
 # include "stdlib.h"
 # include "string.h"
+# include <sys/wait.h>
 # include <unistd.h>
 
 # define TRUE 1
@@ -86,4 +87,6 @@ int			multiple_command(t_minishell *minishell);
 char		**env(t_minishell *minishell);
 char		*find_path(t_minishell *minishell, char *cmd);
 void		signal_handler(int signo);
+int			check_direct(t_minishell *minishell, char **cmd, char ***args,
+				int *i);
 #endif
