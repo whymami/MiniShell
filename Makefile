@@ -4,7 +4,8 @@ RL_DIR = lib/readline
 RL = $(RL_DIR)/libreadline.a
 SRC = src/main.c src/parser.c src/lexer.c src/builtin/env.c src/builtin/pwd.c \
 	src/builtin/unset.c src/builtin/export.c src/builtin/cd.c src/builtin/echo.c \
-	src/builtin/exit.c src/executor.c src/pipe.c src/signal.c src/r_direct.c
+	src/builtin/exit.c src/executor.c src/pipe.c src/signal.c src/r_direct.c \
+	src/heredoc.c src/dollar.c src/utils.c
 
 OBJ := $(SRC:.c=.o)
 CFLAGS = -Wall -Wextra -Werror -g  -fsanitize=address

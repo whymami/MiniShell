@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:13:26 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/14 03:09:34 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/16 21:19:12 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,28 @@
 void	echo(char **args)
 {
 	int	i;
+	int	newline;
+	int	j;
 
-	i = 0;
-	if (!args[1] && ft_putchar('\n'))
-		return ;
-	if (ft_strncmp("-n", args[1], 3) == 0)
+	i = 1;
+	newline = 1;
+	while (args[i] && args[i][0] == '-' && args[i][1] == 'n')
 	{
+		j = 1;
+		while (args[i][j] == 'n')
+			j++;
+		if (args[i][j] != '\0')
+			break ;
+		newline = 0;
 		i++;
-		while (args[++i])
-		{
-			ft_printf("%s", args[i]);
-			if (args[i + 1])
-				ft_putchar(' ');
-		}
-	}	
-	else
-	{
-		while (args[++i])
-		{
-			ft_printf("%s", args[i]);
-			if (args[i + 1])
-				ft_putchar(' ');
-		}
-		ft_putchar('\n');
 	}
+	while (args[i])
+	{
+		ft_printf("%s", args[i]);
+		if (args[i + 1])
+			ft_putchar(' ');
+		i++;
+	}
+	if (newline)
+		ft_putchar('\n');
 }

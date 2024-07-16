@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 00:40:49 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/14 18:37:58 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/16 19:32:28 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,29 @@
 #include "stdio.h"
 #include "stdlib.h"
 
-int main(int argc, char **argv, char **env)
+void	init_data(t_minishell *minishell)
 {
-	t_minishell *minishell;
+	minishell->line = NULL;
+	minishell->pipe_count = 0;
+	minishell->hrd_cmd = NULL;
+	minishell->pipe_fd = NULL;
+	minishell->pid = NULL;
+	minishell->oldpwd = NULL;
+	minishell->tokens = NULL;
+	minishell->env = NULL;
+}
+
+int	main(int argc, char **argv, char **env)
+{
+	t_minishell	*minishell;
 
 	(void)argc;
 	(void)argv;
-	minishell = ft_calloc(1, sizeof(t_minishell));
+	minishell = malloc(sizeof(t_minishell));
 	if (!minishell)
-		return (ft_putstr_fd("Error: Memory allocation error\n", 2), EXIT_FAILURE);
+		return (ft_putstr_fd("Error: Memory allocation error\n", 2),
+			EXIT_FAILURE);
+	init_data(minishell);
 	parse_env(minishell, env);
 	while (1)
 	{
@@ -35,7 +49,7 @@ int main(int argc, char **argv, char **env)
 			{
 				if (!heredoc(minishell))
 				{
-					// ft_printf("komut %s", minishell->line);
+					dollar(minishell, &minishell->line);
 					lexer(minishell);
 					execute_command(minishell);
 				}

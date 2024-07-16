@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/16 14:46:59 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/16 18:39:21 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,9 @@ typedef struct s_minishell
 	int		pipe_count;
 	int		*pipe_fd;
 	int		*pid;
+	int		hrd_count;
 	t_dlist	*tokens;
-	t_dlist *hdc_cmd;
+	t_dlist	*hrd_cmd;
 }			t_minishell;
 
 # define SUCCESS 0
@@ -91,4 +92,7 @@ void		signal_handler(int signo);
 int			heredoc(t_minishell *mini);
 int			check_direct(t_minishell *minishell, char **cmd, char ***args,
 				int *i);
+void		dollar(t_minishell *mini, char **str);
+char		**ft_mini_split(const char *s, char c);
+
 #endif

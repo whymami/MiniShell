@@ -6,27 +6,92 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 19:09:28 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/11 19:10:20 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/16 18:37:53 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	*my_realloc(void *ptr, size_t size)
+static int	ft_count_words(char const *str, char c)
 {
-	void	*new_ptr;
+	int	count;
+	int	quote;
 
-	new_ptr = malloc(size);
-	if (!new_ptr)
+	count = 0;
+	quote = 0;
+	while (*str)
 	{
-		ft_printf("reallocation failed!\n");
-		free(ptr);
-		exit(EXIT_FAILURE);
+		if (*str != c || quote)
+		{
+			if (*str == '\'' || *str == '\"')
+			{
+				if (quote == 0)
+					quote = *str;
+				else if (quote == *str)
+					quote = 0;
+			}
+			if (*str != c || quote)
+			{
+				count++;
+				while (*str && (*str != c || quote))
+				{
+					if (*str == '\'' || *str == '\"')
+					{
+						if (quote == 0)
+							quote = *str;
+						else if (quote == *str)
+							quote = 0;
+					}
+					str++;
+				}
+			}
+		}
+		else
+			str++;
 	}
-	if (ptr)
+	return (count);
+}
+
+char	**ft_mini_split(const char *s, char c)
+{
+	int		i;
+	int		j;
+	int		k;
+	int		quote;
+	char	**dest;
+
+	i = 0;
+	j = 0;
+	quote = 0;
+	dest = (char **)malloc(sizeof(char *) * (ft_count_words(s, c) + 1));
+	if (!dest)
+		return (NULL);
+	while (s[i])
 	{
-		ft_memcpy(new_ptr, ptr, size);
-		free(ptr);
+		if (s[i] != c || quote)
+		{
+			k = 0;
+			if (s[i] == '\'' || s[i] == '\"')
+			{
+				quote = s[i];
+				k++;
+			}
+			while (s[i + k] && (s[i + k] != c || quote))
+			{
+				if (s[i + k] == quote)
+				{
+					k++;
+					quote = 0;
+					break;
+				}
+				k++;
+			}
+			dest[j++] = ft_substr(s, i, k);
+			i += k;
+		}
+		else
+			i++;
 	}
-	return (new_ptr);
+	dest[j] = NULL;
+	return (dest);
 }
