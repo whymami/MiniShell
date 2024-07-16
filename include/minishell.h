@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/13 22:24:32 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/14 13:39:33 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ typedef struct s_minishell
 # define SYNTAX_ERR "syntax error near unexpected token"
 
 int			parser(t_minishell *minishell);
-int			quote_handler(t_minishell *minishell, int pipe_i, int sign);
+int			check_quote(char *line, int value_i);
+int			pass_space(char *line, int *i);
 void		lexer(t_minishell *minishell);
 void		parse_env(t_minishell *minishell, char **env);
 void		export(t_minishell *minishell, char *env_data);
@@ -67,7 +68,7 @@ void		print_env(t_minishell *minishell);
 t_dlist		*search_env(t_minishell *minishell, char *key);
 char		*get_pwd(void);
 void		del(void *content);
-void		unset(t_minishell *mini, char *key);
+void		unset(t_minishell *mini, char **key);
 void		echo(char **args);
 int			cd(t_minishell *mini, char *av);
 int			execute_command(t_minishell *minishell);

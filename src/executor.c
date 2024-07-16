@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/13 18:14:28 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/14 04:39:12 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	cpy_arg(t_minishell *minishell, char ***cmd, char ****args)
 		i++;
 		k++;
 		tokens = tokens->next;
-	}	
+	}
 	return (SUCCESS);
 }
 char	*find_path(t_minishell *minishell, char *cmd)
@@ -102,15 +102,15 @@ int	check_bultin(t_minishell *minishell, char **cmd, char ***args, int *i)
 	if (ft_strncmp(cmd[*i], "env", 3) == 0)
 		print_env(minishell);
 	else if (ft_strncmp(cmd[*i], "export", 6) == 0)
-		export(minishell, *args[*i]);
+		export(minishell, (*args)[1]);
 	else if (ft_strncmp(cmd[*i], "unset", 5) == 0)
-		unset(minishell, *args[*i]);
+		unset(minishell, (*args));
 	else if (ft_strncmp(cmd[*i], "cd", 2) == 0)
-		cd(minishell, *args[*i]);
+		cd(minishell, (*args)[1]);
 	else if (ft_strncmp(cmd[*i], "echo", 4) == 0)
 		echo(args[*i]);
 	else if (ft_strncmp(cmd[*i], "exit", 4) == 0)
-		ft_exit(minishell, *args[*i]);
+		ft_exit(minishell, (*args)[1]);
 	else
 		return (0);
 	return (1);
@@ -122,6 +122,7 @@ int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 	int		status;
 	char	**envs;
 	char	*path;
+	char	*err;
 
 	path = find_path(minishell, cmd[*i]);
 	pid = fork();
@@ -129,7 +130,10 @@ int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 	if (pid == 0)
 	{
 		if (execve(path, args[*i], envs) == -1)
-			return (perror("execve: "), FAILURE);
+		{
+			err = ft_strjoin("minishell: ", cmd[*i]);
+			return (perror(err), free(err), FAILURE);
+		}
 	}
 	else
 		waitpid(pid, &status, 0);
