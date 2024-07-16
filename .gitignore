@@ -11,8 +11,7 @@ settings.json
 *.swp
 *.swn
 *.swo
-#ignore contributers
+readline
 batu
-haluk
 emir
 mami

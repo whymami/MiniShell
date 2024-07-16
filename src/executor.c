@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/14 04:39:12 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/16 14:47:17 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,9 @@ int	cpy_arg(t_minishell *minishell, char ***cmd, char ****args)
 {
 	t_dlist	*tokens;
 	int		i;
-	int		k;
 
 	tokens = minishell->tokens;
 	i = 0;
-	k = 0;
 	*cmd = ft_calloc(1, sizeof(char *) * (dlist_size(minishell->tokens) + 1));
 	*args = ft_calloc(1, sizeof(char **) * (dlist_size(minishell->tokens) + 1));
 	while (tokens)
@@ -43,7 +41,6 @@ int	cpy_arg(t_minishell *minishell, char ***cmd, char ****args)
 		(*args)[i] = ft_split(tokens->data, ' ');
 		(*cmd)[i] = (*args)[i][0];
 		i++;
-		k++;
 		tokens = tokens->next;
 	}
 	return (SUCCESS);
@@ -63,17 +60,13 @@ char	*find_path(t_minishell *minishell, char *cmd)
 		return (cmd);
 	path = path_list->data;
 	path_split = ft_split(path + 5, ':');
-	i = 0;
-	while (path_split[i])
+	i = -1;
+	while (path_split[++i])
 	{
 		path_cmd = ft_strjoin(path_split[i], cmd_slash);
 		if (access(path_cmd, F_OK) == 0)
-		{
-			free(cmd_slash);
-			return (path_cmd);
-		}
+			return (free(cmd_slash), path_cmd);
 		free(path_cmd);
-		i++;
 	}
 	free(cmd_slash);
 	return (cmd);
@@ -132,7 +125,7 @@ int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 		if (execve(path, args[*i], envs) == -1)
 		{
 			err = ft_strjoin("minishell: ", cmd[*i]);
-			return (perror(err), free(err), FAILURE);
+			return (perror(err), free(err), exit(1), FAILURE);
 		}
 	}
 	else
@@ -149,6 +142,8 @@ int	single_command(t_minishell *minishell)
 	i = 0;
 	if (cpy_arg(minishell, &cmd, &args))
 		return (FAILURE);
+	// if (!check_direct(minishell, cmd, args, &i))
+	// 	return (SUCCESS);
 	if (check_bultin(minishell, cmd, args, &i) == 1)
 		return (SUCCESS);
 	if (create_fork(minishell, cmd, args, &i))
