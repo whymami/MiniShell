@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/16 14:47:17 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/17 21:36:46 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,8 @@ int	single_command(t_minishell *minishell)
 	i = 0;
 	if (cpy_arg(minishell, &cmd, &args))
 		return (FAILURE);
-	// if (!check_direct(minishell, cmd, args, &i))
-	// 	return (SUCCESS);
+	if (!check_direct(minishell, args))
+		return (SUCCESS);
 	if (check_bultin(minishell, cmd, args, &i) == 1)
 		return (SUCCESS);
 	if (create_fork(minishell, cmd, args, &i))
