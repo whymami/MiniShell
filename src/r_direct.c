@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   r_direct.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 18:55:19 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/17 22:00:06 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/18 18:41:57 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	ft_rdirect(t_minishell *minishell, char ***args)
 				perror("open");
 				return ;
 			}
-			if (dup2(fd, STDIN_FILENO) == -1)
+			if (dup2(fd, STDIN_FILENO) < 0)
 			{
 				perror("dup2");
 				close(fd);

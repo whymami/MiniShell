@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/17 21:36:46 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/18 18:57:15 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include <sys/wait.h>
 
-int	free_split(char **split)
+int free_split(char **split)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (split[i])
@@ -27,10 +27,10 @@ int	free_split(char **split)
 	return (SUCCESS);
 }
 
-int	cpy_arg(t_minishell *minishell, char ***cmd, char ****args)
+int cpy_arg(t_minishell *minishell, char ***cmd, char ****args)
 {
-	t_dlist	*tokens;
-	int		i;
+	t_dlist *tokens;
+	int i;
 
 	tokens = minishell->tokens;
 	i = 0;
@@ -45,14 +45,14 @@ int	cpy_arg(t_minishell *minishell, char ***cmd, char ****args)
 	}
 	return (SUCCESS);
 }
-char	*find_path(t_minishell *minishell, char *cmd)
+char *find_path(t_minishell *minishell, char *cmd)
 {
-	char	*cmd_slash;
-	char	*path;
-	char	**path_split;
-	char	*path_cmd;
-	int		i;
-	t_dlist	*path_list;
+	char *cmd_slash;
+	char *path;
+	char **path_split;
+	char *path_cmd;
+	int i;
+	t_dlist *path_list;
 
 	cmd_slash = ft_strjoin("/", cmd);
 	path_list = search_env(minishell, "PATH");
@@ -72,11 +72,11 @@ char	*find_path(t_minishell *minishell, char *cmd)
 	return (cmd);
 }
 
-char	**env(t_minishell *minishell)
+char **env(t_minishell *minishell)
 {
-	t_dlist	*env_data;
-	char	**env;
-	int		i;
+	t_dlist *env_data;
+	char **env;
+	int i;
 
 	env_data = minishell->env;
 	i = 0;
@@ -90,7 +90,7 @@ char	**env(t_minishell *minishell)
 	return (env);
 }
 
-int	check_bultin(t_minishell *minishell, char **cmd, char ***args, int *i)
+int check_bultin(t_minishell *minishell, char **cmd, char ***args, int *i)
 {
 	if (ft_strncmp(cmd[*i], "env", 3) == 0)
 		print_env(minishell);
@@ -109,19 +109,20 @@ int	check_bultin(t_minishell *minishell, char **cmd, char ***args, int *i)
 	return (1);
 }
 
-int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
+int create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 {
-	pid_t	pid;
-	int		status;
-	char	**envs;
-	char	*path;
-	char	*err;
+	pid_t pid;
+	int status;
+	char **envs;
+	char *path;
+	char *err;
 
 	path = find_path(minishell, cmd[*i]);
 	pid = fork();
 	envs = env(minishell);
 	if (pid == 0)
 	{
+		check_direct(minishell, args);
 		if (execve(path, args[*i], envs) == -1)
 		{
 			err = ft_strjoin("minishell: ", cmd[*i]);
@@ -133,17 +134,17 @@ int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 	return (SUCCESS);
 }
 
-int	single_command(t_minishell *minishell)
+int single_command(t_minishell *minishell)
 {
-	char	**cmd;
-	char	***args;
-	int		i;
+	char **cmd;
+	char ***args;
+	int i;
 
 	i = 0;
 	if (cpy_arg(minishell, &cmd, &args))
 		return (FAILURE);
-	if (!check_direct(minishell, args))
-		return (SUCCESS);
+	// if (!check_direct(minishell, args))
+	// 	return (SUCCESS);
 	if (check_bultin(minishell, cmd, args, &i) == 1)
 		return (SUCCESS);
 	if (create_fork(minishell, cmd, args, &i))
@@ -151,7 +152,7 @@ int	single_command(t_minishell *minishell)
 	return (SUCCESS);
 }
 
-int	execute_command(t_minishell *minishell)
+int execute_command(t_minishell *minishell)
 {
 	if (minishell->pipe_count == 0)
 		return (single_command(minishell));

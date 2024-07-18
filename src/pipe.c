@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 20:17:02 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/16 14:47:10 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/18 19:00:04 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	create_pipe(t_minishell *minishell)
+int create_pipe(t_minishell *minishell)
 {
-	int	i;
+	int i;
 
 	i = -1;
 	minishell->pipe_fd = malloc(sizeof(int) * (minishell->pipe_count * 2));
@@ -27,9 +27,9 @@ int	create_pipe(t_minishell *minishell)
 	return (SUCCESS);
 }
 
-void	pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
+void pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
 {
-	int	j;
+	int j;
 
 	j = -1;
 	if (i != 0)
@@ -44,6 +44,7 @@ void	pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
 	}
 	while (++j < minishell->pipe_count * 2)
 		close(minishell->pipe_fd[j]);
+	check_direct(minishell, args);
 	if (execve(find_path(minishell, cmd[i]), args[i], env(minishell)) == -1)
 	{
 		perror("Minishell: execve error");
@@ -51,10 +52,10 @@ void	pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
 	}
 }
 
-int	close_fd(t_minishell *minishell)
+int close_fd(t_minishell *minishell)
 {
-	int	i;
-	int	status;
+	int i;
+	int status;
 
 	i = -1;
 	while (++i < minishell->pipe_count * 2)
@@ -67,9 +68,9 @@ int	close_fd(t_minishell *minishell)
 	return (SUCCESS);
 }
 
-int	ft_pipe(t_minishell *minishell, char **cmd, char ***args)
+int ft_pipe(t_minishell *minishell, char **cmd, char ***args)
 {
-	int	i;
+	int i;
 
 	i = -1;
 	if (create_pipe(minishell) == FAILURE)
@@ -85,10 +86,10 @@ int	ft_pipe(t_minishell *minishell, char **cmd, char ***args)
 	return (close_fd(minishell));
 }
 
-int	multiple_command(t_minishell *minishell)
+int multiple_command(t_minishell *minishell)
 {
-	char	**cmd;
-	char	***args;
+	char **cmd;
+	char ***args;
 
 	if (cpy_arg(minishell, &cmd, &args) == FAILURE)
 		return (FAILURE);
