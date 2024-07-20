@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/20 12:58:14 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/20 19:26:33 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include "ft_printf.h"
 # include "libft.h"
 # include "stdlib.h"
-# include <stdio.h>
 # include "string.h"
+# include <stdio.h>
 # include <sys/wait.h>
 # include <unistd.h>
 # include "readline/history.h"
@@ -69,7 +69,7 @@ int			check_quote(char *line, int value_i);
 int			pass_space(char *line, int *i);
 void		lexer(t_minishell *minishell);
 void		parse_env(t_minishell *minishell, char **env);
-void		export(t_minishell *minishell, char *env_data);
+void 		export(t_minishell *minishell, char **env_data_list);
 void		print_env(t_minishell *minishell);
 t_dlist		*search_env(t_minishell *minishell, char *key);
 char		*get_pwd(void);
@@ -78,7 +78,6 @@ void		unset(t_minishell *mini, char **key);
 void		echo(char **args);
 int			cd(t_minishell *mini, char *av);
 int			execute_command(t_minishell *minishell);
-void		*my_realloc(void *ptr, size_t size);
 char		*get_value(char *line);
 void		ft_exit(t_minishell *mini, char *av);
 int			cpy_arg(t_minishell *minishell, char ***cmd, char ****args);
@@ -94,5 +93,5 @@ int			heredoc(t_minishell *mini);
 int			check_direct(t_minishell *minishell, char ***args);
 void		dollar(t_minishell *mini, char **str);
 char		**ft_mini_split(const char *s, char c);
-
+int			get_key(char *line);
 #endif

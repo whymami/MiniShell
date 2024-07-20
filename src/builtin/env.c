@@ -6,13 +6,13 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:37:13 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/16 20:55:59 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/20 13:49:26 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	get_key(char *line)
+int	get_key(char *line)
 {
 	int	j;
 
