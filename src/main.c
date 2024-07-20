@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/05 00:40:49 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/17 21:37:18 by eyasa            ###   ########.fr       */
+/*   Created: 2024/07/20 10:46:21 by eyasa             #+#    #+#             */
+/*   Updated: 2024/07/20 13:03:12 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		minishell->line = readline("minishell> ");
-		// signal(SIGINT, signal_handler);
+		signal(SIGINT, signal_handler);
 		if (minishell->line && ft_strlen(minishell->line) != 0)
 		{
 			add_history(minishell->line);
@@ -52,7 +52,6 @@ int	main(int argc, char **argv, char **env)
 					dollar(minishell, &minishell->line);
 					lexer(minishell);
 					execute_command(minishell);
-					exit(0);
 				}
 			}
 		}

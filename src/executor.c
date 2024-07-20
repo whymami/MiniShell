@@ -6,14 +6,14 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/17 21:36:46 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/20 12:11:43 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include <sys/wait.h>
 
-int	free_split(char **split)
+void	free_split(char **split)
 {
 	int	i;
 
@@ -24,7 +24,6 @@ int	free_split(char **split)
 		i++;
 	}
 	free(split);
-	return (SUCCESS);
 }
 
 int	cpy_arg(t_minishell *minishell, char ***cmd, char ****args)
@@ -65,9 +64,10 @@ char	*find_path(t_minishell *minishell, char *cmd)
 	{
 		path_cmd = ft_strjoin(path_split[i], cmd_slash);
 		if (access(path_cmd, F_OK) == 0)
-			return (free(cmd_slash), path_cmd);
+			return (free_split(path_split), free(cmd_slash), path_cmd);
 		free(path_cmd);
 	}
+	free_split(path_split);
 	free(cmd_slash);
 	return (cmd);
 }
@@ -122,6 +122,7 @@ int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 	envs = env(minishell);
 	if (pid == 0)
 	{
+		check_direct(minishell, args);
 		if (execve(path, args[*i], envs) == -1)
 		{
 			err = ft_strjoin("minishell: ", cmd[*i]);
@@ -142,8 +143,6 @@ int	single_command(t_minishell *minishell)
 	i = 0;
 	if (cpy_arg(minishell, &cmd, &args))
 		return (FAILURE);
-	if (!check_direct(minishell, args))
-		return (SUCCESS);
 	if (check_bultin(minishell, cmd, args, &i) == 1)
 		return (SUCCESS);
 	if (create_fork(minishell, cmd, args, &i))

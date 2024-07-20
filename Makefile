@@ -7,9 +7,7 @@ SRC = src/main.c src/parser.c src/lexer.c src/builtin/env.c src/builtin/pwd.c \
 	src/builtin/exit.c src/executor.c src/pipe.c src/signal.c src/r_direct.c \
 	src/heredoc.c src/dollar.c src/utils.c
 
-OBJ := $(SRC:.c=.o)
-CFLAGS = -Wall -Wextra -Werror -g  -fsanitize=address
-DIR = $(shell pwd)
+OBJ = $(SRC:.c=.o)
 
 LIBFT_DIR = lib/libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -20,24 +18,25 @@ DLINK = $(DLINK_DIR)/dlist.a
 PRINTF_DIR = lib/ft_printf
 PRINTF = $(PRINTF_DIR)/libftprintf.a
 
-RLFLAGS	= -L./lib/readline/lib -I./lib/readline/include/readline -lreadline
-LDFLAGS = -L$(LIBFT_DIR) -L$(PRINTF_DIR)
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror
+RM = rm -rf
 
-all: $(RL) $(NAME)
+READLINE = readline
 
-$(NAME): $(OBJ) $(LIBFT) $(PRINTF) $(DLINK) $(RL)
-	$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS) $(LIBFT) $(PRINTF) $(DLINK) $(RLFLAGS) -o $(NAME)
+all: $(NAME)
 
-$(RL):
-	@curl -O https://ftp.gnu.org/gnu/readline/readline-8.2-rc1.tar.gz
-	@tar -xvf readline-8.2-rc1.tar.gz
-	@rm -rf readline-8.2-rc1.tar.gz
-	@mv readline-8.2-rc1 $(RL_DIR)
-	@cd $(RL_DIR) && ./configure --prefix=$(DIR)/$(RL_DIR) && make && make install
-	make -C $(RL_DIR)
+$(READLINE):
+	curl -O https://ftp.gnu.org/gnu/readline/readline-8.2.tar.gz
+	tar -xvf readline-8.2.tar.gz
+	rm -rf readline-8.2.tar.gz
+	cd readline-8.2 && ./configure --prefix=${PWD}/lib/readline
+	cd readline-8.2 && make install
+	rm -rf readline-8.2
 
-.c.o:
-	$(CC) $(CFLAGS) -c $< -o $@
+$(NAME): $(LIBFT) $(DLINK) $(PRINTF) $(OBJ) $(READLINE)
+	@echo "[COMPILING...]"
+	$(CC) -o $(NAME) $(OBJ) $(CFLAGS) $(LIBFT) $(DLINK) $(PRINTF) -I${PWD}/lib/readline/include/ -lreadline -L${PWD}/lib/readline/lib  
 
 $(LIBFT):
 	make -C $(LIBFT_DIR)
@@ -49,19 +48,23 @@ $(DLINK):
 $(PRINTF):
 	make -C $(PRINTF_DIR)
 
-clean:
-	rm -f $(OBJ)
-	make -C $(LIBFT_DIR) clean
-	make -C $(DLINK_DIR) clean
-	make -C $(PRINTF_DIR) clean
-	make -C $(RL_DIR) clean
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@ -I${PWD}/lib/readline/include/
 
 fclean: clean
-	rm -f $(NAME)
+	$(RM) $(NAME)
 	make -C $(LIBFT_DIR) fclean
 	make -C $(DLINK_DIR) fclean
 	make -C $(PRINTF_DIR) fclean
 
+clean:
+	@echo "[DELETING...]"
+	@$(RM) $(OBJ)
+	@echo "[DELETED]"
+	make -C $(LIBFT_DIR) clean
+	make -C $(DLINK_DIR) clean
+	make -C $(PRINTF_DIR) clean
+
 re: fclean all
 
-.PHONY: re fclean clean all
+.PHONY: all fclean clean re
