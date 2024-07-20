@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/20 12:58:14 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/20 18:54:52 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 # include "fcntl.h"
 # include "ft_printf.h"
 # include "libft.h"
-# include "stdlib.h"
-# include <stdio.h>
-# include "string.h"
-# include <sys/wait.h>
-# include <unistd.h>
 # include "readline/history.h"
 # include "readline/readline.h"
+# include "stdlib.h"
+# include "string.h"
+# include <stdio.h>
+# include <sys/wait.h>
+# include <unistd.h>
 
 # define TRUE 1
 # define FALSE 0
@@ -57,6 +57,7 @@ typedef struct s_minishell
 	int		hrd_count;
 	t_dlist	*tokens;
 	t_dlist	*hrd_cmd;
+	int		exit_code;
 }			t_minishell;
 
 # define SUCCESS 0

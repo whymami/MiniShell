@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:37:13 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/16 20:55:59 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/20 18:21:15 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	get_key(char *line)
 	return (j);
 }
 
-char *get_value(char *line)
+char	*get_value(char *line)
 {
 	int		i;
 	char	*value;
@@ -41,11 +41,14 @@ t_dlist	*search_env(t_minishell *minishell, char *key)
 	t_dlist	*tmp;
 
 	tmp = minishell->env;
-	while (tmp)
+	if (ft_strlen(key) != 0)
 	{
-		if (!ft_strncmp(tmp->data, key, ft_strlen(key)))
-			return (tmp);
-		tmp = tmp->next;
+		while (tmp)
+		{
+			if (!ft_strncmp(tmp->data, key, ft_strlen(key)))
+				return (tmp);
+			tmp = tmp->next;
+		}
 	}
 	return (NULL);
 }

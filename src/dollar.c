@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:25:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/16 18:15:53 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/20 18:54:15 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,21 @@ void	replace_dollar(t_minishell *mini, char **str, int *i, char **result)
 	}
 }
 
+int	empty_dollar(char **str)
+{
+	int	i;
+
+	i = 0;
+	while ((*str)[i])
+	{
+		if (((*str)[i] == '$' && (((*str)[i + 1] == '\0')
+					|| !ft_isalnum((*str)[i + 1]))))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	dollar(t_minishell *mini, char **str)
 {
 	char	*result;
@@ -63,22 +78,25 @@ void	dollar(t_minishell *mini, char **str)
 	int		i;
 	char	quote;
 
-	i = 0;
+	quote = 0;
+	if (empty_dollar(str))
+		return ;
 	result = ft_strdup("");
+	i = 0;
 	while ((*str)[i])
 	{
 		if (quote == 0 && ((*str)[i] == '\'' || (*str)[i] == '\"'))
 			quote = (*str)[i];
 		else if (quote != 0 && quote == (*str)[i])
 			quote = 0;
-		if (quote == '\'')
+		if (quote == '\'' || (quote == 0 && (*str)[i] == '\''))
 		{
 			tmp = result;
 			result = ft_strjoin_char(tmp, (*str)[i++]);
 			free(tmp);
-			continue ;
 		}
-		replace_dollar(mini, str, &i, &result);
+		else
+			replace_dollar(mini, str, &i, &result);
 	}
 	free(*str);
 	*str = result;
