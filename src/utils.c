@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 19:09:28 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/16 18:37:53 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/20 20:05:47 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	**ft_mini_split(const char *s, char c)
 				{
 					k++;
 					quote = 0;
-					break;
+					break ;
 				}
 				k++;
 			}
@@ -94,4 +94,14 @@ char	**ft_mini_split(const char *s, char c)
 	}
 	dest[j] = NULL;
 	return (dest);
+}
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		++i;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

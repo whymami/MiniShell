@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:55:17 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/20 19:46:10 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/20 20:04:37 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	export(t_minishell *minishell, char **env_data_list)
 	if (!env_data_list || !env_data_list[1])
 	{
 		new = dlist_copy(minishell->env);
-		dlist_sort(&new, ft_strncmp);
+		dlist_sort(&new, ft_strcmp);
 		while (new)
 		{
 			name_length = get_key(new->data);

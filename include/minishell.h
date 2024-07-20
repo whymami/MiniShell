@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/20 19:48:44 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/20 20:05:40 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 # include "fcntl.h"
 # include "ft_printf.h"
 # include "libft.h"
-# include "readline/history.h"
-# include "readline/readline.h"
 # include "stdlib.h"
 # include "string.h"
 # include <stdio.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include "readline/history.h"
+# include "readline/readline.h"
 
 # define TRUE 1
 # define FALSE 0
@@ -70,7 +70,7 @@ int			check_quote(char *line, int value_i);
 int			pass_space(char *line, int *i);
 void		lexer(t_minishell *minishell);
 void		parse_env(t_minishell *minishell, char **env);
-void 		export(t_minishell *minishell, char **env_data_list);
+void		export(t_minishell *minishell, char **env_data_list);
 void		print_env(t_minishell *minishell);
 t_dlist		*search_env(t_minishell *minishell, char *key);
 char		*get_pwd(void);
@@ -95,4 +95,5 @@ int			check_direct(t_minishell *minishell, char ***args);
 void		dollar(t_minishell *mini, char **str);
 char		**ft_mini_split(const char *s, char c);
 int			get_key(char *line);
+int			ft_strcmp(char *s1, char *s2);
 #endif

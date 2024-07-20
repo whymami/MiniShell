@@ -5,7 +5,10 @@ SRC = dlist_add_back.c \
 	dlist_clear.c \
 	dlist_delone.c \
 	dlist_new.c \
-	dlist_size.c
+	dlist_size.c \
+	dlist_swap.c \
+	dlist_sort.c \
+	dlist_copy.c
 
 LIBC = ar rc
 OBJ := $(SRC:.c=.o)
