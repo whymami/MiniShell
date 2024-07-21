@@ -5,7 +5,7 @@ SRC = src/main.c src/parser.c src/lexer.c src/builtin/env.c src/builtin/pwd.c \
 	src/builtin/exit.c src/executor.c src/pipe.c src/signal.c src/r_direct.c \
 	src/heredoc.c src/dollar.c src/utils.c
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 LIBFT = lib/libft/libft.a
 PRINTF = lib/ft_printf/libftprintf.a
 DLIST = lib/dlist/dlist.a
