@@ -12,6 +12,7 @@ settings.json
 *.swn
 *.swo
 readline
+minishell_tester
 batu
 emir
 mami

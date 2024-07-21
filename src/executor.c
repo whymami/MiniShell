@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/21 09:44:50 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/21 15:08:39 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,7 @@ char *find_path(t_minishell *minishell, char *cmd)
 			return (free_split(path_split), free(cmd_slash), path_cmd);
 		free(path_cmd);
 	}
-	free_split(path_split);
-	free(cmd_slash);
-	return (cmd);
+	return (write(2, "minishell: command not found\n", 29), minishell->exit_code = 127, free_split(path_split), free(cmd_slash), cmd);
 }
 
 char **env(t_minishell *minishell)
@@ -96,6 +94,8 @@ int check_bultin(t_minishell *minishell, char **cmd, char ***args, int *i)
 		print_env(minishell);
 	else if (ft_strncmp(cmd[*i], "export", 6) == 0)
 		export(minishell, (*args));
+	else if (ft_strncmp(cmd[*i], "pwd", 3) == 0)
+		get_pwd();
 	else if (ft_strncmp(cmd[*i], "unset", 5) == 0)
 		unset(minishell, (*args));
 	else if (ft_strncmp(cmd[*i], "cd", 2) == 0)
@@ -126,7 +126,7 @@ int create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 		if (execve(path, args[*i], envs) == -1)
 		{
 			err = ft_strjoin("minishell: ", cmd[*i]);
-			return (perror(err), free(err), exit(1), FAILURE);
+			return (free(err), exit(1), FAILURE);
 		}
 	}
 	else

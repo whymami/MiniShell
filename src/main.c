@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 10:46:21 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/21 13:40:32 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/21 15:10:31 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,12 @@ void	init_data(t_minishell *minishell)
 	minishell->exit_code = 0;
 }
 
-int	main(int argc, char **argv, char **env)
+int	shell_loop(t_minishell *minishell)
 {
-	t_minishell	*minishell;
-
-	(void)argc;
-	(void)argv;
-	minishell = malloc(sizeof(t_minishell));
-	if (!minishell)
-		return (ft_putstr_fd("Error: Memory allocation error\n", 2),
-			EXIT_FAILURE);
-	init_data(minishell);
-	parse_env(minishell, env);
 	while (1)
 	{
 		minishell->line = readline("minishell> ");
-		// signal(SIGINT, signal_handler);
-		if (minishell->line && ft_strlen(minishell->line) != 0)
+		if (ft_strlen(minishell->line) != 0)
 		{
 			add_history(minishell->line);
 			if (!parser(minishell))
@@ -57,5 +46,22 @@ int	main(int argc, char **argv, char **env)
 			}
 		}
 	}
+}
+
+int	main(int argc, char **argv, char **env)
+{
+	t_minishell	*minishell;
+
+	(void)argc;
+	(void)argv;
+	minishell = malloc(sizeof(t_minishell));
+	if (!minishell)
+		return (ft_putstr_fd("Error: Memory allocation error\n", 2),
+			EXIT_FAILURE);
+	rl_clear_history();
+	init_data(minishell);
+	signal(SIGINT, signal_handler);
+	parse_env(minishell, env);
+	shell_loop(minishell);
 	return (SUCCESS);
 }
