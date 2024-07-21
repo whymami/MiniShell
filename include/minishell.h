@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/20 20:05:40 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/21 00:34:35 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@
 # include "dlist.h"
 # include "fcntl.h"
 # include "ft_printf.h"
-# include "libft.h"
 # include "stdlib.h"
 # include "string.h"
 # include <stdio.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include "readline/history.h"
-# include "readline/readline.h"
+# include "libft.h"
+# include <readline/history.h>
+# include <readline/readline.h>
+
 
 # define TRUE 1
 # define FALSE 0

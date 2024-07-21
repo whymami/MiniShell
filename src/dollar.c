@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:25:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/20 18:54:15 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/21 02:21:56 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,34 +27,61 @@ static char	*ft_strjoin_char(char *s1, char c)
 	return (result);
 }
 
-void	replace_dollar(t_minishell *mini, char **str, int *i, char **result)
+void	get_ext_code(int *i, t_minishell *mini, char **result)
 {
-	int		start;
-	char	*var;
-	t_dlist	*value;
 	char	*tmp;
+	int		j;
+	char	*num;
 
-	if ((*str)[*i] == '$')
-	{
-		start = ++(*i);
-		while ((*str)[*i] && ft_isalnum((*str)[*i]))
-			(*i)++;
-		var = ft_substr(*str, start, (*i) - start);
-		value = search_env(mini, var);
-		if (!value)
-			return ;
-		tmp = get_value(value->data);
-		*result = ft_strjoin(*result, tmp);
-		free(tmp);
-		free(var);
-	}
-	else
+	j = 0;
+	(*i) += 2;
+	num = ft_itoa(mini->exit_code);
+	while (num[j])
 	{
 		tmp = *result;
-		*result = ft_strjoin_char(tmp, (*str)[(*i)++]);
+		*result = ft_strjoin_char(tmp, num[j++]);
 		free(tmp);
 	}
 }
+
+void	get_env(int *i, t_minishell *mini, char **str, char **result)
+{
+	t_dlist	*value;
+	int		start;
+	char	*tmp;
+	char	*var;
+
+	start = ++(*i);
+	while ((*str)[*i] && ft_isalnum((*str)[*i]))
+		(*i)++;
+	var = ft_substr(*str, start, (*i) - start);
+	value = search_env(mini, var);
+	if (!value)
+		return ;
+	tmp = get_value(value->data);
+	*result = ft_strjoin(*result, tmp);
+	free(tmp);
+	free(var);
+}
+
+int is_valid_env_char(char c)
+{
+    return (ft_isalnum(c) || c == '_');
+}
+
+void replace_dollar(t_minishell *mini, char **str, int *i, char **result)
+{
+    char *tmp;
+
+    if ((*str)[*i] == '$' && (*str)[(*i) + 1] == '?')
+        return (get_ext_code(i, mini, result));
+    if ((*str)[*i] == '$')
+        return (get_env(i, mini, str, result));
+    tmp = *result;
+    *result = ft_strjoin_char(tmp, (*str)[(*i)++]);
+    free(tmp);
+}
+
 
 int	empty_dollar(char **str)
 {
@@ -63,9 +90,12 @@ int	empty_dollar(char **str)
 	i = 0;
 	while ((*str)[i])
 	{
-		if (((*str)[i] == '$' && (((*str)[i + 1] == '\0')
-					|| !ft_isalnum((*str)[i + 1]))))
-			return (1);
+		if ((*str)[i] == '$')
+		{
+			if (((*str)[i + 1] == '\0') || (!ft_isalnum((*str)[i + 1]) &&
+                ((*str)[i + 1] != '?' && (*str)[i + 1] != '\'' && (*str)[i + 1] != '\"')))
+				return (1);
+		}
 		i++;
 	}
 	return (0);
