@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 10:46:21 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/21 09:57:17 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/21 13:40:32 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	init_data(t_minishell *minishell)
 	minishell->oldpwd = NULL;
 	minishell->tokens = NULL;
 	minishell->env = NULL;
+	minishell->exit_code = 0;
 }
 
 int	main(int argc, char **argv, char **env)

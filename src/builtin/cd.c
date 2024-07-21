@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:48:57 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/21 02:42:00 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/21 13:41:02 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,25 @@ static int	get_target_directory(t_minishell *mini, char *av, char **target_dir)
 	{
 		if (av && ft_strncmp(av, "~~", 2) == 0)
 			return (ft_printf("minishell: cd: %s: No such file or directory\n",
-					av), FAILURE);
-		path = search_env(mini, "HOME"); // home yok ise bile cd ~ çalışmalı
+					av), mini->exit_code = 1, FAILURE);
+		path = search_env(mini, "HOME");
 		if (!path)
-			return (ft_printf("minishell: cd: HOME not set\n"), FAILURE); 
+			return (ft_printf("minishell: cd: HOME not set\n"),
+				mini->exit_code = 1, FAILURE);
 	}
 	else if (ft_strncmp(av, "-", 1) == 0)
 	{
 		path = search_env(mini, "OLDPWD");
 		if (!path)
-			return (ft_printf("minishell: cd: OLDPWD not set\n"), FAILURE);
+			return (ft_printf("minishell: cd: OLDPWD not set\n"),
+				mini->exit_code = 1, FAILURE);
 	}
 	if (path)
 	{
 		env_data = get_value(path->data);
 		if (!env_data)
 			return (ft_printf("minishell: cd: Invalid environment data\n"),
-				FAILURE);
+				mini->exit_code = 1, FAILURE);
 		*target_dir = env_data;
 	}
 	else if (av)
@@ -95,7 +97,7 @@ int	cd(t_minishell *mini, char *av)
 	if (err == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (chdir(target_dir) == -1)
-		return (printf("minishell: cd: %s: No such file or directory\n", target_dir), EXIT_FAILURE);
+		return (perror("minishell: cd"), mini->exit_code = 1, EXIT_FAILURE);
 	if (!getcwd(pwd, 4096))
 		return (perror("minishell: cd"), EXIT_FAILURE);
 	change_pwd(mini, pwd);
