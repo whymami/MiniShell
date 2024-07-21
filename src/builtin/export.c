@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:55:17 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/20 20:04:37 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/21 15:33:20 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,22 @@
 int	export_check(char *env_data)
 {
 	int	i;
-	int	equal_sign_index;
 
 	i = -1;
-	equal_sign_index = -1;
 	if (isdigit(env_data[0]))
 		return (1);
 	while (env_data[++i])
 	{
 		if (env_data[i] == '=')
-		{
-			equal_sign_index = i;
 			break ;
-		}
 		if (!(isalnum(env_data[i]) || env_data[i] == '_'))
 			return (1);
 	}
-	if (equal_sign_index == -1)
-		return (1);
-	if (equal_sign_index > 0 && env_data[equal_sign_index - 1] == ' ')
-		return (1);
-	if (env_data[equal_sign_index + 1] == ' ')
-		return (1);
-	if (env_data[equal_sign_index + 1] == '\0')
-		return (1);
+	if (env_data[i] == '=')
+	{
+		if (env_data[i + 1] == ' ' || (i > 0 && env_data[i - 1] == ' '))
+			return (1);
+	}
 	return (0);
 }
 

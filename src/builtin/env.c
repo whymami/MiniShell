@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:37:13 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/20 19:49:25 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/21 17:15:36 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_dlist	*search_env(t_minishell *minishell, char *key)
 	{
 		while (tmp)
 		{
-			if (!ft_strncmp(tmp->data, key, ft_strlen(key)))
+			if (!ft_strncmp(tmp->data, key, get_key(tmp->data)))
 				return (tmp);
 			tmp = tmp->next;
 		}
