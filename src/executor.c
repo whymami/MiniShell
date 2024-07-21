@@ -95,7 +95,7 @@ int check_bultin(t_minishell *minishell, char **cmd, char ***args, int *i)
 	if (ft_strncmp(cmd[*i], "env", 3) == 0)
 		print_env(minishell);
 	else if (ft_strncmp(cmd[*i], "export", 6) == 0)
-		export(minishell, (*args)[1]);
+		export(minishell, (*args));
 	else if (ft_strncmp(cmd[*i], "unset", 5) == 0)
 		unset(minishell, (*args));
 	else if (ft_strncmp(cmd[*i], "cd", 2) == 0)

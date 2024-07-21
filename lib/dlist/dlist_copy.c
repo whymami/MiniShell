@@ -1,42 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   dlist_copy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/09 16:13:26 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/20 19:35:25 by eyasa            ###   ########.fr       */
+/*   Created: 2024/07/20 13:32:57 by eyasa             #+#    #+#             */
+/*   Updated: 2024/07/20 19:40:46 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	echo(char **args)
+t_dlist	*dlist_copy(t_dlist *lst)
 {
-	int	i;
-	int	newline;
-	int	j;
+	t_dlist	*new_lst;
+	t_dlist	*current;
+	t_dlist	*new_node;
+	t_dlist	*temp;
 
-	i = 1;
-	newline = 1;
-	while (args[i] && args[i][0] == '-' && args[i][1] == 'n')
+	new_lst = NULL;
+	current = lst;
+	while (current)
 	{
-		j = 1;
-		while (args[i][j] == 'n')
-			j++;
-		if (args[i][j] != '\0')
-			break ;
-		newline = 0;
-		i++;
+		new_node = dlist_new(current->data);
+		if (!new_node)
+		{
+			while (new_lst)
+			{
+				temp = new_lst;
+				new_lst = new_lst->next;
+				free(temp->data);
+				free(temp);
+			}
+			return (NULL);
+		}
+		dlist_add_back(&new_lst, new_node);
+		current = current->next;
 	}
-	while (args[i])
-	{
-		ft_printf("%s", args[i]);
-		if (args[i + 1])
-			ft_putchar(' ');
-		i++;
-	}
-	if (newline)
-		ft_putchar('\n');
+	return (new_lst);
 }

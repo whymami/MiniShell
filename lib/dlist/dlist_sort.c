@@ -1,42 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   dlist_sort.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/09 16:13:26 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/20 19:35:25 by eyasa            ###   ########.fr       */
+/*   Created: 2024/07/20 19:42:32 by eyasa             #+#    #+#             */
+/*   Updated: 2024/07/20 20:04:22 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	echo(char **args)
+void	dlist_sort(t_dlist **head, int (*cmp)(char *, char *))
 {
-	int	i;
-	int	newline;
-	int	j;
+	t_dlist *i;
+	int swapped;
 
-	i = 1;
-	newline = 1;
-	while (args[i] && args[i][0] == '-' && args[i][1] == 'n')
+	if (!head || !*head)
+		return ;
+	swapped = 1;
+	while (swapped)
 	{
-		j = 1;
-		while (args[i][j] == 'n')
-			j++;
-		if (args[i][j] != '\0')
-			break ;
-		newline = 0;
-		i++;
+		swapped = 0;
+		i = *head;
+		while (i->next)
+		{
+			if (cmp(i->data, i->next->data) > 0)
+			{
+				dlist_swap(i, i->next);
+				swapped = 1;
+			}
+			i = i->next;
+		}
 	}
-	while (args[i])
-	{
-		ft_printf("%s", args[i]);
-		if (args[i + 1])
-			ft_putchar(' ');
-		i++;
-	}
-	if (newline)
-		ft_putchar('\n');
 }
