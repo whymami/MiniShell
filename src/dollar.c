@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:25:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/21 02:21:56 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/21 15:53:59 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static char	*ft_strjoin_char(char *s1, char c)
+ char	*ft_strjoin_char(char *s1, char c)
 {
 	char	*result;
 	int		len;
