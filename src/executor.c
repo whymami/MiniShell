@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/21 15:08:39 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/21 19:22:46 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include <dirent.h>
 #include <sys/wait.h>
 
 void	free_split(char **split)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (split[i])
@@ -26,24 +27,24 @@ void	free_split(char **split)
 	free(split);
 }
 
-int cpy_arg(t_minishell *minishell, char ***cmd, char ****args)
+int	cpy_arg(t_minishell *minishell, char ***cmd, char ****args)
 {
-	t_dlist *tokens;
-	int i;
+	t_dlist	*tokens;
+	int		i;
 
+	(void)cmd;
 	tokens = minishell->tokens;
 	i = 0;
-	*cmd = ft_calloc(1, sizeof(char *) * (dlist_size(minishell->tokens) + 1));
 	*args = ft_calloc(1, sizeof(char **) * (dlist_size(minishell->tokens) + 1));
 	while (tokens)
 	{
 		(*args)[i] = ft_mini_split(tokens->data, ' ');
-		(*cmd)[i] = (*args)[i][0];
 		i++;
 		tokens = tokens->next;
 	}
 	return (SUCCESS);
 }
+
 char *find_path(t_minishell *minishell, char *cmd)
 {
 	char *cmd_slash;
@@ -67,14 +68,17 @@ char *find_path(t_minishell *minishell, char *cmd)
 			return (free_split(path_split), free(cmd_slash), path_cmd);
 		free(path_cmd);
 	}
-	return (write(2, "minishell: command not found\n", 29), minishell->exit_code = 127, free_split(path_split), free(cmd_slash), cmd);
+	free_split(path_split);
+	free(cmd_slash);
+	return (cmd);
 }
 
-char **env(t_minishell *minishell)
+
+char	**env(t_minishell *minishell)
 {
-	t_dlist *env_data;
-	char **env;
-	int i;
+	t_dlist	*env_data;
+	char	**env;
+	int		i;
 
 	env_data = minishell->env;
 	i = 0;
@@ -88,7 +92,7 @@ char **env(t_minishell *minishell)
 	return (env);
 }
 
-int check_bultin(t_minishell *minishell, char **cmd, char ***args, int *i)
+int	check_bultin(t_minishell *minishell, char **cmd, char ***args, int *i)
 {
 	if (ft_strncmp(cmd[*i], "env", 3) == 0)
 		print_env(minishell);
@@ -109,15 +113,19 @@ int check_bultin(t_minishell *minishell, char **cmd, char ***args, int *i)
 	return (1);
 }
 
-int create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
+int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 {
-	pid_t pid;
-	int status;
-	char **envs;
-	char *path;
-	char *err;
+	pid_t	pid;
+	int		status;
+	char	**envs;
+	char	*path;
+	char	*err;
 
-	path = find_path(minishell, cmd[*i]);
+	if (ft_strncmp(cmd[*i], "./", 2) != 0)
+		path = find_path(minishell, cmd[*i]);
+	else
+		path = cmd[*i];
+		
 	pid = fork();
 	envs = env(minishell);
 	if (pid == 0)
@@ -134,15 +142,82 @@ int create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 	return (SUCCESS);
 }
 
-int single_command(t_minishell *minishell)
+void	remove_quotes(char ***args)
 {
-	char **cmd;
-	char ***args;
-	int i;
+	char	*tmp;
+	char	*tmp2;
+	int		quote;
+	char	*new_tmp;
+
+	int i, j, k;
+	i = -1;
+	while (args[++i])
+	{
+		j = -1;
+		while (args[i][++j])
+		{
+			k = -1;
+			tmp = strdup(""); // Her kelime için tmp'yi başlat
+			if (!tmp)
+			{
+				// Bellek ayrımı başarısız oldu, işlem durduruluyor
+				return ;
+			}
+			tmp2 = args[i][j];
+			quote = 0;
+			while (args[i][j][++k])
+			{
+				if (quote == 0 && (args[i][j][k] == '\''
+						|| args[i][j][k] == '\"'))
+				{
+					quote = args[i][j][k];
+				}
+				else if (quote != 0 && quote == args[i][j][k])
+				{
+					quote = 0;
+				}
+				else
+				{
+					new_tmp = ft_strjoin_char(tmp, args[i][j][k]);
+					if (!new_tmp)
+					{
+						// Bellek ayrımı başarısız oldu, işlem durduruluyor
+						free(tmp);
+						return ;
+					}
+					tmp = new_tmp;
+				}
+			}
+			args[i][j] = tmp;
+			free(tmp2);
+		}
+	}
+}
+
+int	single_command(t_minishell *minishell)
+{
+	char	**cmd;
+	char	***args;
+	int		i;
+	int		a;
+	int		b;
 
 	i = 0;
 	if (cpy_arg(minishell, &cmd, &args))
 		return (FAILURE);
+	cmd = ft_calloc(1, sizeof(char *) * (dlist_size(minishell->tokens) + 1));
+	remove_quotes(args);
+	a = 0;
+	b = 0;
+	while (args[a])
+	{
+		if (args[a][0])
+		{
+			cmd[b] = args[a][0];
+			b++;
+		}
+		a++;
+	}
 	if (check_bultin(minishell, cmd, args, &i) == 1)
 		return (SUCCESS);
 	if (create_fork(minishell, cmd, args, &i))
@@ -150,7 +225,7 @@ int single_command(t_minishell *minishell)
 	return (SUCCESS);
 }
 
-int execute_command(t_minishell *minishell)
+int	execute_command(t_minishell *minishell)
 {
 	if (minishell->pipe_count == 0)
 		return (single_command(minishell));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/21 00:34:35 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/21 19:10:39 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,14 @@
 # include "dlist.h"
 # include "fcntl.h"
 # include "ft_printf.h"
+# include "libft.h"
+# include "stdio.h"
 # include "stdlib.h"
 # include "string.h"
-# include <stdio.h>
-# include <sys/wait.h>
-# include <unistd.h>
-# include "libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
-
+# include <sys/wait.h>
+# include <unistd.h>
 
 # define TRUE 1
 # define FALSE 0
@@ -97,4 +96,6 @@ void		dollar(t_minishell *mini, char **str);
 char		**ft_mini_split(const char *s, char c);
 int			get_key(char *line);
 int			ft_strcmp(char *s1, char *s2);
+char		*ft_strjoin_char(char *s1, char c);
+void		remove_quotes(char ***args);
 #endif
