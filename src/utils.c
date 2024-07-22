@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 19:09:28 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/20 20:05:47 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/23 01:37:40 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,38 +16,33 @@ static int	ft_count_words(char const *str, char c)
 {
 	int	count;
 	int	quote;
+	int	in_word;
 
 	count = 0;
 	quote = 0;
+	in_word = 0;
 	while (*str)
 	{
+		if (*str == '\'' || *str == '\"')
+		{
+			if (quote == 0)
+				quote = *str;
+			else if (quote == *str)
+				quote = 0;
+		}
 		if (*str != c || quote)
 		{
-			if (*str == '\'' || *str == '\"')
-			{
-				if (quote == 0)
-					quote = *str;
-				else if (quote == *str)
-					quote = 0;
-			}
-			if (*str != c || quote)
+			if (!in_word)
 			{
 				count++;
-				while (*str && (*str != c || quote))
-				{
-					if (*str == '\'' || *str == '\"')
-					{
-						if (quote == 0)
-							quote = *str;
-						else if (quote == *str)
-							quote = 0;
-					}
-					str++;
-				}
+				in_word = 1;
 			}
 		}
 		else
-			str++;
+		{
+			in_word = 0;
+		}
+		str++;
 	}
 	return (count);
 }
@@ -68,29 +63,22 @@ char	**ft_mini_split(const char *s, char c)
 		return (NULL);
 	while (s[i])
 	{
-		if (s[i] != c || quote)
+		while (s[i] && (s[i] == c && quote == 0))
+			i++;
+		k = i;
+		while (s[i] && (s[i] != c || quote))
 		{
-			k = 0;
 			if (s[i] == '\'' || s[i] == '\"')
 			{
-				quote = s[i];
-				k++;
-			}
-			while (s[i + k] && (s[i + k] != c || quote))
-			{
-				if (s[i + k] == quote)
-				{
-					k++;
+				if (quote == 0)
+					quote = s[i];
+				else if (quote == s[i])
 					quote = 0;
-					break ;
-				}
-				k++;
 			}
-			dest[j++] = ft_substr(s, i, k);
-			i += k;
-		}
-		else
 			i++;
+		}
+		if (i > k)
+			dest[j++] = ft_substr(s, k, i - k);
 	}
 	dest[j] = NULL;
 	return (dest);

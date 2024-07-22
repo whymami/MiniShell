@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 10:46:21 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/21 15:10:31 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/23 02:28:57 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	main(int argc, char **argv, char **env)
 	if (!minishell)
 		return (ft_putstr_fd("Error: Memory allocation error\n", 2),
 			EXIT_FAILURE);
-	rl_clear_history();
 	init_data(minishell);
 	signal(SIGINT, signal_handler);
 	parse_env(minishell, env);

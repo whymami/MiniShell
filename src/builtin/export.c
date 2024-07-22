@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:55:17 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/21 15:33:20 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/23 01:40:41 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	export_check(char *env_data)
 	return (0);
 }
 
-void	export(t_minishell *minishell, char **env_data_list)
+void	export(t_minishell *minishell, char **args)
 {
 	t_dlist	*new;
 	t_dlist	*search;
@@ -42,7 +42,7 @@ void	export(t_minishell *minishell, char **env_data_list)
 	char	*key;
 	int		i;
 
-	if (!env_data_list || !env_data_list[1])
+	if (!args || !args[1])
 	{
 		new = dlist_copy(minishell->env);
 		dlist_sort(&new, ft_strcmp);
@@ -59,29 +59,28 @@ void	export(t_minishell *minishell, char **env_data_list)
 		return ;
 	}
 	i = 0;
-	while (env_data_list[++i])
+	while (args[++i])
 	{
-		if (export_check(env_data_list[i]))
+		if (export_check(args[i]))
 		{
 			ft_printf("minishell: export: `%s': not a valid identifier\n",
-				env_data_list[i]);
+				args[i]);
 			continue ;
 		}
-		key = ft_substr(env_data_list[i], 0, get_key(env_data_list[i]));
-		if (!ft_strncmp(key, "_", 1))
+		key = ft_substr(args[i], 0, get_key(args[i]));
+		if (!ft_strcmp(key, "_"))
 		{
 			free(key);
 			continue ;
 		}
 		search = search_env(minishell, key);
-		if (search && ft_strncmp(search->data, env_data_list[i],
-				ft_strlen(env_data_list[i])))
+		if (search && ft_strncmp(search->data, args[i], ft_strlen(args[i])))
 		{
 			free(search->data);
-			search->data = strdup(env_data_list[i]);
+			search->data = strdup(args[i]);
 		}
 		else if (!search)
-			dlist_add_back(&minishell->env, dlist_new(env_data_list[i]));
+			dlist_add_back(&minishell->env, dlist_new(args[i]));
 		free(key);
 	}
 }

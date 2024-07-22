@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/21 19:22:46 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/23 01:38:38 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,19 +94,19 @@ char	**env(t_minishell *minishell)
 
 int	check_bultin(t_minishell *minishell, char **cmd, char ***args, int *i)
 {
-	if (ft_strncmp(cmd[*i], "env", 3) == 0)
+	if (ft_strcmp(cmd[*i], "env") == 0)
 		print_env(minishell);
-	else if (ft_strncmp(cmd[*i], "export", 6) == 0)
+	else if (ft_strcmp(cmd[*i], "export") == 0)
 		export(minishell, (*args));
-	else if (ft_strncmp(cmd[*i], "pwd", 3) == 0)
+	else if (ft_strcmp(cmd[*i], "pwd") == 0)
 		get_pwd();
-	else if (ft_strncmp(cmd[*i], "unset", 5) == 0)
+	else if (ft_strcmp(cmd[*i], "unset") == 0)
 		unset(minishell, (*args));
-	else if (ft_strncmp(cmd[*i], "cd", 2) == 0)
+	else if (ft_strcmp(cmd[*i], "cd") == 0)
 		cd(minishell, (*args)[1]);
-	else if (ft_strncmp(cmd[*i], "echo", 4) == 0)
+	else if (ft_strcmp(cmd[*i], "echo") == 0)
 		echo(args[*i]);
-	else if (ft_strncmp(cmd[*i], "exit", 4) == 0)
+	else if (ft_strcmp(cmd[*i], "exit") == 0)
 		ft_exit(minishell, (*args)[1]);
 	else
 		return (0);
@@ -134,7 +134,7 @@ int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 		if (execve(path, args[*i], envs) == -1)
 		{
 			err = ft_strjoin("minishell: ", cmd[*i]);
-			return (free(err), exit(1), FAILURE);
+			return (perror(err), free(err), exit(1), FAILURE);
 		}
 	}
 	else
@@ -205,6 +205,7 @@ int	single_command(t_minishell *minishell)
 	i = 0;
 	if (cpy_arg(minishell, &cmd, &args))
 		return (FAILURE);
+
 	cmd = ft_calloc(1, sizeof(char *) * (dlist_size(minishell->tokens) + 1));
 	remove_quotes(args);
 	a = 0;
