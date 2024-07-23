@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 19:09:28 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/23 11:22:22 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/23 17:47:27 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static int	ft_count_words(char const *str, char c)
+static int	ft_count_words(const char *str, char c)
 {
-	int	count;
-	int	quote;
-	int	in_word;
+	int count;
+	int quote;
+	int in_word;
 
 	count = 0;
 	quote = 0;
@@ -77,8 +77,13 @@ char	**ft_mini_split(const char *s, char c)
 			}
 			i++;
 		}
-		if (i > k)
-			dest[j++] = ft_substr(s, k, i - k);
+		if (i > k) {
+            char *substr = ft_substr(s, k, i - k);
+            if (substr) {
+                replace_arg(&substr);
+                dest[j++] = substr;
+            }
+        }
 	}
 	dest[j] = NULL;
 	return (dest);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/23 13:00:21 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/23 17:00:20 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,33 @@ void	free_split(char **split)
 	free(split);
 }
 
-int	cpy_arg(t_minishell *minishell, char ***cmd, char ****args)
-{
-	t_dlist	*tokens;
-	int		i;
+int cpy_arg(t_minishell *minishell, char ***cmd, char ****args) {
+    t_dlist *tokens;
+    int i;
 
-	(void)cmd;
-	tokens = minishell->tokens;
-	i = 0;
-	*args = ft_calloc(1, sizeof(char **) * (dlist_size(minishell->tokens) + 1));
-	while (tokens)
-	{
-		(*args)[i] = ft_mini_split(tokens->data, ' ');
-		i++;
-		tokens = tokens->next;
-	}
-	return (SUCCESS);
+    (void)cmd;
+    tokens = minishell->tokens;
+    i = 0;
+    *args = ft_calloc(1, sizeof(char **) * (dlist_size(minishell->tokens) + 1));
+    if (!*args) {
+        perror("ft_calloc");
+        return FAILURE;
+    }
+
+    while (tokens) {
+        char *line = ft_strdup(tokens->data);
+        if (!line) {
+            perror("ft_strdup");
+            return FAILURE;
+        }
+        replace_arg(&line);
+        (*args)[i] = ft_mini_split(line, ' ');
+		(*cmd)[i] = (*args)[i][0];
+        free(line);
+        i++;
+        tokens = tokens->next;
+    }
+    return SUCCESS;
 }
 
 char	*find_path(t_minishell *minishell, char *cmd)
@@ -113,8 +124,7 @@ int	check_bultin(t_minishell *minishell, char **cmd, char ***args, int *i)
 		return (0);
 	return (1);
 }
-int	type_control(t_minishell *minishell, char ***args, char **envs,
-		int *i)
+int	type_control(t_minishell *minishell, char ***args, char **envs, int *i)
 {
 	DIR	*dir;
 
@@ -145,7 +155,8 @@ int	type_control(t_minishell *minishell, char ***args, char **envs,
 	}
 	if (ft_strncmp((*args)[0], "/", 1) == 0)
 		if (access((*args)[0], F_OK) == -1)
-			return (perror("minishell: "), minishell->exit_code = 126, exit(1), SUCCESS);
+			return (perror("minishell: "), minishell->exit_code = 126, exit(1),
+				SUCCESS);
 	return (FAILURE);
 }
 
@@ -197,12 +208,9 @@ void	remove_quotes(char ***args)
 		while (args[i][++j])
 		{
 			k = -1;
-			tmp = strdup(""); // Her kelime için tmp'yi başlat
+			tmp = strdup("");
 			if (!tmp)
-			{
-				// Bellek ayrımı başarısız oldu, işlem durduruluyor
 				return ;
-			}
 			tmp2 = args[i][j];
 			quote = 0;
 			while (args[i][j][++k])
@@ -221,7 +229,6 @@ void	remove_quotes(char ***args)
 					new_tmp = ft_strjoin_char(tmp, args[i][j][k]);
 					if (!new_tmp)
 					{
-						// Bellek ayrımı başarısız oldu, işlem durduruluyor
 						free(tmp);
 						return ;
 					}
@@ -245,7 +252,9 @@ int	single_command(t_minishell *minishell)
 	i = 0;
 	if (cpy_arg(minishell, &cmd, &args))
 		return (FAILURE);
+	printf("args[%d][1]: %s\n", i, args[0][1]);
 	check_direct(minishell, args[i]);
+	printf("args[%d][1]: %s\n", i, args[0][1]);
 	cmd = ft_calloc(1, sizeof(char *) * (dlist_size(minishell->tokens) + 1));
 	remove_quotes(args);
 	a = 0;
