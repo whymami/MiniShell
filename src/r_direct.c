@@ -3,31 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   r_direct.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayegen <ayegen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 18:55:19 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/23 04:00:31 by ayegen           ###   ########.fr       */
+/*   Updated: 2024/07/23 10:50:44 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
+t_fd		g_fd;
+
 static void	rdirect_out(t_minishell *minishell, char *file)
 {
 	int	fd;
+
 	(void)minishell;
-	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC
-		, 0644);	
+	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
 	{
 		perror("open");
 		return ;
 	}
-	if (dup2(fd, STDOUT_FILENO) == -1)
+	if (fd >= 0)
 	{
-		perror("dup2");
-		close(fd);
-		return ;
+		if (dup2(fd, STDOUT_FILENO) == -1)
+		{
+			perror("dup2");
+			close(fd);
+			return ;
+		}
 	}
 	close(fd);
 }
@@ -35,6 +40,7 @@ static void	rdirect_out(t_minishell *minishell, char *file)
 static void	rdirect_in(t_minishell *minishell, char *file)
 {
 	int	fd;
+
 	(void)minishell;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
@@ -56,6 +62,11 @@ static void	ft_rdirect(t_minishell *minishell, char **args)
 	int		j;
 	char	*file;
 
+	if (g_fd.change == 0)
+	{
+		g_fd.std_in = dup(0);
+		g_fd.std_out = dup(1);
+	}
 	j = 0;
 	while ((args)[j])
 	{
@@ -84,15 +95,15 @@ static void	ft_rdirect(t_minishell *minishell, char **args)
 
 int	check_direct(t_minishell *minishell, char **args)
 {
-	int j;
+	int	j;
 
 	j = -1;
 	while ((args)[++j])
 	{
 		if (ft_strcmp((args)[j], ">") == 0 || ft_strcmp((args)[j], "<") == 0)
 			ft_rdirect(minishell, args);
-        else if (ft_strcmp((args)[j], ">>") == 0)
-            ft_printf("cmd : %s\n", (args)[j]);
+		else if (ft_strcmp((args)[j], ">>") == 0)
+			ft_printf("cmd : %s\n", (args)[j]);
 	}
 	return (SUCCESS);
 }

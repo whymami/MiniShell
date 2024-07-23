@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayegen <ayegen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/23 03:40:19 by ayegen           ###   ########.fr       */
+/*   Updated: 2024/07/23 10:51:27 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include <dirent.h>
 #include <sys/wait.h>
+
+t_fd	g_fd;
 
 void	free_split(char **split)
 {
@@ -45,14 +47,14 @@ int	cpy_arg(t_minishell *minishell, char ***cmd, char ****args)
 	return (SUCCESS);
 }
 
-char *find_path(t_minishell *minishell, char *cmd)
+char	*find_path(t_minishell *minishell, char *cmd)
 {
-	char *cmd_slash;
-	char *path;
-	char **path_split;
-	char *path_cmd;
-	int i;
-	t_dlist *path_list;
+	char	*cmd_slash;
+	char	*path;
+	char	**path_split;
+	char	*path_cmd;
+	int		i;
+	t_dlist	*path_list;
 
 	cmd_slash = ft_strjoin("/", cmd);
 	path_list = search_env(minishell, "PATH");
@@ -72,7 +74,6 @@ char *find_path(t_minishell *minishell, char *cmd)
 	free(cmd_slash);
 	return (cmd);
 }
-
 
 char	**env(t_minishell *minishell)
 {
@@ -125,12 +126,10 @@ int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 		path = find_path(minishell, cmd[*i]);
 	else
 		path = cmd[*i];
-		
 	pid = fork();
 	envs = env(minishell);
 	if (pid == 0)
 	{
-		check_direct(minishell, args[*i]);
 		if (execve(path, args[*i], envs) == -1)
 		{
 			err = ft_strjoin("minishell: ", cmd[*i]);
@@ -138,7 +137,12 @@ int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 		}
 	}
 	else
+	{
 		waitpid(pid, &status, 0);
+		dup2(g_fd.std_in, STD_OUTPUT);
+		dup2(g_fd.std_out, STD_INPUT);
+		g_fd.change = 0;
+	}
 	return (SUCCESS);
 }
 
@@ -205,7 +209,7 @@ int	single_command(t_minishell *minishell)
 	i = 0;
 	if (cpy_arg(minishell, &cmd, &args))
 		return (FAILURE);
-
+	check_direct(minishell, args[i]);
 	cmd = ft_calloc(1, sizeof(char *) * (dlist_size(minishell->tokens) + 1));
 	remove_quotes(args);
 	a = 0;

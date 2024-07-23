@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/11 19:09:28 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/23 01:37:40 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/23 11:22:22 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	ft_count_words(char const *str, char c)
 		}
 		if (*str != c || quote)
 		{
-			if (!in_word)
+			if (!in_word && (*str == '<' || *str == '>'))
 			{
 				count++;
 				in_word = 1;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayegen <ayegen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/23 03:40:35 by ayegen           ###   ########.fr       */
+/*   Updated: 2024/07/23 10:49:32 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@
 # define FALSE 0
 # define STD_INPUT 0
 # define STD_OUTPUT 1
+
+typedef struct s_fd
+{
+	int		change; 
+	int		std_in;
+	int		std_out;
+}			t_fd;
 
 typedef enum e_meta_type
 {

@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 10:46:21 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/23 02:28:57 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/23 10:50:13 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include "stdio.h"
 #include "stdlib.h"
+
+t_fd	g_fd;
 
 void	init_data(t_minishell *minishell)
 {
@@ -58,6 +60,7 @@ int	main(int argc, char **argv, char **env)
 	if (!minishell)
 		return (ft_putstr_fd("Error: Memory allocation error\n", 2),
 			EXIT_FAILURE);
+	g_fd.change = 0;
 	init_data(minishell);
 	signal(SIGINT, signal_handler);
 	parse_env(minishell, env);
