@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: ayegen <ayegen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 20:17:02 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/21 19:13:49 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/23 03:46:29 by ayegen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,19 @@ void	pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
 	j = -1;
 	if (i != 0)
 	{
-		dup2(minishell->pipe_fd[(i - 1) * 2], STDIN_FILENO);
+		if (dup2(minishell->pipe_fd[(i - 1) * 2], STDIN_FILENO) == -1)
+			return (close(minishell->pipe_fd[(i - 1) * 2]), perror("Minishell: dup2 error"));
 		close(minishell->pipe_fd[(i - 1) * 2]);
 	}
 	if (i != minishell->pipe_count)
 	{
-		dup2(minishell->pipe_fd[i * 2 + 1], STDOUT_FILENO);
+		if (dup2(minishell->pipe_fd[i * 2 + 1], STDOUT_FILENO) == -1)
+			return (close(minishell->pipe_fd[i * 2 + 1]), perror("Minishell: dup2 error"));
 		close(minishell->pipe_fd[i * 2 + 1]);
 	}
 	while (++j < minishell->pipe_count * 2)
 		close(minishell->pipe_fd[j]);
-	check_direct(minishell, args);
+	check_direct(minishell, args[i]);
 	if (execve(find_path(minishell, cmd[i]), args[i], env(minishell)) == -1)
 	{
 		perror("Minishell: execve error");

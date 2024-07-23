@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: ayegen <ayegen@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/21 19:10:39 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/23 03:40:35 by ayegen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char		**env(t_minishell *minishell);
 char		*find_path(t_minishell *minishell, char *cmd);
 void		signal_handler(int signo);
 int			heredoc(t_minishell *mini);
-int			check_direct(t_minishell *minishell, char ***args);
+int			check_direct(t_minishell *minishell, char **args);
 void		dollar(t_minishell *mini, char **str);
 char		**ft_mini_split(const char *s, char c);
 int			get_key(char *line);
