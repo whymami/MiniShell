@@ -12,50 +12,21 @@
 
 #include "../include/minishell.h"
 
-static int	find_heredoc(t_minishell *mini)
+static char	*get_delimiter(t_minishell *mini, char **args)
 {
-	char	*line;
-	int		i;
-
-	line = ft_strdup(mini->line);
-	i = 0;
-	if (!line)
-		return (0);
-	while (line[i])
+	int i = 0;
+	while(args[i])
 	{
-		if (line[i] == '<' && line[i + 1] == '<' && line[i + 2] == '<')
-			return (free(line), 0);
-		if (line[i] == '<' && line[i + 1] == '<' && line[i + 2] != '<')
-			if (!check_quote(line, i))
-				return (free(line), 1);
+		if (ft_strncmp(args[i], "<<", 2) == 0)
+		{
+			if (args[i + 1])
+				return (ft_strdup(args[i + 1]));
+			else
+				return (NULL);
+		}
 		i++;
 	}
-	return (free(line), 0);
-}
-
-static char	*get_delimiter(t_minishell *mini)
-{
-	char	*line;
-	char	*delimiter;
-	int		i;
-	int		j;
-
-	i = 0;
-	line = ft_strdup(mini->line);
-	if (!line)
-		return (NULL);
-	while (line[i] && line[i] != '<')
-		i++;
-	i += 2;
-	while (line[i] && ((line[i] >= 9 && line[i] <= 13) || line[i] == ' '))
-		i++;
-	if (line[i] == '\0')
-		return (free(line), NULL);
-	j = i;
-	while (line[j] && !((line[j] >= 9 && line[j] <= 13) || line[j] == ' '))
-		j++;
-	delimiter = ft_substr(line, i, j - i);
-	return (free(line), delimiter);
+	return (NULL);
 }
 
 void	set_hrd_cmd(t_minishell *mini)
@@ -80,16 +51,13 @@ void	set_hrd_cmd(t_minishell *mini)
 		dlist_add_back(&mini->hrd_cmd, dlist_new(cmd));
 }
 
-int	heredoc(t_minishell *mini)
+int	heredoc(t_minishell *mini, char **args)
 {
 	char	*line;
 	char	*delimiter;
 
 	line = NULL;
-	delimiter = NULL;
-	if (!find_heredoc(mini))
-		return (0);
-	delimiter = get_delimiter(mini);
+	delimiter = get_delimiter(mini, args);
 	if (!delimiter)
 		return (ft_printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR), 1);
 			// komut yoksa yani " << eof" gibi bir durumda executor komut yok hatası bastırmamalı.
@@ -98,13 +66,8 @@ int	heredoc(t_minishell *mini)
 		line = readline("> ");
 		if (!line)
 			break ;
-		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0
-			&& ft_strlen(line) == ft_strlen(delimiter))
-		{
-			set_hrd_cmd(mini);
+		if (ft_strcmp(line, delimiter) == 0)
 			return (free(delimiter), free(line), 0);
-		}
-		add_history(line);
 		free(line);
 	}
 	free(delimiter);

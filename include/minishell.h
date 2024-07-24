@@ -64,6 +64,7 @@ typedef struct s_minishell
 	int		hrd_count;
 	t_dlist	*tokens;
 	t_dlist	*hrd_cmd;
+	t_fd 	g_fd;
 	int		exit_code;
 }			t_minishell;
 
@@ -89,7 +90,7 @@ int			execute_command(t_minishell *minishell);
 char		*get_value(char *line);
 void		ft_exit(t_minishell *mini, char *av);
 int			cpy_arg(t_minishell *minishell, char ***cmd, char ****args);
-int			check_bultin(t_minishell *minishell, char **cmd, char ***args,
+int			check_builtin(t_minishell *minishell, char **cmd, char ***args,
 				int *i);
 int			create_fork(t_minishell *minishell, char **cmd, char ***args,
 				int *i);
@@ -97,7 +98,7 @@ int			multiple_command(t_minishell *minishell);
 char		**env(t_minishell *minishell);
 char		*find_path(t_minishell *minishell, char *cmd);
 void		signal_handler(int signo);
-int			heredoc(t_minishell *mini);
+int			heredoc(t_minishell *mini, char **args);
 int			check_direct(t_minishell *minishell, char **args);
 void		dollar(t_minishell *mini, char **str);
 char		**ft_mini_split(const char *s, char c);
@@ -106,4 +107,5 @@ int			ft_strcmp(char *s1, char *s2);
 char		*ft_strjoin_char(char *s1, char c);
 void		remove_quotes(char ***args);
 void 		replace_arg(char **args);
+
 #endif
