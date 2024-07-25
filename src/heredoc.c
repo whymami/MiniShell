@@ -12,7 +12,7 @@
 
 #include "../include/minishell.h"
 
-static char	*get_delimiter(t_minishell *mini, char **args)
+static char	*get_delimiter(char **args)
 {
 	int i = 0;
 	while(args[i])
@@ -29,35 +29,14 @@ static char	*get_delimiter(t_minishell *mini, char **args)
 	return (NULL);
 }
 
-void	set_hrd_cmd(t_minishell *mini)
-{
-	int		i;
-	char	*cmd;
-	char	*line;
-
-	i = 0;
-	line = ft_strdup(mini->line);
-	if (!line)
-		return ;
-	while (line[i] && line[i] != '<')
-		i++;
-	cmd = malloc(sizeof(char) * i + 1);
-	ft_strlcpy(cmd, line, i);
-	free(line);
-	cmd = ft_strtrim(cmd, " ");
-	if (!mini->hrd_cmd)
-		mini->hrd_cmd = dlist_new(cmd);
-	else
-		dlist_add_back(&mini->hrd_cmd, dlist_new(cmd));
-}
-
 int	heredoc(t_minishell *mini, char **args)
 {
 	char	*line;
 	char	*delimiter;
 
+	(void)mini;
 	line = NULL;
-	delimiter = get_delimiter(mini, args);
+	delimiter = get_delimiter(args);
 	if (!delimiter)
 		return (ft_printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR), 1);
 			// komut yoksa yani " << eof" gibi bir durumda executor komut yok hatası bastırmamalı.

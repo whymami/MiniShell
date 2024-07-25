@@ -50,7 +50,6 @@ void	get_ext_code(int *i, t_minishell *mini, char **result)
 	{
 		tmp = *result;
 		*result = ft_strjoin_char(tmp, num[j++]);
-		free(tmp);
 	}
 }
 
@@ -132,7 +131,6 @@ void	dollar(t_minishell *mini, char **str)
 		{
 			tmp = result;
 			result = ft_strjoin_char(tmp, (*str)[i++]);
-			free(tmp);
 		}
 		else
 			replace_dollar(mini, str, &i, &result);
