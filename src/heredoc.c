@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 14:48:02 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/21 15:45:41 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/26 22:38:44 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static char	**get_delimiters(t_minishell *mini, char **args)
 	i = -1;
 	while (args[++i])
 	{
-		if (ft_strncmp(args[i], "<<", 2) == 0 && args[i + 1])
+		if (ft_strcmp(args[i], "<<") == 0 && args[i + 1])
 		{
 			delimiters[j] = ft_strdup(args[i + 1]);
 			if (!delimiters[j])

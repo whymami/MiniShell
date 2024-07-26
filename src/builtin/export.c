@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:55:17 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/23 01:40:41 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/27 00:49:58 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ void	export(t_minishell *minishell, char **args)
 {
 	t_dlist	*new;
 	t_dlist	*search;
-	int		name_length;
 	char	*key;
 	int		i;
+	char	*value;
 
 	if (!args || !args[1])
 	{
@@ -48,11 +48,17 @@ void	export(t_minishell *minishell, char **args)
 		dlist_sort(&new, ft_strcmp);
 		while (new)
 		{
-			name_length = get_key(new->data);
-			ft_printf("declare -x ");
-			write(1, (char *)new->data, name_length);
-			write(1, "=", 1);
-			printf("\"%s\"\n", get_value(new->data));
+			write(1, "declare -x ", 12);
+			write(1, (char *)new->data, get_key(new->data));
+			value = get_value(new->data);
+			if (value)
+			{
+				write(1, "=\"", 2);
+				write(1, value, ft_strlen(value));
+				write(1, "\"", 1);
+			}
+			write(1, "\n", 1);
+			free(value);
 			new = new->next;
 		}
 		dlist_clear(&new, &del);

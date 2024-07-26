@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:37:13 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/21 17:15:36 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/26 23:26:11 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,17 @@ char	*get_value(char *line)
 t_dlist	*search_env(t_minishell *minishell, char *key)
 {
 	t_dlist	*tmp;
+	char	*tmp_str;
 
 	tmp = minishell->env;
-	if (ft_strlen(key) != 0)
+	if (key != NULL && ft_strlen(key) != 0)
 	{
 		while (tmp)
 		{
-			if (!ft_strncmp(tmp->data, key, get_key(tmp->data)))
-				return (tmp);
+			tmp_str = ft_substr(tmp->data, 0, get_key(tmp->data));
+			if (!ft_strcmp(tmp_str, key))
+				return (free(tmp_str), tmp);
+			free(tmp_str);
 			tmp = tmp->next;
 		}
 	}
