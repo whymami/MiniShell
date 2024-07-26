@@ -29,14 +29,18 @@ static char	*get_delimiter(char **args)
 	return (NULL);
 }
 
-int	heredoc(t_minishell *mini, char **args)
+int	heredoc(t_minishell *mini)
 {
 	char	*line;
 	char	*delimiter;
+	char	***args;
 
-	(void)mini;
+	args = mini->args;
 	line = NULL;
-	delimiter = get_delimiter(args);
+	// printf("args: %s\n", args[1][0]);
+	printf("args: %s\n", args[0][0]);
+	printf("args: %s\n", args[2][0]);
+	delimiter = get_delimiter(args[0]);
 	if (!delimiter)
 		return (ft_printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR), 1);
 			// komut yoksa yani " << eof" gibi bir durumda executor komut yok hatası bastırmamalı.

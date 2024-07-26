@@ -14,50 +14,74 @@
 #include <dirent.h>
 #include <sys/wait.h>
 
-void	free_split(char **split)
+void free_split(char **split)
 {
-	int	i;
-
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
+    int i = 0;
+    while (split[i])
+    {
+        free(split[i]);
+        i++;
+    }
+    free(split);
 }
 
-int	cpy_arg(t_minishell *minishell, char ***cmd, char ****args)
+void free_args(char ***args)
 {
-	t_dlist	*tokens;
-	int		i;
-	char	*line;
-
-	(void)cmd;
-	tokens = minishell->tokens;
-	i = 0;
-	*args = ft_calloc(1, sizeof(char **) * (dlist_size(minishell->tokens) + 1));
-	if (!*args)
-	{
-		perror("ft_calloc");
-		return (FAILURE);
-	}
-	while (tokens)
-	{
-		line = ft_strdup(tokens->data);
-		if (!line)
-		{
-			perror("ft_strdup");
-			return (FAILURE);
-		}
-		replace_arg(&line);
-		(*args)[i] = ft_mini_split(line, ' ');
-		free(line);
-		i++;
-		tokens = tokens->next;
-	}
-	return (SUCCESS);
+    int i = 0;
+    while (args[i])
+    {
+        free_split(args[i]);
+        i++;
+    }
+    free(args);
 }
+
+int cpy_arg(t_minishell *minishell)
+{
+    t_dlist *tokens;
+    int i;
+    // char *line;
+    char ***args;
+
+    tokens = minishell->tokens;
+    i = 0;
+	printf("selam\n");
+    args = ft_calloc(1, sizeof(char **) * (dlist_size(minishell->tokens) + 1));
+    if (!args)
+    {
+        perror("ft_calloc");
+        return (FAILURE);
+    }
+	printf("as\n");
+    while (tokens)
+    {
+        printf("Token data: %s\n", (char *)tokens->data);
+        // line = ft_strdup(tokens->data);
+        // if (!line)
+        // {
+        //     perror("ft_strdup");
+		// 	free_args(args);
+        //     return (FAILURE);
+        // }
+        // replace_arg(&line);
+        // args[i] = ft_mini_split(line, ' ');
+        // if (!args[i])
+        // {
+        //     perror("ft_mini_split");
+        //     free(line);
+        //     free_args(args);
+        //     return (FAILURE);
+        // }
+        // printf("args[%d]: %s\n", i, args[i][0]);
+        // free(line);
+        i++;
+        tokens = tokens->next;
+    }
+    minishell->args = args;
+    return (SUCCESS);
+}
+
+
 
 char	*find_path(t_minishell *minishell, char *cmd)
 {
@@ -112,6 +136,8 @@ char	**env(t_minishell *minishell)
 
 int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 {
+	if (cmd[*i] == NULL)
+		return (1);
 	if (ft_strcmp(cmd[*i], "env") == 0)
 		print_env(minishell);
 	else if (ft_strcmp(cmd[*i], "export") == 0)
@@ -257,8 +283,9 @@ int	single_command(t_minishell *minishell)
 
 	i = 0;
 	a = 0, b = 0;
-	if (cpy_arg(minishell, &cmd, &args))
-		return (FAILURE);
+	args = minishell->args;
+	// if (cpy_arg(minishell, &args))
+	// 	return (FAILURE);
 	if (check_direct(minishell, args[i]))
 		return (FAILURE);
 	cmd = ft_calloc(dlist_size(minishell->tokens) + 1, sizeof(char *));

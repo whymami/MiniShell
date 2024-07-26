@@ -96,8 +96,9 @@ int	multiple_command(t_minishell *minishell)
 	int		a;
 	int		b;
 
-	if (cpy_arg(minishell, &cmd, &args) == FAILURE)
-		return (FAILURE);
+	// if (cpy_arg(minishell, &cmd, &args) == FAILURE)
+	// 	return (FAILURE);
+	args = minishell->args;
 	cmd = ft_calloc(1, sizeof(char *) * (dlist_size(minishell->tokens) + 1));
 	remove_quotes(args);
 	a = 0;

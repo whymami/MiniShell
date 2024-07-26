@@ -93,20 +93,20 @@ static int	ft_rdirect(t_minishell *mini, char **args)
 			args[j + 1] = NULL;
 			j += 2;
 		}
-		else if (ft_strcmp(args[j], "<<") == 0)
-        {
-			if (!args[j + 1])
-			{
-				printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR);
-				args[j] = NULL;
-				return (1);
-			}
-			else if (heredoc(mini, args))
-				return (1);
-            args[j] = NULL;
-			args[j + 1] = NULL;
-            j += 2;
-        }
+		// else if (ft_strcmp(args[j], "<<") == 0)
+        // {
+		// 	if (!args[j + 1])
+		// 	{
+		// 		printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR);
+		// 		args[j] = NULL;
+		// 		return (1);
+		// 	}
+		// 	else if (heredoc(mini, args))
+		// 		return (1);
+        //     args[j] = NULL;
+		// 	args[j + 1] = NULL;
+        //     j += 2;
+        // }
 		else
 			j++;
 	}
@@ -173,7 +173,7 @@ int	check_direct(t_minishell *mini, char **args)
 	j = -1;
 	while ((args)[++j])
 	{
-		if (ft_strcmp((args)[j], ">") == 0 || ft_strcmp((args)[j], "<") == 0 || ft_strcmp((args)[j], ">>") == 0 || ft_strcmp((args)[j], "<<") == 0)
+		if (ft_strcmp((args)[j], ">") == 0 || ft_strcmp((args)[j], "<") == 0 || ft_strcmp((args)[j], ">>") == 0)
 		{
 			if(ft_rdirect(mini, args))
 				return (1);
