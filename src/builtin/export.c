@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:55:17 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/23 01:40:41 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/27 02:15:33 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	export(t_minishell *minishell, char **args)
 		{
 			ft_printf("minishell: export: `%s': not a valid identifier\n",
 				args[i]);
+			minishell->exit_code = 1;
 			continue ;
 		}
 		key = ft_substr(args[i], 0, get_key(args[i]));

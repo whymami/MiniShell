@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 16:48:47 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/16 19:43:45 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/27 02:45:29 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	is_str_digit(char *str)
 {
+	if (str[0] == '-' || str[0] == '+')
+		str++;
 	while (*str)
 	{
 		if (!ft_isdigit(*str))
@@ -46,21 +48,32 @@ void	free_minishell(t_minishell *mini)
 	free(mini);
 }
 
-void	ft_exit(t_minishell *mini, char *av)
+void	ft_exit(t_minishell *mini, char **av)
 {
 	int	exit_code;
+	int	i;
+	i = 0;
+	while (av[i])
+		i++;
 
+	
 	exit_code = 0;
-	ft_putstr_fd("exit\n", STDERR_FILENO);
+	ft_putstr_fd("exit\n", STD_OUTPUT);
 	free_minishell(mini);
-	if (av)
+	if (i > 2)
 	{
-		if (is_str_digit(av))
-			exit_code = ft_atoi(av);
+		ft_putstr_fd(" too many arguments\n", STDERR_FILENO);
+		exit_code = 1;
+		
+	}
+	else if (av[1] != NULL)
+	{
+		if (is_str_digit(av[1]))
+			exit_code = ft_atoi(av[1]);
 		else
 		{
 			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
-			ft_putstr_fd(av, STDERR_FILENO);
+			ft_putstr_fd(av[1], STDERR_FILENO);
 			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 			exit_code = 255;
 		}

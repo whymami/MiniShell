@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/23 13:00:21 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 02:28:08 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,12 @@ int	check_bultin(t_minishell *minishell, char **cmd, char ***args, int *i)
 	else if (ft_strcmp(cmd[*i], "echo") == 0)
 		echo(args[*i]);
 	else if (ft_strcmp(cmd[*i], "exit") == 0)
-		ft_exit(minishell, (*args)[1]);
+		ft_exit(minishell, (*args));
 	else
 		return (0);
 	return (1);
 }
-int	type_control(t_minishell *minishell, char ***args, char **envs,
-		int *i)
+int	type_control(char ***args, char **envs, int *i)
 {
 	DIR	*dir;
 
@@ -129,26 +128,32 @@ int	type_control(t_minishell *minishell, char ***args, char **envs,
 				ft_putstr_fd("minishell: ", 2);
 				ft_putstr_fd((*args)[0], 2);
 				ft_putstr_fd(": is a directory\n", 2);
-				return (minishell->exit_code = 126, SUCCESS);
+				return (exit(126), SUCCESS);
 			}
 			else if (access((*args)[0], F_OK | X_OK) == -1)
 			{
 				ft_putstr_fd("minishell: ", 2);
 				ft_putstr_fd((*args)[0], 2);
 				ft_putstr_fd(": Permission denied\n", 2);
-				return (minishell->exit_code = 126, SUCCESS);
+				return (exit(126), SUCCESS);
 			}
-			return (minishell->exit_code = 126, SUCCESS);
+			return (exit(126), SUCCESS);
 		}
 		perror("minishell: ");
-		minishell->exit_code = 126;
+		exit(126);
 	}
 	if (ft_strncmp((*args)[0], "/", 1) == 0)
 		if (access((*args)[0], F_OK) == -1)
-			return (perror("minishell: "), minishell->exit_code = 126, exit(1), SUCCESS);
+			return (perror("minishell: "), exit(126), SUCCESS);
 	return (FAILURE);
 }
 
+int	get_exit_code(int status)
+{
+	status >>= 8;
+	status &= 0xff;
+	return (status);
+}
 int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 {
 	pid_t	pid;
@@ -166,15 +171,16 @@ int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 	{
 		if (execve(path, args[*i], envs) == -1)
 		{
-			if (!type_control(minishell, args, envs, i))
+			if (!type_control(args, envs, i))
 				return (exit(1), FAILURE);
 			return (printf("minishell: %s: command not found\n", cmd[*i]),
-				exit(1), FAILURE);
+				exit(127), FAILURE);
 		}
 	}
 	else
 	{
 		waitpid(pid, &status, 0);
+		minishell->exit_code = get_exit_code(status);
 		dup2(g_fd.std_in, STD_OUTPUT);
 		dup2(g_fd.std_out, STD_INPUT);
 		g_fd.change = 0;

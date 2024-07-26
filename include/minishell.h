@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/23 10:49:32 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/27 02:30:04 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 
 typedef struct s_fd
 {
-	int		change; 
+	int		change;
 	int		std_in;
 	int		std_out;
 }			t_fd;
@@ -87,7 +87,7 @@ void		echo(char **args);
 int			cd(t_minishell *mini, char *av);
 int			execute_command(t_minishell *minishell);
 char		*get_value(char *line);
-void		ft_exit(t_minishell *mini, char *av);
+void		ft_exit(t_minishell *mini, char **av);
 int			cpy_arg(t_minishell *minishell, char ***cmd, char ****args);
 int			check_bultin(t_minishell *minishell, char **cmd, char ***args,
 				int *i);
@@ -105,4 +105,5 @@ int			get_key(char *line);
 int			ft_strcmp(char *s1, char *s2);
 char		*ft_strjoin_char(char *s1, char c);
 void		remove_quotes(char ***args);
+int			get_exit_code(int status);
 #endif
