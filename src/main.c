@@ -41,12 +41,12 @@ int	shell_loop(t_minishell *minishell)
 			{
 				dollar(minishell, &minishell->line);
 				lexer(minishell);
-				printf("tokens: %s\n", (char *)minishell->tokens->data);
-				// if (cpy_arg(minishell))
-				// 	return (FAILURE);
-				// printf("args: %s", minishell->args[0][0]);
-				// heredoc(minishell);
-				// execute_command(minishell);
+				if (cpy_arg(minishell))
+					return (FAILURE);
+				if (minishell->hrd_count > 0)
+					if (heredoc(minishell))
+						continue;
+				execute_command(minishell);
 			}
 		}
 	}

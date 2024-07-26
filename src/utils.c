@@ -64,6 +64,25 @@ char **ft_mini_split(const char *s, char c) {
     return dest;
 }
 
+void	*my_realloc(void *ptr, size_t size)
+{
+	void	*new_ptr;
+
+	new_ptr = malloc(size);
+	if (!new_ptr)
+	{
+		ft_printf("reallocation failed!\n");
+		free(ptr);
+		exit(EXIT_FAILURE);
+	}
+	if (ptr)
+	{
+		ft_memcpy(new_ptr, ptr, size);
+		free(ptr);
+	}
+	return (new_ptr);
+}
+
 int	ft_strcmp(char *s1, char *s2)
 {
 	int	i;

@@ -32,7 +32,7 @@
 
 typedef struct s_fd
 {
-	int		change; 
+	int		change;
 	int		std_in;
 	int		std_out;
 }			t_fd;
@@ -65,7 +65,7 @@ typedef struct s_minishell
 	char	***args;
 	t_dlist	*tokens;
 	t_dlist	*hrd_cmd;
-	t_fd 	g_fd;
+	t_fd	g_fd;
 	int		exit_code;
 }			t_minishell;
 
@@ -107,6 +107,7 @@ int			get_key(char *line);
 int			ft_strcmp(char *s1, char *s2);
 char		*ft_strjoin_char(char *s1, char c);
 void		remove_quotes(char ***args);
-void 		replace_arg(char **args);
+void		replace_arg(char **args);
+void		*my_realloc(void *ptr, size_t size);
 
 #endif

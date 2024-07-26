@@ -12,47 +12,131 @@
 
 #include "../include/minishell.h"
 
-static char	*get_delimiter(char **args)
+static char	**get_delimiters(t_minishell *mini, char **args)
 {
-	int i = 0;
-	while(args[i])
+	char	**delimiters;
+	int		i;
+	int		j;
+
+	j = 0;
+	delimiters = (char **)malloc(sizeof(char *) * (mini->hrd_count + 1));
+	if (!delimiters)
+		return (NULL);
+	i = -1;
+	while (args[++i])
 	{
-		if (ft_strncmp(args[i], "<<", 2) == 0)
+		if (ft_strncmp(args[i], "<<", 2) == 0 && args[i + 1])
 		{
-			if (args[i + 1])
-				return (ft_strdup(args[i + 1]));
-			else
-				return (NULL);
+			delimiters[j] = ft_strdup(args[i + 1]);
+			if (!delimiters[j])
+			{
+				while (--j >= 0)
+					free(delimiters[j]);
+				return (free(delimiters), NULL);
+			}
+			j++;
 		}
-		i++;
 	}
-	return (NULL);
+	delimiters[j] = NULL;
+	return (delimiters);
+}
+
+void	null_heredoc_args(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i])
+	{
+		if (ft_strncmp(args[i], "<<", 2) == 0 && args[i + 1])
+		{
+			free(args[i]);
+			args[i] = NULL;
+			free(args[i + 1]);
+			args[i + 1] = NULL;
+			i += 2;
+		}
+		else
+			i++;
+	}
 }
 
 int	heredoc(t_minishell *mini)
 {
-	char	*line;
-	char	*delimiter;
-	char	***args;
+	char *line;
+	char **delimiters;
+	char ***args;
+	int i, j;
 
+	i = 0;
 	args = mini->args;
 	line = NULL;
-	// printf("args: %s\n", args[1][0]);
-	printf("args: %s\n", args[0][0]);
-	printf("args: %s\n", args[2][0]);
-	delimiter = get_delimiter(args[0]);
-	if (!delimiter)
-		return (ft_printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR), 1);
-			// komut yoksa yani " << eof" gibi bir durumda executor komut yok hatası bastırmamalı.
-	while (1)
+	if (!args)
+		return (0);
+
+	delimiters = NULL;
+	while (i <= mini->pipe_count)
 	{
-		line = readline("> ");
+		char **temp_delimiters = get_delimiters(mini, args[i]);
+		if (temp_delimiters)
+		{
+			if (!delimiters)
+				delimiters = temp_delimiters;
+			else
+			{
+				int existing_count = 0;
+				while (delimiters[existing_count])
+					existing_count++;
+
+				int new_count = 0;
+				while (temp_delimiters[new_count])
+					new_count++;
+
+				delimiters = (char **)my_realloc(delimiters, sizeof(char *)
+						* (existing_count + new_count + 1));
+				if (!delimiters)
+					return (0);
+				j = -1;
+				while (++j < new_count)
+					delimiters[existing_count + j] = temp_delimiters[j];
+				delimiters[existing_count + new_count] = NULL;
+
+				free(temp_delimiters);
+			}
+		}
+		i++;
+	}
+	if (!delimiters || !delimiters[0])
+		return (ft_printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR), 1);
+	j = 0;
+	while (delimiters[j])
+	{
+		while (1)
+		{
+			line = readline("> ");
+			if (!line)
+				break ;
+			if (ft_strcmp(line, delimiters[j]) == 0)
+			{
+				free(delimiters[j]);
+				j++;
+				free(line);
+				break ;
+			}
+			free(line);
+		}
+
 		if (!line)
 			break ;
-		if (ft_strcmp(line, delimiter) == 0)
-			return (free(delimiter), free(line), 0);
-		free(line);
 	}
-	free(delimiter);
+	while (delimiters[j])
+	{
+		free(delimiters[j]);
+		j++;
+	}
+	free(delimiters);
+	i = -1;
+	while (++i <= mini->pipe_count)
+		null_heredoc_args(args[i]);
 	return (0);
 }

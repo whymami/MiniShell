@@ -12,6 +12,23 @@
 
 #include "../include/minishell.h"
 
+static void count_heredoc(t_minishell *minishell)
+{
+    int i = 0;
+    char *line = minishell->line;
+
+    minishell->hrd_count = 0;
+    while (line[i])
+    {
+        if (line[i] == '<' && line[i + 1] == '<' && !check_quote(line, i))
+        {
+            minishell->hrd_count++;
+            i++;
+        }
+        i++;
+    }
+}
+
 static int	create_token(t_minishell *minishell, int *i, int *last_pipe)
 {
 	char	*temp_str;
@@ -51,5 +68,6 @@ void	lexer(t_minishell *minishell)
 	minishell->pipe_count = 0;
 	if (minishell->tokens)
 		dlist_clear(&minishell->tokens, &del);
+	count_heredoc(minishell);
 	create_token(minishell, &i, &last_pipe);
 }
