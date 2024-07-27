@@ -6,11 +6,12 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/07/27 14:04:34 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 18:54:33 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include <dirent.h>
 
 static int	ft_count_words(const char *str, char c)
 {
@@ -49,11 +50,17 @@ static int	ft_count_words(const char *str, char c)
 
 char	**ft_mini_split(const char *s, char c)
 {
-	int		i = 0, j = 0, k = 0, quote;
+	int		i;
 	char	**dest;
 	char	*substr;
+	int		k;
+	int		j;
+	int		quote;
 
-	i = 0, j = 0, k = 0, quote = 0;
+	i = 0;
+	j = 0;
+	k = 0;
+	quote = 0;
 	dest = (char **)malloc(sizeof(char *) * (ft_count_words(s, c) + 1));
 	if (!dest)
 		return (NULL);
@@ -116,7 +123,7 @@ int	ft_strcmp(char *s1, char *s2)
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
-int	err_msg(char *cmd,char *arg,char *msg)
+int	err_msg(char *cmd, char *arg, char *msg)
 {
 	ft_putstr_fd(ERR_TITLE, STDERR_FILENO);
 	if (cmd)
@@ -127,4 +134,29 @@ int	err_msg(char *cmd,char *arg,char *msg)
 		ft_putstr_fd(msg, STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
 	return (0);
+}
+
+void    arg_type(t_minishell *minishell, char *arg)
+{
+	DIR	*dir;
+
+	if ((dir = opendir(arg)) != NULL)
+	{
+		closedir(dir);
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putstr_fd(": is a directory\n", STDERR_FILENO);
+		minishell->exit_code = 126;
+	}
+	else if (access(arg, F_OK) == -1)
+	{
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		minishell->exit_code = 127;
+	}
+	else if (access(arg, X_OK) == -1)
+	{
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+		minishell->exit_code = 126;
+	}
 }

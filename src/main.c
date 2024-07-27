@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 10:46:21 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/23 10:50:13 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/27 17:30:12 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ int	shell_loop(t_minishell *minishell)
 	while (1)
 	{
 		minishell->line = readline("minishell> ");
+		if (minishell->line == NULL)
+		{
+			ft_putstr_fd("exit\n", 1);
+			exit(0);
+		}
 		if (ft_strlen(minishell->line) != 0)
 		{
 			add_history(minishell->line);

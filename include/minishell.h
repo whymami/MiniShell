@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/27 16:03:29 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 18:54:40 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,8 @@ void		remove_quotes(char ***args);
 void		replace_arg(char **args);
 void		*my_realloc(void *ptr, size_t size);
 int			get_exit_code(int status);
-int			type_control(char ***args, char **envs, int *i);
+int			type_control(t_minishell *minishell, char ***args, char **envs,
+				int *i);
 int			err_msg(char *cmd, char *arg, char *msg);
+void		arg_type(t_minishell *minishell, char *arg);
 #endif

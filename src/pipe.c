@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 20:17:02 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/27 10:14:12 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 18:56:22 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
 
     if (execve(find_path(minishell, cmd[i]), args[i], env(minishell)) == -1)
     {
-        type_control(args, env(minishell), &i);
+        type_control(minishell ,args, env(minishell), &i);
         ft_putstr_fd(" command not found\n", 2);
         exit(127);
     }
