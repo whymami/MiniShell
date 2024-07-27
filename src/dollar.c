@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:25:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/21 15:53:59 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 01:54:25 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void replace_dollar(t_minishell *mini, char **str, int *i, char **result)
     tmp = *result;
     *result = ft_strjoin_char(tmp, (*str)[(*i)++]);
 }
-
 
 int	empty_dollar(char **str)
 {
