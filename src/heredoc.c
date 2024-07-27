@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 14:48:02 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/26 22:38:44 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/27 03:36:05 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,10 @@ int	heredoc(t_minishell *mini)
 		i++;
 	}
 	if (!delimiters || !delimiters[0])
+	{
+		mini->exit_code = 258;
 		return (ft_printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR), 1);
+	}
 	j = 0;
 	while (delimiters[j])
 	{

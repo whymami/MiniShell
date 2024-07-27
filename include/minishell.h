@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/23 17:25:55 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/27 03:35:37 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void		echo(char **args);
 int			cd(t_minishell *mini, char *av);
 int			execute_command(t_minishell *minishell);
 char		*get_value(char *line);
-void		ft_exit(t_minishell *mini, char *av);
+void		ft_exit(t_minishell *mini, char **av);
 int			cpy_arg(t_minishell *minishell);
 int			check_builtin(t_minishell *minishell, char **cmd, char ***args,
 				int *i);
@@ -109,5 +109,5 @@ char		*ft_strjoin_char(char *s1, char c);
 void		remove_quotes(char ***args);
 void		replace_arg(char **args);
 void		*my_realloc(void *ptr, size_t size);
-
+int			get_exit_code(int status);
 #endif

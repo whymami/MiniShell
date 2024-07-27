@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 03:46:08 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/14 00:55:08 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/27 02:01:13 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	check_pipe(char *line, int i)
 	return (SUCCESS);
 }
 
-static int	check_line(char *line)
+static int	check_line(t_minishell *minishell, char *line)
 {
 	int	i;
 	int	pipe;
@@ -62,7 +62,10 @@ static int	check_line(char *line)
 	while (line[++i])
 	{
 		if (check_pipe(line, i))
+		{
+			minishell->exit_code = 258;
 			return (free(line), FAILURE);
+		}
 		if (pipe != 1 && line[i] == '|' && !check_quote(line, i))
 			pipe = 1;
 		else if (ft_isprint(line[i]) && line[i] != ' ' && line[i] != '|')
@@ -86,7 +89,7 @@ int	parser(t_minishell *minishell)
 	if (quote)
 		return (free(line), ft_printf("%s%s `%c`\n", ERR_TITLE, SYNTAX_ERR,
 				(char)quote), FAILURE);
-	if (check_line(line))
+	if (check_line(minishell, line))
 		return (FAILURE);
 	return (SUCCESS);
 }

@@ -3,12 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/07 18:55:17 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/27 00:49:58 by btanir           ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/07/27 03:37:06 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include "../../include/minishell.h"
 
@@ -71,6 +73,7 @@ void	export(t_minishell *minishell, char **args)
 		{
 			ft_printf("minishell: export: `%s': not a valid identifier\n",
 				args[i]);
+			minishell->exit_code = 1;
 			continue ;
 		}
 		key = ft_substr(args[i], 0, get_key(args[i]));
