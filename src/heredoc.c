@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 14:48:02 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/27 04:00:23 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/27 11:26:05 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,57 +41,61 @@ static char	**get_delimiters(t_minishell *mini, char **args)
 	return (delimiters);
 }
 
-void	null_heredoc_args(char **args)
+void null_heredoc_args(char **args)
 {
-	int	i;
+    int i = 0;
+    int j = 0;
 
-	i = 0;
-	while (args[i])
-	{
-		if (ft_strncmp(args[i], "<<", 2) == 0 && args[i + 1])
-		{
-			free(args[i]);
-			args[i] = NULL;
-			free(args[i + 1]);
-			args[i + 1] = NULL;
-			i += 2;
-		}
-		else
-			i++;
-	}
+    while (args[i])
+    {
+        if (!ft_strncmp(args[i], "<<", 2) && args[i + 1])
+        {
+            free(args[i]);
+            free(args[i + 1]);
+            i += 2;
+        }
+        else
+        {
+            args[j] = args[i];
+            i++;
+            j++;
+        }
+    }
+    args[j] = NULL;
 }
+
 
 int	heredoc(t_minishell *mini)
 {
-	char *line;
-	char **delimiters;
-	char ***args;
-	int i, j;
+	char	*line;
+	char	**delimiters;
+	char	***args;
+	char	**temp_delimiters;
+	int		existing_count;
+	int		new_count;
 
+	int i, j;
 	i = 0;
 	args = mini->args;
 	line = NULL;
 	if (!args)
 		return (0);
-
 	delimiters = NULL;
 	while (i <= mini->pipe_count)
 	{
-		char **temp_delimiters = get_delimiters(mini, args[i]);
+		temp_delimiters = get_delimiters(mini, args[i]);
 		if (temp_delimiters)
 		{
 			if (!delimiters)
 				delimiters = temp_delimiters;
 			else
 			{
-				int existing_count = 0;
+				existing_count = 0;
 				while (delimiters[existing_count])
 					existing_count++;
-
-				int new_count = 0;
+				new_count = 0;
 				while (temp_delimiters[new_count])
 					new_count++;
-
 				delimiters = (char **)my_realloc(delimiters, sizeof(char *)
 						* (existing_count + new_count + 1));
 				if (!delimiters)
@@ -100,7 +104,6 @@ int	heredoc(t_minishell *mini)
 				while (++j < new_count)
 					delimiters[existing_count + j] = temp_delimiters[j];
 				delimiters[existing_count + new_count] = NULL;
-
 				free(temp_delimiters);
 			}
 		}
@@ -128,7 +131,6 @@ int	heredoc(t_minishell *mini)
 			}
 			free(line);
 		}
-
 		if (!line)
 			break ;
 	}

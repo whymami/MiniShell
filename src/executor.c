@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/27 08:46:41 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 11:11:49 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,8 @@ int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 		{
 			if (!type_control(args, envs, i))
 				return (exit(1), FAILURE);
-			return (ft_putstr_fd(" command not found\n", 2), exit(127), FAILURE);
+			return (ft_putstr_fd(" command not found\n", 2), exit(127),
+				FAILURE);
 		}
 	}
 	else
