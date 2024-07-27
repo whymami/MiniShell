@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:48:57 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/26 22:38:52 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/27 14:07:50 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,25 +51,24 @@ static int	get_target_directory(t_minishell *mini, char *av, char **target_dir)
 	if (!av || ft_strncmp(av, "~", 1) == 0)
 	{
 		if (av && ft_strncmp(av, "~~", 2) == 0)
-			return (ft_printf("minishell: cd: %s: No such file or directory\n",
-					av), mini->exit_code = 1, FAILURE);
+			return (err_msg("cd: ", av, ": No such file or directory"), mini->exit_code = 1, FAILURE);
 		path = search_env(mini, "HOME");
 		if (!path)
-			return (ft_printf("minishell: cd: HOME not set\n"),
+			return (err_msg("cd: ", NULL, "Home not set"),
 				mini->exit_code = 1, FAILURE);
 	}
 	else if (ft_strncmp(av, "-", 1) == 0)
 	{
 		path = search_env(mini, "OLDPWD");
 		if (!path)
-			return (ft_printf("minishell: cd: OLDPWD not set\n"),
+			return (err_msg("cd: ", NULL, "OLDPWD not set"),
 				mini->exit_code = 1, FAILURE);
 	}
 	if (path)
 	{
 		env_data = get_value(path->data);
 		if (!env_data)
-			return (ft_printf("minishell: cd: Invalid environment data\n"),
+			return (err_msg("cd: ", NULL, "No such file or directory"),
 				mini->exit_code = 1, FAILURE);
 		*target_dir = env_data;
 	}
@@ -86,10 +85,10 @@ int	cd(t_minishell *mini, char *av)
 	char	*oldpwd_copy;
 
 	if (!getcwd(pwd, 4096))
-		return (perror("minishell: cd"), EXIT_FAILURE);
+		return (err_msg("cd: ", NULL, "Getcwd error"), EXIT_FAILURE);
 	oldpwd_copy = ft_strdup(pwd);
 	if (!oldpwd_copy)
-		return (perror("minishell: cd"), EXIT_FAILURE);
+		return (err_msg("cd: ", NULL, "OLDPWD not set."), EXIT_FAILURE);
 	if (mini->oldpwd)
 		free(mini->oldpwd);
 	mini->oldpwd = oldpwd_copy;
@@ -97,9 +96,9 @@ int	cd(t_minishell *mini, char *av)
 	if (err == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (chdir(target_dir) == -1)
-		return (perror("minishell: cd"), mini->exit_code = 1, EXIT_FAILURE);
+		return (err_msg("cd: ", NULL, "no such file or directory"), mini->exit_code = 1, EXIT_FAILURE);
 	if (!getcwd(pwd, 4096))
-		return (perror("minishell: cd"), EXIT_FAILURE);
+		return (err_msg("cd: ", NULL, "Getcwd error"), EXIT_FAILURE);
 	change_pwd(mini, pwd);
 	if (av && ft_strncmp(av, "-", 1) == 0)
 		ft_printf("%s\n", pwd);

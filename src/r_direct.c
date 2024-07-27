@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 18:55:19 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/27 09:10:47 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 15:05:29 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int rdirect_out(char *file, int append)
 
     if (append)
     {
-        fd = open(file, O_CREAT | O_WRONLY | O_APPEND, 0644); // if'e süslü parantez koymamın sebebi warning vermesi ft_rdirectte silmeyin
+        fd = open(file, O_WRONLY | O_APPEND, 0644); // if'e süslü parantez koymamın sebebi warning vermesi ft_rdirectte silmeyin
     }
     else
     {

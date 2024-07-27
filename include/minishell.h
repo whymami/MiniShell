@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/27 08:47:07 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 13:56:40 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,5 @@ void		replace_arg(char **args);
 void		*my_realloc(void *ptr, size_t size);
 int			get_exit_code(int status);
 int			type_control(char ***args, char **envs, int *i);
+int			err_msg(char *cmd, char *arg, char *msg);
 #endif

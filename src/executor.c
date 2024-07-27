@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/27 11:11:49 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/27 14:49:22 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,10 @@ int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 	else if (ft_strcmp(cmd[*i], "cd") == 0)
 		cd(minishell, (*args)[1]);
 	else if (ft_strcmp(cmd[*i], "echo") == 0)
+	{
 		echo(args[*i]);
+		minishell->exit_code = 0;
+	}
 	else if (ft_strcmp(cmd[*i], "exit") == 0)
 		ft_exit(minishell, (*args));
 	else
@@ -160,33 +163,38 @@ int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 int	type_control(char ***args, char **envs, int *i)
 {
 	DIR	*dir;
+	printf("args[0]: %s\n", (*args)[0]);
 
 	if (ft_strncmp((*args)[0], "./", 2) == 0)
 	{
 		if (execve((*args)[0], args[*i], envs) == -1)
 		{
-			dir = opendir((*args)[0]);
-			if (dir)
+			if ((dir = opendir((*args)[0])) != NULL)
 			{
 				closedir(dir);
-				ft_putstr_fd((*args)[0], 2);
-				ft_putstr_fd(": is a directory\n", 2);
-				return (exit(126), SUCCESS);
+				ft_putstr_fd((*args)[0], STDERR_FILENO);
+				ft_putstr_fd(": is a directory\n", STDERR_FILENO);
 			}
 			else if (access((*args)[0], F_OK | X_OK) == -1)
 			{
-				ft_putstr_fd((*args)[0], 2);
-				ft_putstr_fd(": Permission denied\n", 2);
-				return (exit(126), SUCCESS);
+				ft_putstr_fd((*args)[0], STDERR_FILENO);
+				ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
 			}
-			return (exit(126), SUCCESS);
+			else
+			{
+				perror("minishell");
+			}
+			exit(126);
 		}
-		perror("minishell: ");
-		exit(126);
 	}
-	if (ft_strncmp((*args)[0], "/", 1) == 0)
+	else if (ft_strncmp((*args)[0], "/", 1) == 0)
+	{
 		if (access((*args)[0], F_OK) == -1)
-			return (perror("minishell: "), exit(126), SUCCESS);
+		{
+			perror("minishell");
+			exit(126);
+		}
+	}
 	return (FAILURE);
 }
 
