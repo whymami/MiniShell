@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   r_direct.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 18:55:19 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/27 03:55:41 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/27 09:10:47 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int rdirect_out(char *file, int append)
     }
 	if (fd == -1)
 	{
-		printf("minishell: %s: No such file or directory\n", file);
+		ft_putstr_fd("minishell: No such file or directory\n", 2);
 		return (1);
 	}
 	if (fd >= 0)
@@ -48,7 +48,7 @@ static int rdirect_in(char *file)
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{
-		printf("minishell: %s: No such file or directory\n", file);
+		ft_putstr_fd("minishell: No such file or directory\n", 2);
 		return (1);
 	}
 	if (dup2(fd, STDIN_FILENO) == -1)

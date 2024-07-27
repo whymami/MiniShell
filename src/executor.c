@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/27 03:47:29 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/27 08:46:41 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,16 +190,16 @@ int	type_control(char ***args, char **envs, int *i)
 	return (FAILURE);
 }
 
-int	get_exit_code(int status)
-{
-	status >>= 8;
-	status &= 0xff;
-	return (status);
-}
+// int	get_exit_code(int status)
+// {
+// 	status >>= 8;
+// 	status &= 0xff;
+// 	return (status);
+// }
+
 int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 {
 	pid_t	pid;
-	int		status;
 	char	**envs;
 	char	*path;
 
@@ -215,14 +215,13 @@ int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 		{
 			if (!type_control(args, envs, i))
 				return (exit(1), FAILURE);
-			return (ft_putstr_fd(" command not found\n", 2),
-				exit(127), FAILURE);
+			return (ft_putstr_fd(" command not found\n", 2), exit(127), FAILURE);
 		}
 	}
 	else
 	{
-		waitpid(pid, &status, 0);
-		minishell->exit_code = get_exit_code(status);
+		waitpid(pid, &minishell->exit_code, 0);
+		minishell->exit_code = WEXITSTATUS(minishell->exit_code);
 		dup2(minishell->g_fd.std_in, STD_OUTPUT);
 		dup2(minishell->g_fd.std_in, STD_INPUT);
 		minishell->g_fd.change = 0;

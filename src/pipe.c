@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayegen <ayegen@student.42.fr>              +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 20:17:02 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/23 03:46:29 by ayegen           ###   ########.fr       */
+/*   Updated: 2024/07/27 10:14:12 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,45 +27,57 @@ int	create_pipe(t_minishell *minishell)
 	return (SUCCESS);
 }
 
-void	pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
+void pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
 {
-	int	j;
+    int j = -1;
 
-	j = -1;
-	if (i != 0)
-	{
-		if (dup2(minishell->pipe_fd[(i - 1) * 2], STDIN_FILENO) == -1)
-			return (close(minishell->pipe_fd[(i - 1) * 2]), perror("Minishell: dup2 error"));
-		close(minishell->pipe_fd[(i - 1) * 2]);
-	}
-	if (i != minishell->pipe_count)
-	{
-		if (dup2(minishell->pipe_fd[i * 2 + 1], STDOUT_FILENO) == -1)
-			return (close(minishell->pipe_fd[i * 2 + 1]), perror("Minishell: dup2 error"));
-		close(minishell->pipe_fd[i * 2 + 1]);
-	}
-	while (++j < minishell->pipe_count * 2)
-		close(minishell->pipe_fd[j]);
-	if (check_direct(minishell, args[i]))
-		exit(1);
-	if (execve(find_path(minishell, cmd[i]), args[i], env(minishell)) == -1)
-	{
-		perror("Minishell: execve error");
-		exit(1);
-	}
+    if (i != 0)
+    {
+        if (dup2(minishell->pipe_fd[(i - 1) * 2], STDIN_FILENO) == -1)
+        {
+            close(minishell->pipe_fd[(i - 1) * 2]);
+            perror("Minishell: dup2 error");
+            exit(1);
+        }
+        close(minishell->pipe_fd[(i - 1) * 2]);
+    }
+    if (i != minishell->pipe_count)
+    {
+        if (dup2(minishell->pipe_fd[i * 2 + 1], STDOUT_FILENO) == -1)
+        {
+            close(minishell->pipe_fd[i * 2 + 1]);
+            perror("Minishell: dup2 error");
+            exit(1);
+        }
+        close(minishell->pipe_fd[i * 2 + 1]);
+    }
+    while (++j < minishell->pipe_count * 2)
+        close(minishell->pipe_fd[j]);
+
+    if (check_direct(minishell, args[i]))
+        exit(1);
+
+    if (execve(find_path(minishell, cmd[i]), args[i], env(minishell)) == -1)
+    {
+        type_control(args, env(minishell), &i);
+        ft_putstr_fd(" command not found\n", 2);
+        exit(127);
+    }
 }
 
 int	close_fd(t_minishell *minishell)
 {
 	int	i;
-	int	status;
 
 	i = -1;
 	while (++i < minishell->pipe_count * 2)
 		close(minishell->pipe_fd[i]);
 	i = -1;
 	while (++i < minishell->pipe_count + 1)
-		waitpid(minishell->pid[i], &status, 0);
+	{
+		waitpid(minishell->pid[i], &minishell->exit_code, 0);
+		minishell->exit_code = WEXITSTATUS(minishell->exit_code);
+	}
 	free(minishell->pipe_fd);
 	free(minishell->pid);
 	return (SUCCESS);
@@ -101,7 +113,7 @@ int	multiple_command(t_minishell *minishell)
 	remove_quotes(args);
 	a = 0;
 	b = 0;
-	while (args[a]) //utilse at
+	while (args[a]) // utilse at
 	{
 		if (args[a][0])
 		{

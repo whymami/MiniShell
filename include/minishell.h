@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/27 03:47:19 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/27 08:47:07 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,4 +111,5 @@ void		remove_quotes(char ***args);
 void		replace_arg(char **args);
 void		*my_realloc(void *ptr, size_t size);
 int			get_exit_code(int status);
+int			type_control(char ***args, char **envs, int *i);
 #endif
