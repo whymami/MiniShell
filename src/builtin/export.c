@@ -6,11 +6,9 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:55:17 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/27 03:48:11 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/27 04:16:45 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "../../include/minishell.h"
 
@@ -19,7 +17,7 @@ int	export_check(char *env_data)
 	int	i;
 
 	i = -1;
-	if (ft_isdigit(env_data[0]))
+	if (ft_isdigit(env_data[0]) || env_data[0] == '=')
 		return (1);
 	while (env_data[++i])
 	{
@@ -70,8 +68,8 @@ void	export(t_minishell *minishell, char **args, int *j)
 	{
 		if (export_check(minishell->args_with_quotes[*j][i]))
 		{
-			ft_printf("minishell: export: `%s': not a valid identifier\n",
-				args[i]);
+			ft_printf("minishell: export: `%s':", args[i]);
+			ft_putstr_fd(" not a valid identifier\n", 2);
 			minishell->exit_code = 1;
 			continue ;
 		}
