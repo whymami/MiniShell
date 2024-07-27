@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 03:46:08 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/27 02:01:13 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 04:17:53 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,10 @@ static int	check_line(t_minishell *minishell, char *line)
 	}
 	free(line);
 	if (pipe == 1)
+	{
+		minishell->exit_code = 258;
 		return (ft_printf("%s%s `%s`\n", ERR_TITLE, SYNTAX_ERR, "|"), FAILURE);
+	}
 	return (SUCCESS);
 }
 
