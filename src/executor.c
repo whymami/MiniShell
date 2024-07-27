@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/27 14:49:22 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 17:16:19 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,13 +158,20 @@ int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 		ft_exit(minishell, (*args));
 	else
 		return (0);
+	if (minishell->g_fd.change)
+	{
+		dup2(minishell->g_fd.std_out, STD_OUTPUT);
+		dup2(minishell->g_fd.std_in, STD_INPUT);
+		minishell->g_fd.change = 0;
+	}
 	return (1);
 }
+
 int	type_control(char ***args, char **envs, int *i)
 {
 	DIR	*dir;
-	printf("args[0]: %s\n", (*args)[0]);
 
+	// printf("args[0]: %s\n", (*args)[0]);
 	if (ft_strncmp((*args)[0], "./", 2) == 0)
 	{
 		if (execve((*args)[0], args[*i], envs) == -1)
@@ -231,9 +238,12 @@ int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 	{
 		waitpid(pid, &minishell->exit_code, 0);
 		minishell->exit_code = WEXITSTATUS(minishell->exit_code);
-		dup2(minishell->g_fd.std_in, STD_OUTPUT);
-		dup2(minishell->g_fd.std_in, STD_INPUT);
-		minishell->g_fd.change = 0;
+		if (minishell->g_fd.change)
+		{
+			dup2(minishell->g_fd.std_in, STD_OUTPUT);
+			dup2(minishell->g_fd.std_in, STD_INPUT);
+			minishell->g_fd.change = 0;
+		}
 	}
 	return (SUCCESS);
 }

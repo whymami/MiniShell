@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 16:48:47 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/27 02:45:29 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 15:59:23 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,6 @@ void	ft_exit(t_minishell *mini, char **av)
 		}
 	}
 	else
-		exit_code = 0;
+		exit_code = mini->exit_code;
 	exit(exit_code);
 }
