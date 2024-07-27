@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 03:46:08 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/27 04:17:53 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 20:34:24 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ static int	check_pipe(char *line, int i)
 {
 	if (line[i] == '|' && !check_quote(line, i) && line[i + 1] && line[i
 		+ 1] == '|')
-		return (ft_printf("%s%s `%s`\n", ERR_TITLE, SYNTAX_ERR, "||"), FAILURE);
+		return (err_msg(SYNTAX_ERR, " `||\'", NULL), FAILURE);
 	else if (line[0] == '|' && !check_quote(line, i))
-		return (ft_printf("%s%s `%s`\n", ERR_TITLE, SYNTAX_ERR, "|"), FAILURE);
+		return (err_msg(SYNTAX_ERR, " `|\'", NULL), FAILURE);
 	return (SUCCESS);
 }
 
@@ -63,7 +63,7 @@ static int	check_line(t_minishell *minishell, char *line)
 	{
 		if (check_pipe(line, i))
 		{
-			minishell->exit_code = 258;
+			minishell->exit_code = 2;
 			return (free(line), FAILURE);
 		}
 		if (pipe != 1 && line[i] == '|' && !check_quote(line, i))
@@ -76,8 +76,8 @@ static int	check_line(t_minishell *minishell, char *line)
 	free(line);
 	if (pipe == 1)
 	{
-		minishell->exit_code = 258;
-		return (ft_printf("%s%s `%s`\n", ERR_TITLE, SYNTAX_ERR, "|"), FAILURE);
+		minishell->exit_code = 2;
+		return (err_msg(SYNTAX_ERR, " `|\'", NULL), FAILURE);
 	}
 	return (SUCCESS);
 }
@@ -90,8 +90,7 @@ int	parser(t_minishell *minishell)
 	line = ft_strtrim(minishell->line, " ");
 	quote = check_quote(line, ft_strlen(line));
 	if (quote)
-		return (free(line), ft_printf("%s%s `%c`\n", ERR_TITLE, SYNTAX_ERR,
-				(char)quote), FAILURE);
+		return (free(line), err_msg(SYNTAX_ERR, ft_itoa(quote), NULL), FAILURE);
 	if (check_line(minishell, line))
 		return (FAILURE);
 	return (SUCCESS);

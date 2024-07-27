@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:48:57 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/27 18:57:42 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 21:13:26 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	get_target_directory(t_minishell *mini, char *av, char **target_dir)
 	{
 		env_data = get_value(path->data);
 		if (!env_data)
-			return (err_msg("cd: ", NULL, "No such file or directory"),
+			return (err_msg("cd: ", NULL, " No such file or directory"),
 				mini->exit_code = 1, FAILURE);
 		*target_dir = env_data;
 	}
@@ -96,7 +96,7 @@ int	cd(t_minishell *mini, char *av)
 	if (err == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (chdir(target_dir) == -1)
-		return (err_msg("cd: ", NULL, "No such file or directory"), mini->exit_code = 1, EXIT_FAILURE);
+		return (err_msg("cd: ", NULL, " No such file or directory"), mini->exit_code = 1, EXIT_FAILURE);
 	if (!getcwd(pwd, 4096))
 		return (err_msg("cd: ", NULL, "Getcwd error"), EXIT_FAILURE);
 	change_pwd(mini, pwd);
