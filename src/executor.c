@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/27 03:35:53 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 03:47:29 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,67 +14,74 @@
 #include <dirent.h>
 #include <sys/wait.h>
 
-void free_split(char **split)
+void	free_split(char **split)
 {
-    int i = 0;
-    while (split[i])
-    {
-        free(split[i]);
-        i++;
-    }
-    free(split);
+	int	i;
+
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
 }
 
-void free_args(char ***args)
+void	free_args(char ***args)
 {
-    int i = 0;
-    while (args[i])
-    {
-        free_split(args[i]);
-        i++;
-    }
-    free(args);
+	int	i;
+
+	i = 0;
+	while (args[i])
+	{
+		free_split(args[i]);
+		i++;
+	}
+	free(args);
 }
 
-int cpy_arg(t_minishell *minishell)
+int	cpy_arg(t_minishell *minishell)
 {
-    t_dlist *tokens;
-    int i;
-    char *line;
-    char ***args;
+	t_dlist	*tokens;
+	int		i;
+	char	*line;
+	char	***args;
 
-    tokens = minishell->tokens;
-    i = 0;
-    args = ft_calloc(1, sizeof(char **) * (dlist_size(minishell->tokens) + 1));
-    if (!args)
-    {
-        perror("ft_calloc");
-        return (FAILURE);
-    }
-    while (tokens)
-    {
-        line = ft_strdup(tokens->data);
-        if (!line)
-        {
-            perror("ft_strdup");
+	tokens = minishell->tokens;
+	i = 0;
+	args = ft_calloc(1, sizeof(char **) * (dlist_size(minishell->tokens) + 1));
+	minishell->args_with_quotes = ft_calloc(1, sizeof(char **)
+			* (dlist_size(minishell->tokens) + 1));
+	if (!args)
+	{
+		perror("ft_calloc");
+		return (FAILURE);
+	}
+	while (tokens)
+	{
+		line = ft_strdup(tokens->data);
+		if (!line)
+		{
+			perror("ft_strdup");
 			free_args(args);
-            return (FAILURE);
-        }
-        replace_arg(&line);
-        args[i] = ft_mini_split(line, ' ');
-        if (!args[i])
-        {
-            perror("ft_mini_split");
-            free(line);
-            free_args(args);
-            return (FAILURE);
-        }
-        free(line);
-        i++;
-        tokens = tokens->next;
-    }
-    minishell->args = args;
-    return (SUCCESS);
+			return (FAILURE);
+		}
+		replace_arg(&line);
+		args[i] = ft_mini_split(line, ' ');
+		minishell->args_with_quotes[i] = ft_mini_split(line, ' ');
+		if (!args[i])
+		{
+			perror("ft_mini_split");
+			free(line);
+			free_args(args);
+			return (FAILURE);
+		}
+		free(line);
+		i++;
+		tokens = tokens->next;
+	}
+	minishell->args = args;
+	return (SUCCESS);
 }
 
 char	*find_path(t_minishell *minishell, char *cmd)
@@ -135,7 +142,7 @@ int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 	if (ft_strcmp(cmd[*i], "env") == 0)
 		print_env(minishell);
 	else if (ft_strcmp(cmd[*i], "export") == 0)
-		export(minishell, (*args));
+		export(minishell, (*args), i);
 	else if (ft_strcmp(cmd[*i], "pwd") == 0)
 		get_pwd();
 	else if (ft_strcmp(cmd[*i], "unset") == 0)
@@ -277,8 +284,10 @@ int	single_command(t_minishell *minishell)
 	char	**cmd;
 	char	***args;
 	int		i;
-	int		a = 0, b;
+	int		a;
+	int		b;
 
+	a = 0;
 	i = 0;
 	a = 0, b = 0;
 	args = minishell->args;
@@ -298,7 +307,7 @@ int	single_command(t_minishell *minishell)
 		return (free(cmd), SUCCESS);
 	if (create_fork(minishell, cmd, args, &i))
 		return (free(cmd), FAILURE);
-	return free(cmd), (SUCCESS);
+	return (free(cmd), (SUCCESS));
 }
 
 int	execute_command(t_minishell *minishell)

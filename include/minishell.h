@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/27 03:35:37 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 03:47:19 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_minishell
 	int		*pid;
 	int		hrd_count;
 	char	***args;
+	char	***args_with_quotes;
 	t_dlist	*tokens;
 	t_dlist	*hrd_cmd;
 	t_fd	g_fd;
@@ -79,7 +80,7 @@ int			check_quote(char *line, int value_i);
 int			pass_space(char *line, int *i);
 void		lexer(t_minishell *minishell);
 void		parse_env(t_minishell *minishell, char **env);
-void		export(t_minishell *minishell, char **env_data_list);
+void		export(t_minishell *minishell, char **env_data_list, int *i);
 void		print_env(t_minishell *minishell);
 t_dlist		*search_env(t_minishell *minishell, char *key);
 char		*get_pwd(void);
