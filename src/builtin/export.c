@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:55:17 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/27 00:49:58 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/27 01:57:02 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,23 @@ int	export_check(char *env_data)
 	int	i;
 
 	i = -1;
-	if (isdigit(env_data[0]))
+	if (ft_isdigit(env_data[0]))
 		return (1);
 	while (env_data[++i])
 	{
 		if (env_data[i] == '=')
+		{
+			if (env_data[i + 1] == ' ' || (i > 0 && env_data[i - 1] == ' '))
+				return (1);
 			break ;
+		}
 		if (!(isalnum(env_data[i]) || env_data[i] == '_'))
-			return (1);
-	}
-	if (env_data[i] == '=')
-	{
-		if (env_data[i + 1] == ' ' || (i > 0 && env_data[i - 1] == ' '))
 			return (1);
 	}
 	return (0);
 }
 
-void	export(t_minishell *minishell, char **args)
+void	export(t_minishell *minishell, char **args, int *j)
 {
 	t_dlist	*new;
 	t_dlist	*search;
@@ -67,7 +66,7 @@ void	export(t_minishell *minishell, char **args)
 	i = 0;
 	while (args[++i])
 	{
-		if (export_check(args[i]))
+		if (export_check(minishell->args_with_quotes[*j][i]))
 		{
 			ft_printf("minishell: export: `%s': not a valid identifier\n",
 				args[i]);

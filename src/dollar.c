@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:25:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/21 15:53:59 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 03:29:54 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
- char	*ft_strjoin_char(char *s1, char c)
+char	*ft_strjoin_char(char *s1, char c)
 {
 	char	*result;
 	int		len;
@@ -73,23 +73,22 @@ void	get_env(int *i, t_minishell *mini, char **str, char **result)
 	free(var);
 }
 
-int is_valid_env_char(char c)
+int	is_valid_env_char(char c)
 {
-    return (ft_isalnum(c) || c == '_');
+	return (ft_isalnum(c) || c == '_');
 }
 
-void replace_dollar(t_minishell *mini, char **str, int *i, char **result)
+void	replace_dollar(t_minishell *mini, char **str, int *i, char **result)
 {
-    char *tmp;
+	char	*tmp;
 
-    if ((*str)[*i] == '$' && (*str)[(*i) + 1] == '?')
-        return (get_ext_code(i, mini, result));
-    if ((*str)[*i] == '$')
-        return (get_env(i, mini, str, result));
-    tmp = *result;
-    *result = ft_strjoin_char(tmp, (*str)[(*i)++]);
+	if ((*str)[*i] == '$' && (*str)[(*i) + 1] && (*str)[(*i) + 1] == '?')
+		return (get_ext_code(i, mini, result));
+	if ((*str)[*i] == '$' && (*str)[(*i) + 1] && (*str)[(*i) + 1] != '$')
+		return (get_env(i, mini, str, result));
+	tmp = *result;
+	*result = ft_strjoin_char(tmp, (*str)[(*i)++]);
 }
-
 
 int	empty_dollar(char **str)
 {
@@ -100,8 +99,8 @@ int	empty_dollar(char **str)
 	{
 		if ((*str)[i] == '$')
 		{
-			if (((*str)[i + 1] == '\0') || (!ft_isalnum((*str)[i + 1]) &&
-                ((*str)[i + 1] != '?' && (*str)[i + 1] != '\'' && (*str)[i + 1] != '\"')))
+			if ((!ft_isalnum((*str)[i + 1]) && ((*str)[i + 1] != '?')
+					&& ((*str)[i + 1] != '$')))
 				return (1);
 		}
 		i++;
