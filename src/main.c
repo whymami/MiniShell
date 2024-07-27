@@ -14,8 +14,6 @@
 #include "stdio.h"
 #include "stdlib.h"
 
-t_fd	g_fd;
-
 void	init_data(t_minishell *minishell)
 {
 	minishell->line = NULL;
@@ -26,7 +24,9 @@ void	init_data(t_minishell *minishell)
 	minishell->oldpwd = NULL;
 	minishell->tokens = NULL;
 	minishell->env = NULL;
+	minishell->args = NULL;
 	minishell->exit_code = 0;
+	minishell->g_fd.change = 0;
 }
 
 int	shell_loop(t_minishell *minishell)
@@ -39,12 +39,14 @@ int	shell_loop(t_minishell *minishell)
 			add_history(minishell->line);
 			if (!parser(minishell))
 			{
-				if (!heredoc(minishell))
-				{
-					dollar(minishell, &minishell->line);
-					lexer(minishell);
-					execute_command(minishell);
-				}
+				dollar(minishell, &minishell->line);
+				lexer(minishell);
+				if (cpy_arg(minishell))
+					return (FAILURE);
+				if (minishell->hrd_count > 0)
+					if (heredoc(minishell))
+						continue;
+				execute_command(minishell);
 			}
 		}
 	}
@@ -60,9 +62,8 @@ int	main(int argc, char **argv, char **env)
 	if (!minishell)
 		return (ft_putstr_fd("Error: Memory allocation error\n", 2),
 			EXIT_FAILURE);
-	g_fd.change = 0;
 	init_data(minishell);
-	signal(SIGINT, signal_handler);
+	// signal(SIGINT, signal_handler);
 	parse_env(minishell, env);
 	shell_loop(minishell);
 	return (SUCCESS);

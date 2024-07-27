@@ -46,7 +46,8 @@ void	pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
 	}
 	while (++j < minishell->pipe_count * 2)
 		close(minishell->pipe_fd[j]);
-	check_direct(minishell, args[i]);
+	if (check_direct(minishell, args[i]))
+		exit(1);
 	if (execve(find_path(minishell, cmd[i]), args[i], env(minishell)) == -1)
 	{
 		perror("Minishell: execve error");
@@ -95,8 +96,7 @@ int	multiple_command(t_minishell *minishell)
 	int		a;
 	int		b;
 
-	if (cpy_arg(minishell, &cmd, &args) == FAILURE)
-		return (FAILURE);
+	args = minishell->args;
 	cmd = ft_calloc(1, sizeof(char *) * (dlist_size(minishell->tokens) + 1));
 	remove_quotes(args);
 	a = 0;

@@ -6,107 +6,140 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 14:48:02 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/21 15:45:41 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 03:32:33 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static int	find_heredoc(t_minishell *mini)
+static char	**get_delimiters(t_minishell *mini, char **args)
 {
-	char	*line;
-	int		i;
-
-	line = ft_strdup(mini->line);
-	i = 0;
-	if (!line)
-		return (0);
-	while (line[i])
-	{
-		if (line[i] == '<' && line[i + 1] == '<' && line[i + 2] == '<')
-			return (free(line), 0);
-		if (line[i] == '<' && line[i + 1] == '<' && line[i + 2] != '<')
-			if (!check_quote(line, i))
-				return (free(line), 1);
-		i++;
-	}
-	return (free(line), 0);
-}
-
-static char	*get_delimiter(t_minishell *mini)
-{
-	char	*line;
-	char	*delimiter;
+	char	**delimiters;
 	int		i;
 	int		j;
 
-	i = 0;
-	line = ft_strdup(mini->line);
-	if (!line)
+	j = 0;
+	delimiters = (char **)malloc(sizeof(char *) * (mini->hrd_count + 1));
+	if (!delimiters)
 		return (NULL);
-	while (line[i] && line[i] != '<')
-		i++;
-	i += 2;
-	while (line[i] && ((line[i] >= 9 && line[i] <= 13) || line[i] == ' '))
-		i++;
-	if (line[i] == '\0')
-		return (free(line), NULL);
-	j = i;
-	while (line[j] && !((line[j] >= 9 && line[j] <= 13) || line[j] == ' '))
-		j++;
-	delimiter = ft_substr(line, i, j - i);
-	return (free(line), delimiter);
+	i = -1;
+	while (args[++i])
+	{
+		if (ft_strcmp(args[i], "<<") == 0 && args[i + 1])
+		{
+			delimiters[j] = ft_strdup(args[i + 1]);
+			if (!delimiters[j])
+			{
+				while (--j >= 0)
+					free(delimiters[j]);
+				return (free(delimiters), NULL);
+			}
+			j++;
+		}
+	}
+	delimiters[j] = NULL;
+	return (delimiters);
 }
 
-void	set_hrd_cmd(t_minishell *mini)
+void	null_heredoc_args(char **args)
 {
-	int		i;
-	char	*cmd;
-	char	*line;
+	int	i;
 
 	i = 0;
-	line = ft_strdup(mini->line);
-	if (!line)
-		return ;
-	while (line[i] && line[i] != '<')
-		i++;
-	cmd = malloc(sizeof(char) * i + 1);
-	ft_strlcpy(cmd, line, i);
-	free(line);
-	cmd = ft_strtrim(cmd, " ");
-	if (!mini->hrd_cmd)
-		mini->hrd_cmd = dlist_new(cmd);
-	else
-		dlist_add_back(&mini->hrd_cmd, dlist_new(cmd));
+	while (args[i])
+	{
+		if (ft_strncmp(args[i], "<<", 2) == 0 && args[i + 1])
+		{
+			free(args[i]);
+			args[i] = NULL;
+			free(args[i + 1]);
+			args[i + 1] = NULL;
+			i += 2;
+		}
+		else
+			i++;
+	}
 }
 
 int	heredoc(t_minishell *mini)
 {
-	char	*line;
-	char	*delimiter;
+	char *line;
+	char **delimiters;
+	char ***args;
+	int i, j;
 
+	i = 0;
+	args = mini->args;
 	line = NULL;
-	delimiter = NULL;
-	if (!find_heredoc(mini))
+	if (!args)
 		return (0);
-	delimiter = get_delimiter(mini);
-	if (!delimiter)
-		return (ft_printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR), 1);
-			// komut yoksa yani " << eof" gibi bir durumda executor komut yok hatası bastırmamalı.
-	while (1)
+
+	delimiters = NULL;
+	while (i <= mini->pipe_count)
 	{
-		line = readline("> ");
+		char **temp_delimiters = get_delimiters(mini, args[i]);
+		if (temp_delimiters)
+		{
+			if (!delimiters)
+				delimiters = temp_delimiters;
+			else
+			{
+				int existing_count = 0;
+				while (delimiters[existing_count])
+					existing_count++;
+
+				int new_count = 0;
+				while (temp_delimiters[new_count])
+					new_count++;
+
+				delimiters = (char **)my_realloc(delimiters, sizeof(char *)
+						* (existing_count + new_count + 1));
+				if (!delimiters)
+					return (0);
+				j = -1;
+				while (++j < new_count)
+					delimiters[existing_count + j] = temp_delimiters[j];
+				delimiters[existing_count + new_count] = NULL;
+
+				free(temp_delimiters);
+			}
+		}
+		i++;
+	}
+	if (!delimiters || !delimiters[0])
+	{
+		mini->exit_code = 258;
+		return (ft_printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR), 1);
+	}
+	j = 0;
+	while (delimiters[j])
+	{
+		while (1)
+		{
+			line = readline("> ");
+			if (!line)
+				break ;
+			if (ft_strcmp(line, delimiters[j]) == 0)
+			{
+				free(delimiters[j]);
+				j++;
+				free(line);
+				break ;
+			}
+			free(line);
+		}
+
 		if (!line)
 			break ;
-		if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0
-			&& ft_strlen(line) == ft_strlen(delimiter))
-		{
-			set_hrd_cmd(mini);
-			return (free(delimiter), free(line), 0);
-		}
-		add_history(line);
-		free(line);
 	}
-	free(delimiter);
+	while (delimiters[j])
+	{
+		free(delimiters[j]);
+		j++;
+	}
+	free(delimiters);
+	i = -1;
+	while (++i <= mini->pipe_count)
+		null_heredoc_args(args[i]);
 	return (0);
 }

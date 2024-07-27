@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/27 02:28:08 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 03:25:44 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,67 @@
 #include <dirent.h>
 #include <sys/wait.h>
 
-t_fd	g_fd;
-
-void	free_split(char **split)
+void free_split(char **split)
 {
-	int	i;
-
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
+    int i = 0;
+    while (split[i])
+    {
+        free(split[i]);
+        i++;
+    }
+    free(split);
 }
 
-int	cpy_arg(t_minishell *minishell, char ***cmd, char ****args)
+void free_args(char ***args)
 {
-	t_dlist	*tokens;
-	int		i;
+    int i = 0;
+    while (args[i])
+    {
+        free_split(args[i]);
+        i++;
+    }
+    free(args);
+}
 
-	(void)cmd;
-	tokens = minishell->tokens;
-	i = 0;
-	*args = ft_calloc(1, sizeof(char **) * (dlist_size(minishell->tokens) + 1));
-	while (tokens)
-	{
-		(*args)[i] = ft_mini_split(tokens->data, ' ');
-		i++;
-		tokens = tokens->next;
-	}
-	return (SUCCESS);
+int cpy_arg(t_minishell *minishell)
+{
+    t_dlist *tokens;
+    int i;
+    char *line;
+    char ***args;
+
+    tokens = minishell->tokens;
+    i = 0;
+    args = ft_calloc(1, sizeof(char **) * (dlist_size(minishell->tokens) + 1));
+    if (!args)
+    {
+        perror("ft_calloc");
+        return (FAILURE);
+    }
+    while (tokens)
+    {
+        line = ft_strdup(tokens->data);
+        if (!line)
+        {
+            perror("ft_strdup");
+			free_args(args);
+            return (FAILURE);
+        }
+        replace_arg(&line);
+        args[i] = ft_mini_split(line, ' ');
+        if (!args[i])
+        {
+            perror("ft_mini_split");
+            free(line);
+            free_args(args);
+            return (FAILURE);
+        }
+        free(line);
+        i++;
+        tokens = tokens->next;
+    }
+    minishell->args = args;
+    return (SUCCESS);
 }
 
 char	*find_path(t_minishell *minishell, char *cmd)
@@ -84,6 +114,11 @@ char	**env(t_minishell *minishell)
 	env_data = minishell->env;
 	i = 0;
 	env = ft_calloc(1, sizeof(char *) * (dlist_size(minishell->env) + 1));
+	if (!env)
+	{
+		perror("malloc");
+		return (NULL);
+	}
 	while (env_data)
 	{
 		env[i++] = env_data->data;
@@ -93,8 +128,10 @@ char	**env(t_minishell *minishell)
 	return (env);
 }
 
-int	check_bultin(t_minishell *minishell, char **cmd, char ***args, int *i)
+int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 {
+	if (cmd[*i] == NULL)
+		return (1);
 	if (ft_strcmp(cmd[*i], "env") == 0)
 		print_env(minishell);
 	else if (ft_strcmp(cmd[*i], "export") == 0)
@@ -125,14 +162,12 @@ int	type_control(char ***args, char **envs, int *i)
 			if (dir)
 			{
 				closedir(dir);
-				ft_putstr_fd("minishell: ", 2);
 				ft_putstr_fd((*args)[0], 2);
 				ft_putstr_fd(": is a directory\n", 2);
 				return (exit(126), SUCCESS);
 			}
 			else if (access((*args)[0], F_OK | X_OK) == -1)
 			{
-				ft_putstr_fd("minishell: ", 2);
 				ft_putstr_fd((*args)[0], 2);
 				ft_putstr_fd(": Permission denied\n", 2);
 				return (exit(126), SUCCESS);
@@ -173,7 +208,7 @@ int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 		{
 			if (!type_control(args, envs, i))
 				return (exit(1), FAILURE);
-			return (printf("minishell: %s: command not found\n", cmd[*i]),
+			return (ft_putstr_fd(" command not found\n", 2),
 				exit(127), FAILURE);
 		}
 	}
@@ -181,62 +216,59 @@ int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 	{
 		waitpid(pid, &status, 0);
 		minishell->exit_code = get_exit_code(status);
-		dup2(g_fd.std_in, STD_OUTPUT);
-		dup2(g_fd.std_out, STD_INPUT);
-		g_fd.change = 0;
+		dup2(minishell->g_fd.std_in, STD_OUTPUT);
+		dup2(minishell->g_fd.std_in, STD_INPUT);
+		minishell->g_fd.change = 0;
 	}
 	return (SUCCESS);
 }
 
 void	remove_quotes(char ***args)
 {
+	int		i;
+	int		j;
+	int		k;
 	char	*tmp;
 	char	*tmp2;
 	int		quote;
 	char	*new_tmp;
 
-	int i, j, k;
-	i = -1;
-	while (args[++i])
+	i = 0;
+	while (args[i])
 	{
-		j = -1;
-		while (args[i][++j])
+		j = 0;
+		while (args[i][j])
 		{
-			k = -1;
-			tmp = strdup(""); // Her kelime için tmp'yi başlat
+			tmp = strdup("");
 			if (!tmp)
-			{
-				// Bellek ayrımı başarısız oldu, işlem durduruluyor
 				return ;
-			}
 			tmp2 = args[i][j];
 			quote = 0;
-			while (args[i][j][++k])
+			k = 0;
+			while (tmp2[k])
 			{
-				if (quote == 0 && (args[i][j][k] == '\''
-						|| args[i][j][k] == '\"'))
+				if (quote == 0 && (tmp2[k] == '\'' || tmp2[k] == '\"'))
 				{
-					quote = args[i][j][k];
+					quote = tmp2[k];
 				}
-				else if (quote != 0 && quote == args[i][j][k])
+				else if (quote != 0 && quote == tmp2[k])
 				{
 					quote = 0;
 				}
 				else
 				{
-					new_tmp = ft_strjoin_char(tmp, args[i][j][k]);
+					new_tmp = ft_strjoin_char(tmp, tmp2[k]);
 					if (!new_tmp)
-					{
-						// Bellek ayrımı başarısız oldu, işlem durduruluyor
-						free(tmp);
 						return ;
-					}
 					tmp = new_tmp;
 				}
+				k++;
 			}
 			args[i][j] = tmp;
 			free(tmp2);
+			j++;
 		}
+		i++;
 	}
 }
 
@@ -245,37 +277,34 @@ int	single_command(t_minishell *minishell)
 	char	**cmd;
 	char	***args;
 	int		i;
-	int		a;
-	int		b;
+	int		a = 0, b;
 
 	i = 0;
-	if (cpy_arg(minishell, &cmd, &args))
+	a = 0, b = 0;
+	args = minishell->args;
+	if (check_direct(minishell, args[i]))
 		return (FAILURE);
-	check_direct(minishell, args[i]);
-	cmd = ft_calloc(1, sizeof(char *) * (dlist_size(minishell->tokens) + 1));
+	cmd = ft_calloc(dlist_size(minishell->tokens) + 1, sizeof(char *));
+	if (!cmd)
+		return (FAILURE);
 	remove_quotes(args);
-	a = 0;
-	b = 0;
 	while (args[a])
 	{
 		if (args[a][0])
-		{
-			cmd[b] = args[a][0];
-			b++;
-		}
+			cmd[b++] = args[a][0];
 		a++;
 	}
-	if (check_bultin(minishell, cmd, args, &i) == 1)
-		return (SUCCESS);
+	if (check_builtin(minishell, cmd, args, &i) == 1)
+		return (free(cmd), SUCCESS);
 	if (create_fork(minishell, cmd, args, &i))
-		return (FAILURE);
-	return (SUCCESS);
+		return (free(cmd), FAILURE);
+	return free(cmd), (SUCCESS);
 }
 
 int	execute_command(t_minishell *minishell)
 {
 	if (minishell->pipe_count == 0)
-		return (single_command(minishell));
+		return (single_command(minishell), SUCCESS);
 	else
 		return (multiple_command(minishell));
 	return (FAILURE);

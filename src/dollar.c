@@ -17,6 +17,15 @@
 	char	*result;
 	int		len;
 
+	if (!s1)
+	{
+		result = malloc(2);
+		if (!result)
+			return (NULL);
+		result[0] = c;
+		result[1] = '\0';
+		return (result);
+	}
 	len = ft_strlen(s1);
 	result = malloc(len + 2);
 	if (!result)
@@ -24,6 +33,7 @@
 	ft_strlcpy(result, s1, len + 1);
 	result[len] = c;
 	result[len + 1] = '\0';
+	free(s1);
 	return (result);
 }
 
@@ -40,7 +50,6 @@ void	get_ext_code(int *i, t_minishell *mini, char **result)
 	{
 		tmp = *result;
 		*result = ft_strjoin_char(tmp, num[j++]);
-		free(tmp);
 	}
 }
 
@@ -79,7 +88,6 @@ void replace_dollar(t_minishell *mini, char **str, int *i, char **result)
         return (get_env(i, mini, str, result));
     tmp = *result;
     *result = ft_strjoin_char(tmp, (*str)[(*i)++]);
-    free(tmp);
 }
 
 
@@ -123,7 +131,6 @@ void	dollar(t_minishell *mini, char **str)
 		{
 			tmp = result;
 			result = ft_strjoin_char(tmp, (*str)[i++]);
-			free(tmp);
 		}
 		else
 			replace_dollar(mini, str, &i, &result);
