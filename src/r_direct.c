@@ -6,13 +6,13 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 18:55:19 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/23 17:46:26 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/27 03:55:41 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void	rdirect_out(char *file, int append)
+static int rdirect_out(char *file, int append)
 {
 	int	fd;
 
@@ -26,38 +26,38 @@ static void	rdirect_out(char *file, int append)
     }
 	if (fd == -1)
 	{
-		perror("open");
-		return ;
+		printf("minishell: %s: No such file or directory\n", file);
+		return (1);
 	}
 	if (fd >= 0)
 	{
 		if (dup2(fd, STDOUT_FILENO) == -1)
 		{
-			perror("dup2");
+			perror("minishell: ");
 			close(fd);
-			return ;
+			return (1);
 		}
 	}
-	close(fd);
+	return (close(fd), 0);
 }
 
-static void	rdirect_in(char *file)
+static int rdirect_in(char *file)
 {
 	int	fd;
 
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 	{
-		perror("open");
-		return ;
+		printf("minishell: %s: No such file or directory\n", file);
+		return (1);
 	}
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
-		perror("dup2");
+		perror("minishell: ");
 		close(fd);
-		return ;
+		return (1);
 	}
-	close(fd);
+	return (close(fd), 0);
 }
 
 static int	ft_rdirect(t_minishell *mini, char **args)
@@ -78,9 +78,13 @@ static int	ft_rdirect(t_minishell *mini, char **args)
 		{
 			file = args[j + 1];
             if (ft_strcmp(args[j], ">") == 0)
-                rdirect_out(file, 0);
+			{
+                if (rdirect_out(file, 0))
+					return (mini->exit_code = 1, 1);
+			}
             else
-                rdirect_out(file, 1);
+                if (rdirect_out(file, 0))
+					return (mini->exit_code = 1, 1);
 			args[j] = NULL;
 			args[j + 1] = NULL;
 			j += 2;
@@ -88,7 +92,8 @@ static int	ft_rdirect(t_minishell *mini, char **args)
 		else if (ft_strcmp(args[j], "<") == 0 && args[j + 1])
 		{
 			file = args[j + 1];
-			rdirect_in(file);
+			if (rdirect_in(file))
+					return (1);
 			args[j] = NULL;
 			args[j + 1] = NULL;
 			j += 2;
