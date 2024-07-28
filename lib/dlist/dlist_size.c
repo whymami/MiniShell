@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 20:37:00 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/09 20:39:19 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/28 20:45:49 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	dlist_size(t_dlist *lst)
 {
-	int i;
-	t_dlist *tmp;
+	int		i;
+	t_dlist	*tmp;
 
 	i = 0;
 	tmp = lst;

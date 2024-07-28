@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:55:17 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/27 04:16:45 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/28 20:00:26 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,9 @@ int	export_check(char *env_data)
 	return (0);
 }
 
-void	export(t_minishell *minishell, char **args, int *j)
+int	arg_check(char **args, t_minishell *minishell)
 {
 	t_dlist	*new;
-	t_dlist	*search;
-	char	*key;
-	int		i;
 	char	*value;
 
 	if (!args || !args[1])
@@ -50,9 +47,8 @@ void	export(t_minishell *minishell, char **args, int *j)
 			write(1, "declare -x ", 12);
 			write(1, (char *)new->data, get_key(new->data));
 			value = get_value(new->data);
-			if (value)
+			if (value && write(1, "=\"", 2))
 			{
-				write(1, "=\"", 2);
 				write(1, value, ft_strlen(value));
 				write(1, "\"", 1);
 			}
@@ -61,11 +57,35 @@ void	export(t_minishell *minishell, char **args, int *j)
 			new = new->next;
 		}
 		dlist_clear(&new, &del);
-		return ;
+		return (FAILURE);
 	}
+	return (SUCCESS);
+}
+
+void	search_to_add(t_minishell *minishell, char **args, int i, char *key)
+{
+	t_dlist	*search;
+
+	search = search_env(minishell, key);
+	if (search && ft_strncmp(search->data, args[i], ft_strlen(args[i])))
+	{
+		free(search->data);
+		search->data = strdup(args[i]);
+	}
+	else if (!search)
+		dlist_add_back(&minishell->env, dlist_new(args[i]));
+}
+
+void	export(t_minishell *minishell, char **args, int *j)
+{
+	char	*key;
+	int		i;
+
 	i = 0;
 	while (args[++i])
 	{
+		if (arg_check(args, minishell))
+			return ;
 		if (export_check(minishell->args_with_quotes[*j][i]))
 		{
 			ft_printf("minishell: export: `%s':", args[i]);
@@ -79,14 +99,7 @@ void	export(t_minishell *minishell, char **args, int *j)
 			free(key);
 			continue ;
 		}
-		search = search_env(minishell, key);
-		if (search && ft_strncmp(search->data, args[i], ft_strlen(args[i])))
-		{
-			free(search->data);
-			search->data = strdup(args[i]);
-		}
-		else if (!search)
-			dlist_add_back(&minishell->env, dlist_new(args[i]));
+		search_to_add(minishell, args, i, key);
 		free(key);
 	}
 }

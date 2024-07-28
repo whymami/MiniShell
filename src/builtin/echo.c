@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:13:26 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/27 15:48:11 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/28 19:26:55 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,4 @@ void	echo(char **args)
 	}
 	if (newline)
 		ft_putstr_fd("\n", 1);
-	
 }

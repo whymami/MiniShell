@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 03:46:08 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/27 20:34:24 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/28 19:23:54 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int	pass_space(char *line, int *i)
 
 static int	check_pipe(char *line, int i)
 {
-	if (line[i] == '|' && !check_quote(line, i) && line[i + 1] && line[i
-		+ 1] == '|')
+	if (line[i] == '|' && !check_quote(line, i) && line[i + 1]
+		&& line[i + 1] == '|')
 		return (err_msg(SYNTAX_ERR, " `||\'", NULL), FAILURE);
 	else if (line[0] == '|' && !check_quote(line, i))
 		return (err_msg(SYNTAX_ERR, " `|\'", NULL), FAILURE);
@@ -75,10 +75,8 @@ static int	check_line(t_minishell *minishell, char *line)
 	}
 	free(line);
 	if (pipe == 1)
-	{
-		minishell->exit_code = 2;
-		return (err_msg(SYNTAX_ERR, " `|\'", NULL), FAILURE);
-	}
+		return (err_msg(SYNTAX_ERR, " `|\'", NULL), minishell->exit_code = 2,
+			FAILURE);
 	return (SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/27 18:54:40 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/28 20:38:03 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_minishell
 	int		*pipe_fd;
 	int		*pid;
 	int		hrd_count;
+	char	*path;
 	char	***args;
 	char	***args_with_quotes;
 	t_dlist	*tokens;
@@ -102,7 +103,7 @@ char		*find_path(t_minishell *minishell, char *cmd);
 void		signal_handler(int signo);
 int			heredoc(t_minishell *mini);
 int			check_direct(t_minishell *minishell, char **args);
-void		dollar(t_minishell *mini, char **str);
+void		dollar(t_minishell *mini, char **str, int i);
 char		**ft_mini_split(const char *s, char c);
 int			get_key(char *line);
 int			ft_strcmp(char *s1, char *s2);
@@ -114,5 +115,23 @@ int			get_exit_code(int status);
 int			type_control(t_minishell *minishell, char ***args, char **envs,
 				int *i);
 int			err_msg(char *cmd, char *arg, char *msg);
-void		arg_type(t_minishell *minishell, char *arg);
+void		reset_fd(t_minishell *minishell);
+void		remove_quotes(char ***args);
+void		check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i);
+void		free_args(char ***args);
+void		free_split(char **split);
+int			is_valid_env_char(char c);
+void		get_ext_code(int *i, t_minishell *mini, char **result);
+void		get_env(int *i, t_minishell *mini, char **str, char **result);
+char		**get_delimiters(t_minishell *mini, char **args);
+void		null_heredoc_args(char **args);
+char		**merge_delimiters(char **delimiters, char **temp_delimiters);
+int			create_pipe(t_minishell *minishell);
+void		handle_pipe_dup(t_minishell *minishell, int i);
+void		pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args);
+char		*handle_quotes(const char *str);
+void		free_n_null(char **args, int *j);
+void		dup_fd(t_minishell *mini);
+void		free_n_null(char **args, int *j);
+
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dlist_sort.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 19:42:32 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/20 20:04:22 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/28 20:46:17 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	dlist_sort(t_dlist **head, int (*cmp)(char *, char *))
 {
-	t_dlist *i;
-	int swapped;
+	t_dlist	*i;
+	int		swapped;
 
 	if (!head || !*head)
 		return ;

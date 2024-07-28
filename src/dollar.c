@@ -3,82 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:25:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/27 04:00:44 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/07/28 15:52:10 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char	*ft_strjoin_char(char *s1, char c)
-{
-	char	*result;
-	int		len;
-
-	if (!s1)
-	{
-		result = malloc(2);
-		if (!result)
-			return (NULL);
-		result[0] = c;
-		result[1] = '\0';
-		return (result);
-	}
-	len = ft_strlen(s1);
-	result = malloc(len + 2);
-	if (!result)
-		return (NULL);
-	ft_strlcpy(result, s1, len + 1);
-	result[len] = c;
-	result[len + 1] = '\0';
-	free(s1);
-	return (result);
-}
-
-void	get_ext_code(int *i, t_minishell *mini, char **result)
-{
-	char	*tmp;
-	int		j;
-	char	*num;
-
-	j = 0;
-	(*i) += 2;
-	num = ft_itoa(mini->exit_code);
-	while (num[j])
-	{
-		tmp = *result;
-		*result = ft_strjoin_char(tmp, num[j++]);
-	}
-}
-
-void	get_env(int *i, t_minishell *mini, char **str, char **result)
-{
-	t_dlist	*value;
-	int		start;
-	char	*tmp;
-	char	*var;
-
-	start = ++(*i);
-	while ((*str)[*i] && ft_isalnum((*str)[*i]))
-		(*i)++;
-	var = ft_substr(*str, start, (*i) - start);
-	value = search_env(mini, var);
-	if (!value)
-		return ;
-	tmp = get_value(value->data);
-	*result = ft_strjoin(*result, tmp);
-	free(tmp);
-	free(var);
-}
-
-int	is_valid_env_char(char c)
-{
-	return (ft_isalnum(c) || c == '_');
-}
-
-void	replace_dollar(t_minishell *mini, char **str, int *i, char **result)
+static void	replace_dollar(t_minishell *mini, char **str, int *i, char **result)
 {
 	char	*tmp;
 
@@ -90,7 +24,7 @@ void	replace_dollar(t_minishell *mini, char **str, int *i, char **result)
 	*result = ft_strjoin_char(tmp, (*str)[(*i)++]);
 }
 
-int	empty_dollar(char **str)
+static int	empty_dollar(char **str)
 {
 	int	i;
 
@@ -108,18 +42,16 @@ int	empty_dollar(char **str)
 	return (0);
 }
 
-void	dollar(t_minishell *mini, char **str)
+void	dollar(t_minishell *mini, char **str, int i)
 {
 	char	*result;
 	char	*tmp;
-	int		i;
 	char	quote;
 
 	quote = 0;
 	if (empty_dollar(str))
 		return ;
 	result = ft_strdup("");
-	i = 0;
 	while ((*str)[i])
 	{
 		if (quote == 0 && ((*str)[i] == '\'' || (*str)[i] == '\"'))

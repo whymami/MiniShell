@@ -6,27 +6,29 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 15:34:45 by btanir            #+#    #+#             */
-/*   Updated: 2024/07/27 17:46:09 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/28 19:20:44 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void count_heredoc(t_minishell *minishell)
+static void	count_heredoc(t_minishell *minishell)
 {
-    int i = 0;
-    char *line = minishell->line;
+	int		i;
+	char	*line;
 
-    minishell->hrd_count = 0;
-    while (line[i])
-    {
-        if (line[i] == '<' && line[i + 1] == '<' && !check_quote(line, i))
-        {
-            minishell->hrd_count++;
-            i++;
-        }
-        i++;
-    }
+	i = 0;
+	line = minishell->line;
+	minishell->hrd_count = 0;
+	while (line[i])
+	{
+		if (line[i] == '<' && line[i + 1] == '<' && !check_quote(line, i))
+		{
+			minishell->hrd_count++;
+			i++;
+		}
+		i++;
+	}
 }
 
 static int	create_token(t_minishell *minishell, int *i, int *last_pipe)

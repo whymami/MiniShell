@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 10:46:21 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/27 17:30:12 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/28 19:21:51 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ int	shell_loop(t_minishell *minishell)
 			add_history(minishell->line);
 			if (!parser(minishell))
 			{
-				dollar(minishell, &minishell->line);
+				dollar(minishell, &minishell->line, 0);
 				lexer(minishell);
 				if (cpy_arg(minishell))
 					return (FAILURE);
 				if (minishell->hrd_count > 0)
 					if (heredoc(minishell))
-						continue;
+						continue ;
 				execute_command(minishell);
 			}
 		}
@@ -68,7 +68,6 @@ int	main(int argc, char **argv, char **env)
 		return (ft_putstr_fd("Error: Memory allocation error\n", 2),
 			EXIT_FAILURE);
 	init_data(minishell);
-	// signal(SIGINT, signal_handler);
 	parse_env(minishell, env);
 	shell_loop(minishell);
 	return (SUCCESS);

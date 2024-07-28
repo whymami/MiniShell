@@ -3,18 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.tr>  +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 14:25:25 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/06 20:15:37 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/28 20:46:42 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int ft_isascii(int c)
+int	ft_isascii(int c)
 {
-    if ((c >= 0) & (c <= 127))
-    {
-        return (1);
-    }
-    return (0);
+	if ((c >= 0) && (c <= 127))
+		return (1);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:48:57 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/27 21:13:26 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/28 19:32:45 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,17 @@ void	change_pwd(t_minishell *mini, char *pwd)
 	}
 }
 
-static int	get_target_directory(t_minishell *mini, char *av, char **target_dir)
+static int	check_meta(char *av, t_minishell *mini, t_dlist *path)
 {
-	t_dlist	*path;
-	char	*env_data;
-
-	path = NULL;
-	env_data = NULL;
 	if (!av || ft_strncmp(av, "~", 1) == 0)
 	{
 		if (av && ft_strncmp(av, "~~", 2) == 0)
-			return (err_msg("cd: ", av, ": No such file or directory"), mini->exit_code = 1, FAILURE);
+			return (err_msg("cd: ", av, ": No such file or directory"),
+				mini->exit_code = 1, FAILURE);
 		path = search_env(mini, "HOME");
 		if (!path)
-			return (err_msg("cd: ", NULL, "Home not set"),
-				mini->exit_code = 1, FAILURE);
+			return (err_msg("cd: ", NULL, "Home not set"), mini->exit_code = 1,
+				FAILURE);
 	}
 	else if (ft_strncmp(av, "-", 1) == 0)
 	{
@@ -64,6 +60,18 @@ static int	get_target_directory(t_minishell *mini, char *av, char **target_dir)
 			return (err_msg("cd: ", NULL, "OLDPWD not set"),
 				mini->exit_code = 1, FAILURE);
 	}
+	return (SUCCESS);
+}
+
+static int	get_target_directory(t_minishell *mini, char *av, char **target_dir)
+{
+	t_dlist	*path;
+	char	*env_data;
+
+	path = NULL;
+	env_data = NULL;
+	if (check_meta(av, mini, path))
+		return (FAILURE);
 	if (path)
 	{
 		env_data = get_value(path->data);
@@ -96,7 +104,8 @@ int	cd(t_minishell *mini, char *av)
 	if (err == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (chdir(target_dir) == -1)
-		return (err_msg("cd: ", NULL, " No such file or directory"), mini->exit_code = 1, EXIT_FAILURE);
+		return (err_msg("cd: ", NULL, " No such file or directory"),
+			mini->exit_code = 1, EXIT_FAILURE);
 	if (!getcwd(pwd, 4096))
 		return (err_msg("cd: ", NULL, "Getcwd error"), EXIT_FAILURE);
 	change_pwd(mini, pwd);
