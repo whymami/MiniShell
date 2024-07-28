@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 16:48:47 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/27 02:45:29 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/27 14:31:29 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ void	ft_exit(t_minishell *mini, char **av)
 	i = 0;
 	while (av[i])
 		i++;
-
-	
 	exit_code = 0;
 	ft_putstr_fd("exit\n", STD_OUTPUT);
 	free_minishell(mini);
@@ -64,7 +62,6 @@ void	ft_exit(t_minishell *mini, char **av)
 	{
 		ft_putstr_fd(" too many arguments\n", STDERR_FILENO);
 		exit_code = 1;
-		
 	}
 	else if (av[1] != NULL)
 	{

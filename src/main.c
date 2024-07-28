@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 10:46:21 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/23 10:50:13 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/27 14:41:47 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ int	shell_loop(t_minishell *minishell)
 	while (1)
 	{
 		minishell->line = readline("minishell> ");
+		if (minishell->line == NULL)
+		{
+			ft_putstr_fd("exit\n", 0);
+			exit(0);
+		}
 		if (ft_strlen(minishell->line) != 0)
 		{
 			add_history(minishell->line);
@@ -45,11 +50,12 @@ int	shell_loop(t_minishell *minishell)
 					return (FAILURE);
 				if (minishell->hrd_count > 0)
 					if (heredoc(minishell))
-						continue;
+						continue ;
 				execute_command(minishell);
 			}
 		}
 	}
+	return (SUCCESS);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -63,7 +69,7 @@ int	main(int argc, char **argv, char **env)
 		return (ft_putstr_fd("Error: Memory allocation error\n", 2),
 			EXIT_FAILURE);
 	init_data(minishell);
-	// signal(SIGINT, signal_handler);
+	signal(SIGINT, signal_handler);
 	parse_env(minishell, env);
 	shell_loop(minishell);
 	return (SUCCESS);
