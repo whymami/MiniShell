@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/28 15:30:36 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/29 18:03:17 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 		minishell->path = cmd[*i];
 	pid = fork();
 	if (pid < 0)
-	{
-		perror("fork");
-		return (FAILURE);
-	}
+		return (perror("fork"), FAILURE);
 	check_pid(&pid, minishell, args, i);
 	return (SUCCESS);
 }

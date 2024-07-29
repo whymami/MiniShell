@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/28 20:38:03 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/29 10:58:45 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,13 @@ char		*find_path(t_minishell *minishell, char *cmd);
 void		signal_handler(int signo);
 int			heredoc(t_minishell *mini);
 int			check_direct(t_minishell *minishell, char **args);
-void		dollar(t_minishell *mini, char **str, int i);
+void		dollar(t_minishell *mini, int i);
 char		**ft_mini_split(const char *s, char c);
 int			get_key(char *line);
 int			ft_strcmp(char *s1, char *s2);
 char		*ft_strjoin_char(char *s1, char c);
 void		remove_quotes(char ***args);
-void		replace_arg(char **args);
+int			replace_arg(char **args);
 void		*my_realloc(void *ptr, size_t size);
 int			get_exit_code(int status);
 int			type_control(t_minishell *minishell, char ***args, char **envs,

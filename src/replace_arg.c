@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_arg.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 20:21:21 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/28 20:44:02 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/29 11:03:04 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	if_should(char **input, char **buffer, int *i, int *j)
 		(*buffer)[(*j)++] = (*input)[(*i)++];
 }
 
-void	replace_arg(char **args)
+int	replace_arg(char **args)
 {
 	char	*input;
 	int		len;
@@ -52,10 +52,7 @@ void	replace_arg(char **args)
 	len = ft_strlen(input);
 	buffer = (char *)malloc((len * 2) + 1);
 	if (!buffer)
-	{
-		perror("malloc");
-		exit(EXIT_FAILURE);
-	}
+		return (perror("malloc"), FAILURE);
 	i = 0;
 	j = 0;
 	while (i < len)
@@ -63,4 +60,5 @@ void	replace_arg(char **args)
 	buffer[j] = '\0';
 	free(*args);
 	*args = buffer;
+	return (SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 03:46:08 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/28 19:23:54 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/29 10:24:00 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ int	pass_space(char *line, int *i)
 
 static int	check_pipe(char *line, int i)
 {
-	if (line[i] == '|' && !check_quote(line, i) && line[i + 1]
-		&& line[i + 1] == '|')
+	if (line[i] == '|' && !check_quote(line, i) && line[i + 1] && line[i
+		+ 1] == '|')
 		return (err_msg(SYNTAX_ERR, " `||\'", NULL), FAILURE);
 	else if (line[0] == '|' && !check_quote(line, i))
 		return (err_msg(SYNTAX_ERR, " `|\'", NULL), FAILURE);
@@ -84,11 +84,15 @@ int	parser(t_minishell *minishell)
 {
 	char	*line;
 	int		quote;
+	char	*num;
 
 	line = ft_strtrim(minishell->line, " ");
 	quote = check_quote(line, ft_strlen(line));
 	if (quote)
-		return (free(line), err_msg(SYNTAX_ERR, ft_itoa(quote), NULL), FAILURE);
+	{
+		num = ft_itoa(quote);
+		return (free(line), err_msg(SYNTAX_ERR, num, NULL), free(num), FAILURE);
+	}
 	if (check_line(minishell, line))
 		return (FAILURE);
 	return (SUCCESS);

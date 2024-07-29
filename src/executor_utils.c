@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:11:34 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/28 15:29:29 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/29 17:59:31 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 	return (1);
 }
 
-void	check_pid(pid_t *pid, t_minishell *minishell, char ***args,
-		int *i)
+void	check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
 {
 	char	**envs;
 

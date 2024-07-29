@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   r_direct.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 18:55:19 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/28 20:40:43 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/29 17:57:18 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static int	rdirect_out(char *file, int append)
+static int	rdirect_out(char *file, int *j, int append)
 {
 	int		fd;
 	char	*clean_file;
@@ -24,23 +24,13 @@ static int	rdirect_out(char *file, int append)
 		fd = open(clean_file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	free(clean_file);
 	if (fd == -1)
-	{
-		ft_putstr_fd("minishell: No such file or directory\n", 2);
-		return (1);
-	}
-	if (fd >= 0)
-	{
-		if (dup2(fd, STDOUT_FILENO) == -1)
-		{
-			perror("minishell: ");
-			close(fd);
-			return (1);
-		}
-	}
+		return (ft_putstr_fd("minishell: No such file or directory\n", 2), 1);
+	if (fd >= 0 && *j != 0 && dup2(fd, STDOUT_FILENO) == -1)
+		return (perror("dup2: "), close(fd), 1);
 	return (close(fd), 0);
 }
 
-static int	rdirect_in(char *file)
+static int	rdirect_in(char *file, int *j)
 {
 	int		fd;
 	char	*clean_file;
@@ -49,38 +39,32 @@ static int	rdirect_in(char *file)
 	fd = open(clean_file, O_RDONLY);
 	free(clean_file);
 	if (fd == -1)
-	{
-		ft_putstr_fd("minishell: No such file or directory\n", 2);
-		return (1);
-	}
-	if (dup2(fd, STDIN_FILENO) == -1)
-	{
-		perror("minishell: ");
-		close(fd);
-		return (1);
-	}
+		return (ft_putstr_fd("minishell: No such file or directory\n", 2), 1);
+	if (fd >= 0 && *j != 0 && dup2(fd, STDIN_FILENO) == -1)
+		return (perror("minishell: "), close(fd), 1);
 	return (close(fd), 0);
 }
 
-int	find_exec(char **args, int *j, int *i, char **file)
+int	find_exec(t_minishell *mini ,char **args, int *j, int *i, char **file)
 {
+	(void)mini;
 	if ((ft_strcmp(args[(*j)], ">") == 0 && args[(*j) + 1])
 		|| (ft_strcmp(args[(*j)], ">>") == 0 && args[(*j) + 1]))
 	{
 		*file = args[(*j) + 1];
 		if (ft_strcmp(args[(*j)], ">") == 0)
 		{
-			if (rdirect_out(*file, 0))
+			if (rdirect_out(*file, j, 0))
 				return (FAILURE);
 		}
-		else if (rdirect_out(*file, 1))
+		else if (rdirect_out(*file, j, 1))
 			return (FAILURE);
 		free_n_null(args, j);
 	}
 	else if (ft_strcmp(args[(*j)], "<") == 0 && args[(*j) + 1])
 	{
 		*file = args[(*j) + 1];
-		if (rdirect_in(*file))
+		if (rdirect_in(*file, j))
 			return (FAILURE);
 		free_n_null(args, j);
 	}
@@ -99,8 +83,10 @@ static int	ft_rdirect(t_minishell *mini, char **args)
 	i = 0;
 	dup_fd(mini);
 	while (args[j])
-		if (find_exec(args, &j, &i, &file))
+	{
+		if (find_exec(mini, args, &j, &i, &file))
 			return (FAILURE);
+	}
 	args[i] = NULL;
 	return (SUCCESS);
 }
@@ -112,12 +98,12 @@ int	check_direct(t_minishell *mini, char **args)
 	j = -1;
 	while ((args)[++j])
 	{
-		if (ft_strcmp((args)[j], ">") == 0 || ft_strcmp((args)[j], "<") == 0
-			|| ft_strcmp((args)[j], ">>") == 0)
+		if (!ft_strcmp((args)[j], ">") || !ft_strcmp((args)[j], "<")
+			|| !ft_strcmp((args)[j], ">>"))
 		{
 			if (ft_rdirect(mini, args))
-				return (mini->exit_code = 1, 1);
-			return (0);
+				return (mini->exit_code = 1, FAILURE);
+			return (SUCCESS);
 		}
 	}
 	return (SUCCESS);

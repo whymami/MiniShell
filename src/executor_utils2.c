@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:31:12 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/28 15:53:34 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/29 11:09:44 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,16 @@ int	handle_token(t_dlist *tokens, char ***args, char ***args_with_quotes, int i)
 
 	line = ft_strdup(tokens->data);
 	if (!line)
-	{
-		perror("ft_strdup");
-		free_args(args);
+		return (perror("ft_strdup"), free_args(args), FAILURE);
+	if (replace_arg(&line))
 		return (FAILURE);
-	}
-	replace_arg(&line);
 	args[i] = ft_mini_split(line, ' ');
-	args_with_quotes[i] = ft_mini_split(line, ' ');
 	if (!args[i])
-	{
-		perror("ft_mini_split");
-		free(line);
-		free_args(args);
-		return (FAILURE);
-	}
+		return (perror("ft_mini_split"), free(line), FAILURE);
+	args_with_quotes[i] = ft_mini_split(line, ' ');
+	if (!args_with_quotes[i])
+		return (free_args(args_with_quotes), free(line),
+			perror("ft_mini_split"), FAILURE);
 	free(line);
 	return (SUCCESS);
 }
@@ -46,15 +41,16 @@ int	cpy_arg(t_minishell *minishell)
 	tokens = minishell->tokens;
 	i = 0;
 	args = ft_calloc(1, sizeof(char **) * (dlist_size(minishell->tokens) + 1));
-	minishell->args_with_quotes = ft_calloc(1, sizeof(char **)
-			* (dlist_size(minishell->tokens) + 1));
 	if (!args)
 		return (perror("ft_calloc"), FAILURE);
+	minishell->args_with_quotes = ft_calloc(1, sizeof(char **)
+			* (dlist_size(minishell->tokens) + 1));
+	if (!minishell->args_with_quotes)
+		return (free_args(args), perror("ft_calloc"), FAILURE);
 	while (tokens)
 	{
-		if (handle_token(tokens, args, minishell->args_with_quotes,
-				i) == FAILURE)
-			return (FAILURE);
+		if (handle_token(tokens, args, minishell->args_with_quotes, i))
+			return (free_args(args), FAILURE);
 		i++;
 		tokens = tokens->next;
 	}

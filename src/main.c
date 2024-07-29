@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 10:46:21 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/28 20:50:07 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/29 17:59:46 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	shell_loop(t_minishell *minishell)
 			add_history(minishell->line);
 			if (!parser(minishell))
 			{
-				dollar(minishell, &minishell->line, 0);
+				dollar(minishell, 0);
 				lexer(minishell);
 				if (cpy_arg(minishell))
 					return (FAILURE);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 15:34:45 by btanir            #+#    #+#             */
-/*   Updated: 2024/07/28 19:20:44 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/29 10:48:47 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	count_heredoc(t_minishell *minishell)
 	}
 }
 
-static int	create_token(t_minishell *minishell, int *i, int *last_pipe)
+static void	create_token(t_minishell *minishell, int *i, int *last_pipe)
 {
 	char	*temp_str;
 	char	*temp_line;
@@ -57,7 +57,6 @@ static int	create_token(t_minishell *minishell, int *i, int *last_pipe)
 		(*i)++;
 	}
 	free(line);
-	return (SUCCESS);
 }
 
 void	lexer(t_minishell *minishell)
