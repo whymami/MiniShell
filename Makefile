@@ -37,24 +37,24 @@ $(READLINE):
 
 $(NAME): $(LIBFT) $(PRINTF) $(DLIST) $(OBJS)
 	@echo "$(BOLD)$(YELLOW)[COMPILING...]$(RESET)"
-	@sleep 2
+	@sleep 0.5
 	@$(CC) -o $(NAME) $(OBJS) $(CFLAGS) $(LIBFT) $(PRINTF) $(DLIST) -I${PWD}/lib/readline/include/ -lreadline -L${PWD}/lib/readline/lib
 	@clear
 	@echo "$(BOLD)$(YELLOW)[COMPILATION COMPLETE]$(RESET)"
 
 $(LIBFT):
 	@echo "$(BOLD)$(GREEN)[BUILDING LIBFT...]$(RESET)"
-	@sleep 1
+	@sleep 0.5
 	@make -C lib/libft
 
 $(PRINTF):
 	@echo "$(BOLD)$(GREEN)[BUILDING FT_PRINTF...]$(RESET)"
-	@sleep 1
+	@sleep 0.5
 	@make -C lib/ft_printf
 
 $(DLIST):
 	@echo "$(BOLD)$(GREEN)[BUILDING DLIST...]$(RESET)"
-	@sleep 1
+	@sleep 0.5
 	@make -C lib/dlist
 
 %.o: %.c
@@ -62,7 +62,7 @@ $(DLIST):
 
 fclean: clean
 	@echo "$(BOLD)$(RED)[DELETING...]$(RESET)"
-	@sleep 1
+	@sleep 0.5
 	@$(RM) $(NAME)
 	@make -C lib/libft/ fclean
 	@make -C lib/ft_printf/ fclean
@@ -71,7 +71,7 @@ fclean: clean
 
 clean:
 	@echo "$(BOLD)$(YELLOW)[DELETING OBJECTS...]$(RESET)"
-	@sleep 1
+	@sleep 0.5
 	@$(RM) $(OBJS)
 	@make -C lib/libft/ clean
 	@make -C lib/ft_printf/ clean

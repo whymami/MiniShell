@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 16:18:09 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/29 10:11:22 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/29 20:23:49 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	handle_pipe_dup(t_minishell *minishell, int i)
 	{
 		if (dup2(minishell->pipe_fd[(i - 1) * 2], STDIN_FILENO) == -1)
 		{
-			perror("Minishell: dup2 error (stdin)");
+			perror("minishell: dup2 error (stdin)");
 			exit(1);
 		}
 	}
@@ -46,7 +46,7 @@ void	handle_pipe_dup(t_minishell *minishell, int i)
 	{
 		if (dup2(minishell->pipe_fd[i * 2 + 1], STDOUT_FILENO) == -1)
 		{
-			perror("Minishell: dup2 error (stdout)");
+			perror("minishell: dup2 error (stdout)");
 			exit(1);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/29 10:58:45 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/29 20:14:49 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,5 +133,6 @@ char		*handle_quotes(const char *str);
 void		free_n_null(char **args, int *j);
 void		dup_fd(t_minishell *mini);
 void		free_n_null(char **args, int *j);
+int			close_fd(t_minishell *minishell);
 
 #endif
