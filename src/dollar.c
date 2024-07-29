@@ -32,18 +32,18 @@ static int	empty_dollar(char *str)
 	int sign;
 	i = 0;
 	sign = 0;
-	while ((*str)[i])
+	while ((str)[i])
 	{
-		if ((*str)[i] == '$')
+		if (str[i] == '$')
 			sign = 1;
 		i++;
 	}
 	if (sign == 0)
 		return (1);
 	i = 0;
-	while ((*str)[i])
+	while (str[i])
 	{
-		if ((*str)[i] == '$')
+		if (str[i] == '$')
 		{
 			if ((!ft_isalnum(str[i + 1]) && (str[i + 1] != '?') && (str[i
 						+ 1] != '$')))

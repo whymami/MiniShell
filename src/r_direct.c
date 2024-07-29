@@ -29,7 +29,7 @@ static int	rdirect_out(char *file, int *j, int append)
 		return (1);
 	}
 	if (fd >= 0 && *j != 0 && dup2(fd, STDOUT_FILENO) == -1)
-			return (perror("dup2: "), close(fd), 1);
+			return (perror("dup2"), close(fd), 1);
 	return (close(fd), 0);
 }
 
@@ -47,7 +47,7 @@ static int	rdirect_in(char *file, int *j)
 		return (1);
 	}
 	if (fd >= 0 && *j != 0 && dup2(fd, STDIN_FILENO) == -1)
-		return (perror("minishell: "), close(fd), 1);
+		return (perror("minishell"), close(fd), 1);
 	return (close(fd), 0);
 }
 
