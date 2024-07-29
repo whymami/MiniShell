@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:11:34 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/28 15:29:29 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/29 21:41:49 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,51 @@ int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 	if (cmd[*i] == NULL)
 		return (1);
 	if (ft_strcmp(cmd[*i], "env") == 0)
+	{
+		minishell->exit_code = 0;
 		print_env(minishell);
+	}
 	else if (ft_strcmp(cmd[*i], "export") == 0)
+	{
 		export(minishell, (*args), i);
+		if (minishell->exit_code != 1)
+			minishell->exit_code = 0;
+	}
 	else if (ft_strcmp(cmd[*i], "pwd") == 0)
+	{
 		get_pwd();
+		minishell->exit_code = 0;
+	}
 	else if (ft_strcmp(cmd[*i], "unset") == 0)
+	{
 		unset(minishell, (*args));
+		minishell->exit_code = 0;
+	}
 	else if (ft_strcmp(cmd[*i], "cd") == 0)
+	{
 		cd(minishell, (*args)[1]);
+		if (minishell->exit_code != 1)
+			minishell->exit_code = 0;
+	}
 	else if (ft_strcmp(cmd[*i], "echo") == 0)
 	{
 		echo(args[*i]);
 		minishell->exit_code = 0;
 	}
 	else if (ft_strcmp(cmd[*i], "exit") == 0)
+	{
 		ft_exit(minishell, (*args));
+		minishell->exit_code = 0;
+	}
 	else
 		return (0);
+	free_args(args);
 	if (minishell->g_fd.change)
 		reset_fd(minishell);
 	return (1);
 }
 
-void	check_pid(pid_t *pid, t_minishell *minishell, char ***args,
-		int *i)
+void	check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
 {
 	char	**envs;
 
@@ -52,9 +72,13 @@ void	check_pid(pid_t *pid, t_minishell *minishell, char ***args,
 		if (execve(minishell->path, (*args), envs) == -1)
 		{
 			if (!type_control(minishell, args, envs, i))
+			{
+				free(envs);
 				exit(1);
+			}
 			ft_putstr_fd(minishell->path, STDERR_FILENO);
 			ft_putstr_fd(": command not found\n", STDERR_FILENO);
+			free(envs);
 			exit(127);
 		}
 	}

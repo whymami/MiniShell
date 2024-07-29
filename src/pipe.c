@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 20:17:02 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/28 16:19:39 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/29 20:22:26 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	ft_pipe(t_minishell *minishell, char **cmd, char ***args)
 	{
 		minishell->pid[i] = fork();
 		if (minishell->pid[i] == -1)
-			return (perror("Minishell: fork error"), FAILURE);
+			return (FAILURE);
 		else if (minishell->pid[i] == 0)
 			pipe_fork(minishell, i, cmd, args);
 	}

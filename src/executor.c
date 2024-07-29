@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/28 15:30:36 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/29 21:35:44 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,19 @@
 int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 {
 	pid_t	pid;
+	int		status;
 
-	if (ft_strncmp(cmd[*i], "./", 2) != 0)
+	status = 0;
+	if (ft_strncmp(cmd[*i], "./", 2) != 0 && ++status)
 		minishell->path = find_path(minishell, cmd[*i]);
 	else
 		minishell->path = cmd[*i];
 	pid = fork();
 	if (pid < 0)
-	{
-		perror("fork");
-		return (FAILURE);
-	}
+		return (free_args(args), perror("fork"), FAILURE);
 	check_pid(&pid, minishell, args, i);
+	if (status)
+		free(minishell->path);
 	return (SUCCESS);
 }
 

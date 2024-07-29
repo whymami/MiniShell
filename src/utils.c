@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 19:24:46 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/28 19:24:51 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/29 18:14:24 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	*my_realloc(void *ptr, size_t size)
 	if (!new_ptr)
 	{
 		ft_printf("reallocation failed!\n");
-		free(ptr);
+		if (ptr)
+			free(ptr);
 		exit(EXIT_FAILURE);
 	}
 	if (ptr)

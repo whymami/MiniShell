@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 20:21:21 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/28 20:44:02 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/29 20:22:36 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	replace_arg(char **args)
 	buffer = (char *)malloc((len * 2) + 1);
 	if (!buffer)
 	{
-		perror("malloc");
+
 		exit(EXIT_FAILURE);
 	}
 	i = 0;

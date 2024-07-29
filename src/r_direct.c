@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 18:55:19 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/28 20:40:43 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/29 20:23:41 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ static int	rdirect_out(char *file, int append)
 	free(clean_file);
 	if (fd == -1)
 	{
-		ft_putstr_fd("minishell: No such file or directory\n", 2);
+		perror("minishell");
 		return (1);
 	}
 	if (fd >= 0)
 	{
 		if (dup2(fd, STDOUT_FILENO) == -1)
 		{
-			perror("minishell: ");
+			perror("minishell");
 			close(fd);
 			return (1);
 		}
@@ -50,12 +50,12 @@ static int	rdirect_in(char *file)
 	free(clean_file);
 	if (fd == -1)
 	{
-		ft_putstr_fd("minishell: No such file or directory\n", 2);
+		perror("minishell");
 		return (1);
 	}
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
-		perror("minishell: ");
+		perror("minishell");
 		close(fd);
 		return (1);
 	}
@@ -116,7 +116,7 @@ int	check_direct(t_minishell *mini, char **args)
 			|| ft_strcmp((args)[j], ">>") == 0)
 		{
 			if (ft_rdirect(mini, args))
-				return (mini->exit_code = 1, 1);
+				return (mini->exit_code = 1, FAILURE);
 			return (0);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:25:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/28 15:52:10 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/29 20:39:56 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,17 @@ static void	replace_dollar(t_minishell *mini, char **str, int *i, char **result)
 static int	empty_dollar(char **str)
 {
 	int	i;
-
+	int sign;
+	i = 0;
+	sign = 0;
+	while ((*str)[i])
+	{
+		if ((*str)[i] == '$')
+			sign = 1;
+		i++;
+	}
+	if (sign == 0)
+		return (1);
 	i = 0;
 	while ((*str)[i])
 	{

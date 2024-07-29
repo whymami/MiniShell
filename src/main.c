@@ -6,7 +6,7 @@
 /*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 10:46:21 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/28 20:50:07 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/29 21:17:32 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	shell_loop(t_minishell *minishell)
 		if (minishell->line == NULL)
 		{
 			ft_putstr_fd("exit\n", 0);
+			rl_clear_history();
 			exit(0);
 		}
 		if (ft_strlen(minishell->line) != 0)
