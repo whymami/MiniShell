@@ -73,6 +73,15 @@ int	heredoc(t_minishell *mini)
 	i = 0;
 	if (!args)
 		return (0);
+	// printf("heredoc:%s\n", args[0][0]);
+	// for (i = 0; args[i]; i++)
+    // {
+    //     if (check_heredoc_syntax_errors(args[i])) {
+    //         mini->exit_code = 258;
+	// 		ft_printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR);
+    //         return 1;
+    //     }
+    // }
 	if (!process_delimiters(mini, &delimiters) || !delimiters || !delimiters[0])
 		return (ft_printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR),
 			mini->exit_code = 258, 1);

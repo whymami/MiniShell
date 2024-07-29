@@ -17,7 +17,8 @@ void	if_should(char **input, char **buffer, int *i, int *j)
 	if (((*input)[(*i)] == '>' || (*input)[(*i)] == '<')
 		&& check_quote((*input), (*i)) == 0)
 	{
-		if ((*i) > 0 && (*input)[(*i) - 1] != ' ')
+		if ((*i) > 0 && (*input)[(*i) - 1] != ' ' && (*input)[(*i) - 1] != '>'
+			&& (*input)[(*i) - 1] != '<')
 			(*buffer)[(*j)++] = ' ';
 		if ((*input)[(*i)] == '>' && (*input)[(*i) + 1] == '>')
 		{
@@ -33,7 +34,8 @@ void	if_should(char **input, char **buffer, int *i, int *j)
 		}
 		else
 			(*buffer)[(*j)++] = (*input)[(*i)++];
-		if ((*i) < (int)ft_strlen(*input) && (*input)[(*i)] != ' ')
+		if ((*i) < (int)ft_strlen(*input) && (*input)[(*i)] != ' '
+			&& (*input)[(*i)] != '>' && (*input)[(*i)] != '<')
 			(*buffer)[(*j)++] = ' ';
 	}
 	else

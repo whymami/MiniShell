@@ -102,6 +102,9 @@ int	check_direct(t_minishell *mini, char **args)
 	int	j;
 
 	j = -1;
+	// printf("redirect:%s\n", args[0]);
+	// if (check_syntax_errors(args))
+	// 	return (mini->exit_code = 1, FAILURE);
 	while ((args)[++j])
 	{
 		if (!ft_strcmp((args)[j], ">") || !ft_strcmp((args)[j], "<")
