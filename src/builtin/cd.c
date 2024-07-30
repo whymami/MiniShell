@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:48:57 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/29 20:32:42 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/30 15:37:22 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,13 @@ void	change_pwd(t_minishell *mini, char *pwd)
 	if (pwd_env)
 	{
 		if (!oldpwd_env)
-			dlist_add_back(&mini->env, dlist_new(ft_strjoin("OLDPWD=",
-						mini->oldpwd)));
+		{
+			char *oldpwd_str = ft_strjoin("OLDPWD=", mini->oldpwd);
+			dlist_add_back(&mini->env, dlist_new(oldpwd_str));
+			free(oldpwd_str);
+			if (mini->oldpwd)
+				free(mini->oldpwd);
+		}
 		free(pwd_env->data);
 		pwd_env->data = ft_strjoin("PWD=", pwd);
 	}
@@ -111,5 +116,7 @@ int	cd(t_minishell *mini, char *av)
 	change_pwd(mini, pwd);
 	if (av && ft_strncmp(av, "-", 1) == 0)
 		ft_printf("%s\n", pwd);
+	if (target_dir != av)
+		free(target_dir);
 	return (EXIT_SUCCESS);
 }

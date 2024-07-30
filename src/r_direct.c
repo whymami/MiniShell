@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 18:55:19 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/29 20:23:41 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/30 14:30:51 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	rdirect_out(char *file, int *j, int append)
 		return (1);
 	}
 	if (fd >= 0 && *j != 0 && dup2(fd, STDOUT_FILENO) == -1)
-			return (perror("dup2"), close(fd), 1);
+		return (perror("dup2"), close(fd), 1);
 	return (close(fd), 0);
 }
 
@@ -51,7 +51,7 @@ static int	rdirect_in(char *file, int *j)
 	return (close(fd), 0);
 }
 
-int	find_exec(t_minishell *mini ,char **args, int *j, int *i, char **file)
+int	find_exec(t_minishell *mini, char **args, int *j, int *i, char **file)
 {
 	(void)mini;
 	if ((ft_strcmp(args[(*j)], ">") == 0 && args[(*j) + 1])

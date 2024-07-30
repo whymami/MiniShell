@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:25:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/29 20:39:56 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/30 19:23:51 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ static void	replace_dollar(t_minishell *mini, int *i, char **result)
 static int	empty_dollar(char *str)
 {
 	int	i;
-	int sign;
+	int	sign;
+
 	i = 0;
 	sign = 0;
 	while ((str)[i])

@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:31:12 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/29 11:09:44 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/30 19:04:44 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ char	*find_path(t_minishell *minishell, char *cmd)
 	temp = ft_strjoin("/", cmd);
 	path_list = search_env(minishell, "PATH");
 	if (!path_list)
-		return (cmd);
+	{
+		minishell->sign = 0;
+		return (free(temp), cmd);
+	}
 	path_split = ft_split(path_list->data + 5, ':');
 	i = -1;
 	while (path_split[++i])
@@ -79,11 +82,13 @@ char	*find_path(t_minishell *minishell, char *cmd)
 		{
 			free_split(path_split);
 			free(temp);
+			minishell->sign = 1;
 			return (path_cmd);
 		}
 		free(path_cmd);
 	}
 	free_split(path_split);
+	minishell->sign = 0;
 	return (free(temp), cmd);
 }
 

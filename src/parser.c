@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 03:46:08 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/29 10:24:00 by btanir           ###   ########.fr       */
+/*   Updated: 2024/07/30 16:13:24 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,12 @@ int	parser(t_minishell *minishell)
 {
 	char	*line;
 	int		quote;
-	char	*num;
 
 	line = ft_strtrim(minishell->line, " ");
 	quote = check_quote(line, ft_strlen(line));
 	if (quote)
-	{
-		num = ft_itoa(quote);
-		return (free(line), err_msg(SYNTAX_ERR, num, NULL), free(num), FAILURE);
-	}
+		return (free(line), ft_putstr_fd(SYNTAX_ERR " ` ", 2),
+			ft_putchar_fd(quote, 2), ft_putstr_fd("\'\n", 2), FAILURE);
 	if (check_line(minishell, line))
 		return (FAILURE);
 	return (SUCCESS);
