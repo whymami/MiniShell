@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 16:48:47 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/28 20:49:36 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/30 18:37:07 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,18 @@ static int	is_str_digit(char *str)
 
 static void	free_minishell(t_minishell *mini)
 {
-	t_dlist	*tmp;
-
-	while (mini->env)
-	{
-		tmp = mini->env;
-		mini->env = mini->env->next;
-		free(tmp->data);
-		free(tmp);
-	}
-	free(mini->oldpwd);
-	free(mini->line);
-	while (mini->tokens)
-	{
-		tmp = mini->tokens;
-		mini->tokens = mini->tokens->next;
-		free(tmp->data);
-		free(tmp);
-	}
-	free(mini);
+	if (mini->env)
+		dlist_clear(&mini->env, del);
+	if (mini->oldpwd)
+		free(mini->oldpwd);
+	if (mini->line)
+		free(mini->line);
+	if (mini->tokens)
+		dlist_clear(&mini->tokens, del);
+	if (mini->args)
+		free_args(mini->args);
+	if (mini)
+		free(mini);
 }
 
 static int	max_int(char *str)
@@ -84,7 +77,6 @@ void	ft_exit(t_minishell *mini, char **av)
 		i++;
 	exit_code = 0;
 	ft_putstr_fd("exit\n", STD_OUTPUT);
-	free_minishell(mini);
 	if (i > 2)
 	{
 		ft_putstr_fd(" too many arguments\n", STDERR_FILENO);
@@ -94,5 +86,6 @@ void	ft_exit(t_minishell *mini, char **av)
 		check_numeric(av[1], &exit_code);
 	else
 		exit_code = mini->exit_code;
+	free_minishell(mini);
 	exit(exit_code);
 }

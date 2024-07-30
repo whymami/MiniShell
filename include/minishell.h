@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/29 20:14:49 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/30 18:55:20 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,6 @@ typedef enum e_meta_type
 	DOLLAR,
 }			t_meta_type;
 
-typedef struct s_env
-{
-	char	*key;
-	char	*value;
-}			t_env;
-
 typedef struct s_minishell
 {
 	t_dlist	*env;
@@ -62,6 +56,7 @@ typedef struct s_minishell
 	int		*pipe_fd;
 	int		*pid;
 	int		hrd_count;
+	int		sign;
 	char	*path;
 	char	***args;
 	char	***args_with_quotes;
@@ -111,7 +106,6 @@ char		*ft_strjoin_char(char *s1, char c);
 void		remove_quotes(char ***args);
 int			replace_arg(char **args);
 void		*my_realloc(void *ptr, size_t size);
-int			get_exit_code(int status);
 int			type_control(t_minishell *minishell, char ***args, char **envs,
 				int *i);
 int			err_msg(char *cmd, char *arg, char *msg);

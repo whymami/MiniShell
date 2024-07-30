@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:55:17 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/29 20:45:48 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/30 17:33:05 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	export_check(char *env_data)
+int	arg_check(char *env_data)
 {
 	int	i;
 
@@ -33,7 +33,7 @@ int	export_check(char *env_data)
 	return (0);
 }
 
-int	arg_check(char **args, t_minishell *minishell)
+static int	print_export(char **args, t_minishell *minishell)
 {
 	t_dlist	*new;
 	char	*value;
@@ -62,18 +62,18 @@ int	arg_check(char **args, t_minishell *minishell)
 	return (SUCCESS);
 }
 
-void	search_to_add(t_minishell *minishell, char **args, int i, char *key)
+static void	search_to_add(t_minishell *minishell, char *arg, char *key)
 {
 	t_dlist	*search;
 
 	search = search_env(minishell, key);
-	if (search && ft_strncmp(search->data, args[i], ft_strlen(args[i])))
+	if (search && ft_strncmp(search->data, arg, ft_strlen(arg)))
 	{
 		free(search->data);
-		search->data = strdup(args[i]);
+		search->data = strdup(arg);
 	}
 	else if (!search)
-		dlist_add_back(&minishell->env, dlist_new(args[i]));
+		dlist_add_back(&minishell->env, dlist_new(arg));
 }
 
 void	export(t_minishell *minishell, char **args, int *j)
@@ -81,12 +81,12 @@ void	export(t_minishell *minishell, char **args, int *j)
 	char	*key;
 	int		i;
 
+	if (print_export(args, minishell))
+		return ;
 	i = 0;
 	while (args[++i])
 	{
-		if (arg_check(args, minishell))
-			return ;
-		if (export_check(minishell->args_with_quotes[*j][i]))
+		if (arg_check(minishell->args_with_quotes[*j][i]))
 		{
 			ft_printf("minishell: export: `%s':", args[i]);
 			ft_putstr_fd(" not a valid identifier\n", 2);
@@ -99,7 +99,7 @@ void	export(t_minishell *minishell, char **args, int *j)
 			free(key);
 			continue ;
 		}
-		search_to_add(minishell, args, i, key);
+		search_to_add(minishell, args[i], key);
 		free(key);
 	}
 }

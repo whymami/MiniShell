@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 10:46:21 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/29 21:17:32 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/30 19:03:46 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	init_data(t_minishell *minishell)
 	minishell->env = NULL;
 	minishell->args = NULL;
 	minishell->exit_code = 0;
+	minishell->sign = 0;
 	minishell->g_fd.change = 0;
 }
 
@@ -55,6 +56,8 @@ int	shell_loop(t_minishell *minishell)
 				execute_command(minishell);
 			}
 		}
+		if (minishell->line)
+			free(minishell->line);
 	}
 	return (SUCCESS);
 }

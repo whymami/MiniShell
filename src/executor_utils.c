@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:11:34 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/29 21:41:49 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/07/30 18:35:13 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,10 @@ int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 	}
 	else
 		return (0);
-	free_args(args);
 	if (minishell->g_fd.change)
 		reset_fd(minishell);
+	if (args)
+		free_args(args);
 	return (1);
 }
 
@@ -72,13 +73,9 @@ void	check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
 		if (execve(minishell->path, (*args), envs) == -1)
 		{
 			if (!type_control(minishell, args, envs, i))
-			{
-				free(envs);
 				exit(1);
-			}
 			ft_putstr_fd(minishell->path, STDERR_FILENO);
 			ft_putstr_fd(": command not found\n", STDERR_FILENO);
-			free(envs);
 			exit(127);
 		}
 	}
@@ -88,6 +85,8 @@ void	check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
 		minishell->exit_code = WEXITSTATUS(minishell->exit_code);
 		if (minishell->g_fd.change)
 			reset_fd(minishell);
+		free(envs);
+		free_args(args);
 	}
 }
 
@@ -132,7 +131,9 @@ int	type_control(t_minishell *minishell, char ***args, char **envs, int *i)
 	if (ft_strncmp((*args)[0], "./", 2) == 0 || ft_strncmp((*args)[0], "/",
 			1) == 0)
 		if (execve((*args)[0], args[*i], envs) == -1)
+		{
 			return (arg_type(minishell, (*args)[0]), exit(minishell->exit_code),
 				0);
+		}
 	return (FAILURE);
 }
