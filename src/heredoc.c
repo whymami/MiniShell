@@ -11,6 +11,37 @@
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+int check_heredoc_syntax_errors(char **args)
+{
+    int i;
+    int len;
+
+    i = 0;
+    while (args[i])
+    {
+        len = strlen(args[i]);
+        if (len >= 2 && strncmp(args[i], "<<", 2) == 0)
+        {
+            if (len > 2)
+            {
+                err_msg(SYNTAX_ERR, "`<<'", NULL);
+                return (1);
+            }
+            if (args[i + 1] && strncmp(args[i + 1], ">>", 2) == 0)
+            {
+                err_msg(SYNTAX_ERR, "`>>'", NULL);
+                return (1);
+            }
+            if (args[i + 1] && strncmp(args[i + 1], "<<", 2) == 0)
+            {
+                err_msg(SYNTAX_ERR, "`<<'", NULL);
+                return (1);
+            }
+        }
+        i++;
+    }
+    return (0);
+}
 
 static int	process_delimiters(t_minishell *mini, char ***delimiters)
 {
@@ -70,23 +101,22 @@ int	heredoc(t_minishell *mini)
 
 	delimiters = NULL;
 	args = mini->args;
-	i = 0;
+	i = -1;
 	if (!args)
 		return (0);
-	// printf("heredoc:%s\n", args[0][0]);
-	// for (i = 0; args[i]; i++)
-    // {
-    //     if (check_heredoc_syntax_errors(args[i])) {
-    //         mini->exit_code = 258;
-	// 		ft_printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR);
-    //         return 1;
-    //     }
-    // }
+	while (args[++i])
+    {
+        if (check_heredoc_syntax_errors(args[i])) {
+            mini->exit_code = 2;
+            return (FAILURE);
+        }
+    }
+	i = 0;
 	if (!process_delimiters(mini, &delimiters) || !delimiters || !delimiters[0])
 		return (ft_printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR),
-			mini->exit_code = 258, 1);
+			mini->exit_code = 2, 1);
 	read_heredoc(delimiters);
 	while (i <= mini->pipe_count)
 		null_heredoc_args(args[i++]);
-	return (0);
+	return (SUCCESS);
 }

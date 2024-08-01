@@ -12,6 +12,30 @@
 
 #include "../include/minishell.h"
 
+static int check_syntax_errors(char **args)
+{
+    int i;
+
+    i = 0;
+    while (args[i])
+    {
+        if ((strcmp(args[i], "<>") == 0) || (strcmp(args[i], "><") == 0))
+        {
+            err_msg(SYNTAX_ERR, "`newline'", NULL);
+            return (1);
+        }
+
+        if ((strcmp(args[i], ">") == 0 || strcmp(args[i], "<") == 0 || strcmp(args[i], ">>") == 0) && 
+            (!args[i + 1] || (args[i + 1] && strlen(args[i + 1]) == 0)))
+        {
+            err_msg(SYNTAX_ERR, "`newline'", NULL);
+            return (1);
+        }
+        i++;
+    }
+    return (0);
+}
+
 static int	rdirect_out(char *file, int *j, int append)
 {
 	int		fd;
@@ -102,13 +126,12 @@ int	check_direct(t_minishell *mini, char **args)
 	int	j;
 
 	j = -1;
-	// printf("redirect:%s\n", args[0]);
-	// if (check_syntax_errors(args))
-	// 	return (mini->exit_code = 1, FAILURE);
+	if (check_syntax_errors(args))
+		return (mini->exit_code = 2, FAILURE);
 	while ((args)[++j])
 	{
-		if (!ft_strcmp((args)[j], ">") || !ft_strcmp((args)[j], "<")
-			|| !ft_strcmp((args)[j], ">>"))
+		if ((!ft_strcmp((args)[j], ">") || !ft_strcmp((args)[j], "<")
+			|| !ft_strcmp((args)[j], ">>")))
 		{
 			if (ft_rdirect(mini, args))
 				return (mini->exit_code = 1, FAILURE);
