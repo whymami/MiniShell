@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 16:48:47 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/30 18:37:07 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/01 17:20:29 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static void	free_minishell(t_minishell *mini)
 		dlist_clear(&mini->tokens, del);
 	if (mini->args)
 		free_args(mini->args);
+	if (mini->args_with_quotes)
+		free_args(mini->args_with_quotes);
 	if (mini)
 		free(mini);
 }

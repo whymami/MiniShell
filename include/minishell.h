@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/30 18:55:20 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/01 18:20:39 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "stdio.h"
 # include "stdlib.h"
 # include "string.h"
+# include "signal.h"
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <sys/wait.h>
@@ -29,7 +30,7 @@
 # define FALSE 0
 # define STD_INPUT 0
 # define STD_OUTPUT 1
-
+int		g_status;
 typedef struct s_fd
 {
 	int		change;
@@ -63,7 +64,9 @@ typedef struct s_minishell
 	t_dlist	*tokens;
 	t_dlist	*hrd_cmd;
 	t_fd	g_fd;
+	int		in_heredoc;
 	int		exit_code;
+	int		status;
 }			t_minishell;
 
 # define SUCCESS 0

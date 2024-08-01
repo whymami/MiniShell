@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/30 18:56:02 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/01 17:17:55 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	single_command(t_minishell *minishell)
 	b = 0;
 	args = minishell->args;
 	if (check_direct(minishell, args[i]))
-		return (free_args(minishell->args_with_quotes), FAILURE);
+		return (free_args(minishell->args_with_quotes), free_args(args), FAILURE);
 	cmd = ft_calloc(dlist_size(minishell->tokens) + 1, sizeof(char *));
 	if (!cmd)
 		return (FAILURE);

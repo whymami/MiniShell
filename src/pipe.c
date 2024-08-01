@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 20:17:02 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/29 20:22:26 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/08/01 16:38:53 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,5 +71,5 @@ int	multiple_command(t_minishell *minishell)
 	}
 	if (ft_pipe(minishell, cmd, args) == FAILURE)
 		return (FAILURE);
-	return (SUCCESS);
+	return (free_args(args), free_args(minishell->args_with_quotes), free(cmd), SUCCESS);
 }

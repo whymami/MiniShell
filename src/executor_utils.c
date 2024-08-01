@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:11:34 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/30 18:35:13 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/01 16:09:26 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,8 +132,10 @@ int	type_control(t_minishell *minishell, char ***args, char **envs, int *i)
 			1) == 0)
 		if (execve((*args)[0], args[*i], envs) == -1)
 		{
-			return (arg_type(minishell, (*args)[0]), exit(minishell->exit_code),
-				0);
+			arg_type(minishell, (*args)[0]);
+			if (minishell->sign)
+				free(minishell->path);
+			return (exit(minishell->exit_code), 0);
 		}
 	return (FAILURE);
 }

@@ -3,44 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 14:48:02 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/29 21:13:51 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/08/01 19:37:50 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-int check_heredoc_syntax_errors(char **args)
-{
-    int i;
-    int len;
 
-    i = 0;
-    while (args[i])
-    {
-        len = strlen(args[i]);
-        if (len >= 2 && strncmp(args[i], "<<", 2) == 0)
-        {
-            if (len > 2)
-            {
-                err_msg(SYNTAX_ERR, "`<<'", NULL);
-                return (1);
-            }
-            if (args[i + 1] && strncmp(args[i + 1], ">>", 2) == 0)
-            {
-                err_msg(SYNTAX_ERR, "`>>'", NULL);
-                return (1);
-            }
-            if (args[i + 1] && strncmp(args[i + 1], "<<", 2) == 0)
-            {
-                err_msg(SYNTAX_ERR, "`<<'", NULL);
-                return (1);
-            }
-        }
-        i++;
-    }
-    return (0);
+int	check_heredoc_syntax_errors(char **args)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	while (args[i])
+	{
+		len = strlen(args[i]);
+		if (len >= 2 && strncmp(args[i], "<<", 2) == 0)
+		{
+			if (len > 2)
+			{
+				err_msg(SYNTAX_ERR, "`<<'", NULL);
+				return (1);
+			}
+			if (args[i + 1] && strncmp(args[i + 1], ">>", 2) == 0)
+			{
+				err_msg(SYNTAX_ERR, "`>>'", NULL);
+				return (1);
+			}
+			if (args[i + 1] && strncmp(args[i + 1], "<<", 2) == 0)
+			{
+				err_msg(SYNTAX_ERR, "`<<'", NULL);
+				return (1);
+			}
+		}
+		i++;
+	}
+	return (0);
 }
 
 static int	process_delimiters(t_minishell *mini, char ***delimiters)
@@ -64,12 +65,14 @@ static int	process_delimiters(t_minishell *mini, char ***delimiters)
 	return (1);
 }
 
-static int	read_heredoc(char **delimiters)
+static int	read_heredoc(char **delimiters, t_minishell *mini)
 {
 	char	*line;
 	int		j;
 
 	j = 0;
+	mini->in_heredoc = 1;
+	g_status = 1;
 	while (delimiters[j])
 	{
 		while (1)
@@ -87,6 +90,7 @@ static int	read_heredoc(char **delimiters)
 		if (!line)
 			break ;
 	}
+	mini->in_heredoc = 0;
 	while (delimiters[j])
 		free(delimiters[j++]);
 	free(delimiters);
@@ -105,17 +109,18 @@ int	heredoc(t_minishell *mini)
 	if (!args)
 		return (0);
 	while (args[++i])
-    {
-        if (check_heredoc_syntax_errors(args[i])) {
-            mini->exit_code = 2;
-            return (FAILURE);
-        }
-    }
+	{
+		if (check_heredoc_syntax_errors(args[i]))
+		{
+			mini->exit_code = 2;
+			return (FAILURE);
+		}
+	}
 	i = 0;
 	if (!process_delimiters(mini, &delimiters) || !delimiters || !delimiters[0])
 		return (ft_printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR),
 			mini->exit_code = 2, 1);
-	read_heredoc(delimiters);
+	read_heredoc(delimiters, mini);
 	while (i <= mini->pipe_count)
 		null_heredoc_args(args[i++]);
 	return (SUCCESS);

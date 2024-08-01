@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:55:17 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/30 17:33:05 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/01 17:02:47 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int	print_export(char **args, t_minishell *minishell)
 {
 	t_dlist	*new;
 	char	*value;
+	t_dlist	*temp;
 
 	if (!args || !args[1])
 	{
@@ -47,16 +48,15 @@ static int	print_export(char **args, t_minishell *minishell)
 			write(1, "declare -x ", 12);
 			write(1, (char *)new->data, get_key(new->data));
 			value = get_value(new->data);
-			if (value && write(1, "=\"", 2))
-			{
-				write(1, value, ft_strlen(value));
+			if (value && write(1, "=\"", 2) && write(1, value,
+					ft_strlen(value)))
 				write(1, "\"", 1);
-			}
 			write(1, "\n", 1);
 			free(value);
+			temp = new;
 			new = new->next;
+			free(temp);
 		}
-		dlist_clear(&new, &del);
 		return (FAILURE);
 	}
 	return (SUCCESS);
@@ -70,10 +70,10 @@ static void	search_to_add(t_minishell *minishell, char *arg, char *key)
 	if (search && ft_strncmp(search->data, arg, ft_strlen(arg)))
 	{
 		free(search->data);
-		search->data = strdup(arg);
+		search->data = ft_strdup(arg);
 	}
 	else if (!search)
-		dlist_add_back(&minishell->env, dlist_new(arg));
+		dlist_add_back(&minishell->env, dlist_new(ft_strdup(arg)));
 }
 
 void	export(t_minishell *minishell, char **args, int *j)

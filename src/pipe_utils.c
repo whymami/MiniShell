@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 16:18:09 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/29 20:23:49 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/08/01 16:08:51 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,24 +56,24 @@ void	handle_pipe_dup(t_minishell *minishell, int i)
 
 void	pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
 {
-	char	*path;
-
 	handle_pipe_dup(minishell, i);
 	if (check_direct(minishell, args[i]))
 		exit(1);
 	if (strcmp(cmd[i], "export") != 0)
 	{
-		path = find_path(minishell, cmd[i]);
-		if (execve(path, args[i], env(minishell)) == -1)
+		minishell->path = find_path(minishell, cmd[i]);
+		if (execve(minishell->path, args[i], env(minishell)) == -1)
 		{
-			free(path);
 			type_control(minishell, args, env(minishell), &i);
 			ft_putstr_fd("minishell: ", STDERR_FILENO);
 			ft_putstr_fd(args[i][0], STDERR_FILENO);
+			if (minishell->sign)
+				free(minishell->path);
 			ft_putstr_fd(": command not found\n", STDERR_FILENO);
 			exit(127);
 		}
-		free(path);
+		if (minishell->sign)
+			free(minishell->path);
 	}
 	else
 	{
