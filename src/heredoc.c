@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/08/02 21:13:45 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/02 23:20:28 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,73 +49,64 @@ int	check_heredoc_syntax_errors(char **args)
 static int	process_delimiters(t_minishell *mini, char ***delimiters)
 {
 	char	***args;
-	char	**temp_delimiters;
 	int		i;
 
 	args = mini->args;
 	i = -1;
 	while (++i <= mini->pipe_count)
 	{
-		temp_delimiters = get_delimiters(mini, args[i]);
-		if (temp_delimiters)
+		(delimiters)[i] = get_delimiters(mini, args[i]);
+		if (!(delimiters)[i] && mini->hrd_count > 0)
 		{
-			*delimiters = merge_delimiters(*delimiters, temp_delimiters);
-			if (!*delimiters)
-				return (0);
+			while (--i >= 0)
+				free_split((delimiters)[i]);
+			free(delimiters);
+			return (0);
 		}
 	}
 	return (1);
 }
 
-static int	read_heredoc(char **delimiters, t_minishell *mini)
+static int	read_heredoc(char **delimiters, t_minishell *mini, int i)
 {
 	char	*line;
 	int		j;
 	int		fd[2];
 
-	(void)mini;
-	j = 0;
 	if (pipe(fd) == -1)
 		return (FAILURE);
-	dup_fd(mini);
 	g_sig = 2;
+	j = 0;
 	while (delimiters[j] && g_sig == 2)
 	{
 		while (1)
 		{
 			line = readline("> ");
 			if (g_sig == 1)
-				break;
+				break ;
 			if (!line || ft_strcmp(line, delimiters[j]) == 0)
 			{
-				free(delimiters[j]);
-				j++;
 				free(line);
+				j++;
 				break ;
 			}
 			ft_putstr_fd(line, fd[1]);
 			ft_putchar_fd('\n', fd[1]);
 			free(line);
 		}
-		if (!line)
-			break ;
 	}
-	j = 0;
-	while (delimiters[j])
-		free(delimiters[j++]);
-	free(delimiters);
-	close(fd[1]);
-	dup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
-	return (0);
+	mini->heredoc_fd[i] = fd[1];
+	printf("heredoc_fd[%d] = %d\n", i, mini->heredoc_fd[i]);
+	return (SUCCESS);
 }
 
 int	heredoc(t_minishell *mini)
 {
-	char	**delimiters;
 	char	***args;
 	int		i;
 
+	char ***delimiters;
 	delimiters = NULL;
 	args = mini->args;
 	i = -1;
@@ -129,12 +120,21 @@ int	heredoc(t_minishell *mini)
 			return (FAILURE);
 		}
 	}
-	i = 0;
-	if (!process_delimiters(mini, &delimiters) || !delimiters || !delimiters[0])
+	delimiters = (char ***)malloc(sizeof(char **) * (mini->pipe_count + 1));
+	if (!delimiters)
+		return (0);
+	if (!process_delimiters(mini, delimiters) || !delimiters)
 		return (ft_printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR),
 			mini->exit_code = 2, 1);
-	read_heredoc(delimiters, mini);
+	i = 0;
+	mini->heredoc_fd = (int *)malloc(sizeof(int) * (mini->pipe_count + 1));
 	while (i <= mini->pipe_count)
-		null_heredoc_args(args[i++]);
+	{
+		mini->heredoc_fd[i] = -1;
+		if (delimiters[i] && delimiters[i][0])
+			read_heredoc(delimiters[i], mini, i);
+		null_heredoc_args(args[i]);
+		i++;
+	}
 	return (SUCCESS);
 }

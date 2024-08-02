@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 16:18:09 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/01 16:08:51 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/02 23:20:18 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,12 @@ void	handle_pipe_dup(t_minishell *minishell, int i)
 	int	j;
 
 	j = -1;
+	if (i != 0 && minishell->heredoc_fd[i] != -1)
+		minishell->pipe_fd[(i - 1) * 2] = minishell->heredoc_fd[i];
 	if (i != 0)
 	{
+		printf("minishell->pipe_fd[%d] = %d\n", i, minishell->pipe_fd[(i - 1)
+			* 2]);
 		if (dup2(minishell->pipe_fd[(i - 1) * 2], STDIN_FILENO) == -1)
 		{
 			perror("minishell: dup2 error (stdin)");

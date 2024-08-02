@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/02 21:12:57 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/02 22:07:24 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_minishell
 	int		sign;
 	char	*path;
 	char	***args;
-	int		heredoc_fd;
+	int		*heredoc_fd;
 	char	***args_with_quotes;
 	t_dlist	*tokens;
 	t_dlist	*hrd_cmd;
