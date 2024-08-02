@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/02 21:13:13 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 01:22:14 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	single_command(t_minishell *minishell)
 	if (check_direct(minishell, args[i]))
 		return (free_args(minishell->args_with_quotes), free_args(args), FAILURE);
 	if (args[0][0] == NULL)
-		return (reset_fd(minishell), SUCCESS);
+		return (reset_fd(minishell), free_args(args), free_args(minishell->args_with_quotes),  SUCCESS);
 	cmd = ft_calloc(dlist_size(minishell->tokens) + 1, sizeof(char *));
 	if (!cmd)
 		return (FAILURE);

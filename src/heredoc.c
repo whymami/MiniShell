@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 00:03:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 00:06:37 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 01:25:49 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int	read_heredoc(char **delimiters, t_minishell *mini, int i)
 			{
 				if (mini->pipe_count == 0)
 					reset_fd(mini);
-				return (FAILURE);
+				return (free(line), FAILURE);
 			}
 			if (!line || ft_strcmp(line, delimiters[j]) == 0)
 			{
@@ -142,9 +142,13 @@ int	heredoc(t_minishell *mini)
 		mini->heredoc_fd[i] = -1;
 		if (delimiters[i] && delimiters[i][0])
 			if (read_heredoc(delimiters[i], mini, i))
-				return (free_split(delimiters[i]), 1);
+				return (free_split(delimiters[i]), free(delimiters), 1);
+		free_split(delimiters[i]);
 		null_heredoc_args(args[i]);
 		i++;
 	}
+	if (mini->pipe_count == 0)
+		free(mini->heredoc_fd);
+	free(delimiters);
 	return (SUCCESS);
 }
