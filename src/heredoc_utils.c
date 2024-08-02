@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 16:00:18 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/02 15:26:17 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/02 23:26:33 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,29 +64,4 @@ void	null_heredoc_args(char **args)
 		}
 	}
 	args[j] = NULL;
-}
-
-char	**merge_delimiters(char **delimiters, char **temp_delimiters)
-{
-	int		existing_count;
-	int		new_count;
-	char	**new_delimiters;
-	int		i;
-
-	existing_count = 0;
-	new_count = 0;
-	while (delimiters && delimiters[existing_count])
-		existing_count++;
-	while (temp_delimiters && temp_delimiters[new_count])
-		new_count++;
-	new_delimiters = (char **)my_realloc(delimiters, sizeof(char *)
-			* (existing_count + new_count + 1));
-	if (!new_delimiters)
-		return (NULL);
-	i = -1;
-	while (++i < new_count)
-		new_delimiters[existing_count + i] = temp_delimiters[i];
-	new_delimiters[existing_count + new_count] = NULL;
-	free(temp_delimiters);
-	return (new_delimiters);
 }

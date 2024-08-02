@@ -5,11 +5,9 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/08/02 23:20:28 by eyasa            ###   ########.fr       */
+/*   Created: 2024/07/23 00:03:44 by eyasa             #+#    #+#             */
+/*   Updated: 2024/08/03 00:06:37 by eyasa            ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
-
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
@@ -75,6 +73,8 @@ static int	read_heredoc(char **delimiters, t_minishell *mini, int i)
 
 	if (pipe(fd) == -1)
 		return (FAILURE);
+	if (mini->pipe_count == 0)
+		dup_fd(mini);
 	g_sig = 2;
 	j = 0;
 	while (delimiters[j] && g_sig == 2)
@@ -83,7 +83,11 @@ static int	read_heredoc(char **delimiters, t_minishell *mini, int i)
 		{
 			line = readline("> ");
 			if (g_sig == 1)
-				break ;
+			{
+				if (mini->pipe_count == 0)
+					reset_fd(mini);
+				return (FAILURE);
+			}
 			if (!line || ft_strcmp(line, delimiters[j]) == 0)
 			{
 				free(line);
@@ -95,9 +99,14 @@ static int	read_heredoc(char **delimiters, t_minishell *mini, int i)
 			free(line);
 		}
 	}
-	close(fd[0]);
-	mini->heredoc_fd[i] = fd[1];
-	printf("heredoc_fd[%d] = %d\n", i, mini->heredoc_fd[i]);
+	close(fd[1]);
+	if (mini->pipe_count != 0)
+		mini->heredoc_fd[i] = fd[0];
+	else
+	{
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
+	}
 	return (SUCCESS);
 }
 
@@ -105,8 +114,8 @@ int	heredoc(t_minishell *mini)
 {
 	char	***args;
 	int		i;
+	char	***delimiters;
 
-	char ***delimiters;
 	delimiters = NULL;
 	args = mini->args;
 	i = -1;
@@ -132,7 +141,8 @@ int	heredoc(t_minishell *mini)
 	{
 		mini->heredoc_fd[i] = -1;
 		if (delimiters[i] && delimiters[i][0])
-			read_heredoc(delimiters[i], mini, i);
+			if (read_heredoc(delimiters[i], mini, i))
+				return (free_split(delimiters[i]), 1);
 		null_heredoc_args(args[i]);
 		i++;
 	}

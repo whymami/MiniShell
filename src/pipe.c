@@ -3,31 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 20:17:02 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/01 16:38:53 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/02 23:31:29 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	close_fd(t_minishell *minishell)
+int close_fd(t_minishell *minishell)
 {
-	int	i;
+    int i;
 
-	i = -1;
-	while (++i < minishell->pipe_count * 2)
-		close(minishell->pipe_fd[i]);
-	i = -1;
-	while (++i < minishell->pipe_count + 1)
-	{
-		waitpid(minishell->pid[i], &minishell->exit_code, 0);
-		minishell->exit_code = WEXITSTATUS(minishell->exit_code);
-	}
-	free(minishell->pipe_fd);
-	free(minishell->pid);
-	return (SUCCESS);
+    i = -1;
+    while (++i < minishell->pipe_count * 2)
+        close(minishell->pipe_fd[i]);
+    i = -1;
+    while (++i < minishell->pipe_count + 1)
+    {
+        waitpid(minishell->pid[i], &minishell->exit_code, 0);
+        minishell->exit_code = WEXITSTATUS(minishell->exit_code);
+    }
+    free(minishell->pipe_fd);
+    free(minishell->pid);
+    return (SUCCESS);
 }
 
 int	ft_pipe(t_minishell *minishell, char **cmd, char ***args)
