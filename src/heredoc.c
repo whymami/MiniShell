@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 14:48:02 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/01 19:37:50 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/02 19:31:18 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,20 @@ int	check_heredoc_syntax_errors(char **args)
 	i = 0;
 	while (args[i])
 	{
-		len = strlen(args[i]);
-		if (len >= 2 && strncmp(args[i], "<<", 2) == 0)
+		len = ft_strlen(args[i]);
+		if (len >= 2 && ft_strncmp(args[i], "<<", 2) == 0)
 		{
 			if (len > 2)
 			{
 				err_msg(SYNTAX_ERR, "`<<'", NULL);
 				return (1);
 			}
-			if (args[i + 1] && strncmp(args[i + 1], ">>", 2) == 0)
+			if (args[i + 1] && ft_strncmp(args[i + 1], ">>", 2) == 0)
 			{
 				err_msg(SYNTAX_ERR, "`>>'", NULL);
 				return (1);
 			}
-			if (args[i + 1] && strncmp(args[i + 1], "<<", 2) == 0)
+			if (args[i + 1] && ft_strncmp(args[i + 1], "<<", 2) == 0)
 			{
 				err_msg(SYNTAX_ERR, "`<<'", NULL);
 				return (1);
@@ -69,9 +69,13 @@ static int	read_heredoc(char **delimiters, t_minishell *mini)
 {
 	char	*line;
 	int		j;
+	int		fd[2];
 
+	(void)mini;
 	j = 0;
-	mini->in_heredoc = 1;
+	if (pipe(fd) == -1)
+		return (FAILURE);
+	dup_fd(mini);
 	g_status = 1;
 	while (delimiters[j])
 	{
@@ -80,20 +84,24 @@ static int	read_heredoc(char **delimiters, t_minishell *mini)
 			line = readline("> ");
 			if (!line || ft_strcmp(line, delimiters[j]) == 0)
 			{
-				free(delimiters[j]);
 				j++;
 				free(line);
 				break ;
 			}
+			ft_putstr_fd(line, fd[1]);
+			ft_putchar_fd('\n', fd[1]);
 			free(line);
 		}
 		if (!line)
 			break ;
 	}
-	mini->in_heredoc = 0;
+	j = 0;
 	while (delimiters[j])
 		free(delimiters[j++]);
 	free(delimiters);
+	close(fd[1]);
+	dup2(fd[0], STDIN_FILENO);
+	close(fd[0]);
 	return (0);
 }
 

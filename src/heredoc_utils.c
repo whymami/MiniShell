@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 16:00:18 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/28 16:01:59 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/08/02 15:26:17 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

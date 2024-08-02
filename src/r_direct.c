@@ -6,41 +6,41 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 18:55:19 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/01 17:17:33 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/02 18:28:01 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static int check_syntax_errors(char **args)
+static int	check_syntax_errors(char **args)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (args[i])
-    {
-        if ((strcmp(args[i], "<>") == 0) || (strcmp(args[i], "><") == 0))
-        {
-            err_msg(SYNTAX_ERR, "`newline'", NULL);
-            return (1);
-        }
-
-        if ((strcmp(args[i], ">") == 0 || strcmp(args[i], "<") == 0 || strcmp(args[i], ">>") == 0) && 
-            (!args[i + 1] || (args[i + 1] && strlen(args[i + 1]) == 0)))
-        {
-            err_msg(SYNTAX_ERR, "`newline'", NULL);
-            return (1);
-        }
-        i++;
-    }
-    return (0);
+	i = 0;
+	while (args[i])
+	{
+		if ((strcmp(args[i], "<>") == 0) || (strcmp(args[i], "><") == 0))
+		{
+			err_msg(SYNTAX_ERR, "`newline'", NULL);
+			return (1);
+		}
+		if ((strcmp(args[i], ">") == 0 || strcmp(args[i], "<") == 0
+				|| strcmp(args[i], ">>") == 0) && (!args[i + 1] || (args[i + 1]
+					&& strlen(args[i + 1]) == 0)))
+		{
+			err_msg(SYNTAX_ERR, "`newline'", NULL);
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }
 
 static int	rdirect_out(char *file, int *j, int append)
 {
 	int		fd;
 	char	*clean_file;
-
+	(void)*j;
 	clean_file = handle_quotes(file);
 	if (append)
 		fd = open(clean_file, O_CREAT | O_WRONLY | O_APPEND, 0644);
@@ -52,7 +52,7 @@ static int	rdirect_out(char *file, int *j, int append)
 		perror("minishell");
 		return (1);
 	}
-	if (fd >= 0 && *j != 0 && dup2(fd, STDOUT_FILENO) == -1)
+	if (fd >= 0 && dup2(fd, STDOUT_FILENO) == -1)
 		return (perror("dup2"), close(fd), 1);
 	return (close(fd), 0);
 }
@@ -61,7 +61,7 @@ static int	rdirect_in(char *file, int *j)
 {
 	int		fd;
 	char	*clean_file;
-
+	(void)*j;
 	clean_file = handle_quotes(file);
 	fd = open(clean_file, O_RDONLY);
 	free(clean_file);
@@ -70,7 +70,7 @@ static int	rdirect_in(char *file, int *j)
 		perror("minishell");
 		return (1);
 	}
-	if (fd >= 0 && *j != 0 && dup2(fd, STDIN_FILENO) == -1)
+	if (fd >= 0 && dup2(fd, STDIN_FILENO) == -1)
 		return (perror("minishell"), close(fd), 1);
 	return (close(fd), 0);
 }
@@ -99,7 +99,9 @@ int	find_exec(t_minishell *mini, char **args, int *j, int *i, char **file)
 		free_n_null(args, j);
 	}
 	else
+	{
 		args[(*i)++] = args[(*j)++];
+	}
 	return (SUCCESS);
 }
 
@@ -131,7 +133,7 @@ int	check_direct(t_minishell *mini, char **args)
 	while ((args)[++j])
 	{
 		if ((!ft_strcmp((args)[j], ">") || !ft_strcmp((args)[j], "<")
-			|| !ft_strcmp((args)[j], ">>")))
+				|| !ft_strcmp((args)[j], ">>")))
 		{
 			if (ft_rdirect(mini, args))
 				return (mini->exit_code = 1, FAILURE);

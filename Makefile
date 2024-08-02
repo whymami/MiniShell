@@ -7,7 +7,7 @@ SRC = src/main.c src/parser.c src/lexer.c src/builtin/env.c src/builtin/pwd.c \
 	src/executor_utils2.c src/dollar_utils.c src/heredoc_utils.c src/pipe_utils.c \
 	src/utils1.c src/mini_split.c src/r_direct_utils.c src/replace_arg.c
 
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address # MallocStackLogging=1
 LIBFT = lib/libft/libft.a
 PRINTF = lib/ft_printf/libftprintf.a
 DLIST = lib/dlist/dlist.a

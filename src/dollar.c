@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:25:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/30 19:23:51 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/02 14:03:24 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@ static void	replace_dollar(t_minishell *mini, int *i, char **result)
 	char	*str;
 
 	str = mini->line;
+	if (str[*i] == '$' && str[*i - 1] == '\"' && str[*i + 1] == '\"')
+	{
+		tmp = *result;
+		*result = ft_strjoin_char(tmp, str[(*i)++]);
+		return ;
+	}
 	if (str[*i] == '$' && str[(*i) + 1] && str[(*i) + 1] == '?')
 		return (get_ext_code(i, mini, result));
 	if (str[*i] == '$' && str[(*i) + 1] && str[(*i) + 1] != '$')
@@ -47,7 +53,8 @@ static int	empty_dollar(char *str)
 		if (str[i] == '$')
 		{
 			if ((!ft_isalnum(str[i + 1]) && (str[i + 1] != '?') && (str[i
-						+ 1] != '$')))
+						+ 1] != '$') && (str[i + 1] != '\'') && (str[i
+						+ 1] != '\"')))
 				return (1);
 		}
 		i++;

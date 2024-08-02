@@ -3,25 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 19:24:46 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/29 18:14:24 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/08/02 14:35:01 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	*my_realloc(void *ptr, size_t size)
+char	**my_realloc(char **ptr, size_t size)
 {
-	void	*new_ptr;
+	char	**new_ptr;
 
-	new_ptr = malloc(size);
+	new_ptr = (char **)malloc(size * sizeof(char *));
 	if (!new_ptr)
 	{
-		ft_printf("reallocation failed!\n");
-		if (ptr)
-			free(ptr);
+		printf("reallocation failed!\n");
+		free(ptr);
 		exit(EXIT_FAILURE);
 	}
 	if (ptr)

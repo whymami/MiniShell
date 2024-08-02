@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/01 18:20:39 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/02 18:27:57 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 # include "fcntl.h"
 # include "ft_printf.h"
 # include "libft.h"
+# include "signal.h"
 # include "stdio.h"
 # include "stdlib.h"
 # include "string.h"
-# include "signal.h"
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <sys/wait.h>
@@ -30,7 +30,7 @@
 # define FALSE 0
 # define STD_INPUT 0
 # define STD_OUTPUT 1
-int		g_status;
+int			g_status;
 typedef struct s_fd
 {
 	int		change;
@@ -108,7 +108,7 @@ int			ft_strcmp(char *s1, char *s2);
 char		*ft_strjoin_char(char *s1, char c);
 void		remove_quotes(char ***args);
 int			replace_arg(char **args);
-void		*my_realloc(void *ptr, size_t size);
+char		**my_realloc(char **ptr, size_t size);
 int			type_control(t_minishell *minishell, char ***args, char **envs,
 				int *i);
 int			err_msg(char *cmd, char *arg, char *msg);

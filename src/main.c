@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 10:46:21 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/01 18:30:32 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/02 17:16:58 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,6 @@ int	shell_loop(t_minishell *minishell)
 							free(minishell->line);
 						continue ;
 					}
-				if (minishell->in_heredoc == 1)
-				{
-					minishell->in_heredoc = 0;
-					continue ;
-				}
 				execute_command(minishell);
 			}
 		}
@@ -82,24 +77,6 @@ int	shell_loop(t_minishell *minishell)
 	}
 	return (SUCCESS);
 }
-#include "termios.h"
-void	tcsa(void)
-{
-	struct termios	term1;
-
-	if (tcgetattr(STDIN_FILENO, &term1) != 0)
-		exit((perror("error"), -1));
-	else
-	{
-		term1.c_cc[VQUIT] = _POSIX_VDISABLE;
-		term1.c_lflag |= ECHOE | ICANON;
-		if (tcsetattr(STDIN_FILENO, TCSANOW, &term1) != 0)
-			exit((perror("error"), -1));
-		if (tcgetattr(STDIN_FILENO, &term1) != 0)
-			exit((perror("error"), -1));
-	}
-}
-
 
 int	main(int argc, char **argv, char **env)
 {
@@ -113,9 +90,8 @@ int	main(int argc, char **argv, char **env)
 		return (ft_putstr_fd("Error: Memory allocation error\n", 2),
 			EXIT_FAILURE);
 	init_data(minishell);
-	tcsa();
-	signal(SIGINT, signal_handler);
-	signal(SIGQUIT, signal_handler);
+	// signal(SIGINT, signal_handler);
+	// signal(SIGQUIT, signal_handler);
 	parse_env(minishell, env);
 	shell_loop(minishell);
 	return (SUCCESS);

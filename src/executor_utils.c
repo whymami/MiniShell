@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:11:34 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/01 16:09:26 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/02 13:00:24 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 	}
 	else
 		return (0);
-	if (minishell->g_fd.change)
-		reset_fd(minishell);
+	reset_fd(minishell);
 	if (args)
 		free_args(args);
 	return (1);
@@ -66,8 +65,10 @@ int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 void	check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
 {
 	char	**envs;
+	int		j;
 
 	envs = env(minishell);
+	j = 0;	
 	if ((*pid) == 0)
 	{
 		if (execve(minishell->path, (*args), envs) == -1)
@@ -83,8 +84,7 @@ void	check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
 	{
 		waitpid((*pid), &minishell->exit_code, 0);
 		minishell->exit_code = WEXITSTATUS(minishell->exit_code);
-		if (minishell->g_fd.change)
-			reset_fd(minishell);
+		reset_fd(minishell);
 		free(envs);
 		free_args(args);
 	}
