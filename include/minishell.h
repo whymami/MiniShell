@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/30 18:55:20 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/02 21:12:05 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define STD_INPUT 0
 # define STD_OUTPUT 1
 
+extern int	g_sig;
 typedef struct s_fd
 {
 	int		change;
@@ -59,6 +60,7 @@ typedef struct s_minishell
 	int		sign;
 	char	*path;
 	char	***args;
+	int		heredoc_fd;
 	char	***args_with_quotes;
 	t_dlist	*tokens;
 	t_dlist	*hrd_cmd;
@@ -128,5 +130,5 @@ void		free_n_null(char **args, int *j);
 void		dup_fd(t_minishell *mini);
 void		free_n_null(char **args, int *j);
 int			close_fd(t_minishell *minishell);
-
+void		handle_signals(void);
 #endif

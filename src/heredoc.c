@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 14:48:02 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/29 21:13:51 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/08/02 21:10:39 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,11 +70,14 @@ static int	read_heredoc(char **delimiters)
 	int		j;
 
 	j = 0;
-	while (delimiters[j])
+	g_sig = 2;
+	while (delimiters[j] && g_sig == 2)
 	{
 		while (1)
 		{
 			line = readline("> ");
+			if (g_sig == 1)
+				break;
 			if (!line || ft_strcmp(line, delimiters[j]) == 0)
 			{
 				free(delimiters[j]);
