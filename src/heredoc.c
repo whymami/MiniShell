@@ -3,11 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 14:48:02 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/02 19:31:18 by btanir           ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/08/02 21:13:45 by eyasa            ###   ########.fr       */
 /*                                                                            */
+/* ************************************************************************** */
+
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
@@ -76,14 +78,17 @@ static int	read_heredoc(char **delimiters, t_minishell *mini)
 	if (pipe(fd) == -1)
 		return (FAILURE);
 	dup_fd(mini);
-	g_status = 1;
-	while (delimiters[j])
+	g_sig = 2;
+	while (delimiters[j] && g_sig == 2)
 	{
 		while (1)
 		{
 			line = readline("> ");
+			if (g_sig == 1)
+				break;
 			if (!line || ft_strcmp(line, delimiters[j]) == 0)
 			{
+				free(delimiters[j]);
 				j++;
 				free(line);
 				break ;
