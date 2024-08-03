@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 20:18:41 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/03 16:57:42 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 17:31:01 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	check_syntax_errors(char **args)
 			return (1);
 		}
 		if ((ft_strcmp(args[i], ">") == 0 || ft_strcmp(args[i], "<") == 0
-				|| ft_strcmp(args[i], ">>") == 0) && (!args[i + 1] || (args[i + 1]
-					&& ft_strlen(args[i + 1]) == 0)))
+				|| ft_strcmp(args[i], ">>") == 0) && (!args[i + 1] || (args[i
+						+ 1] && ft_strlen(args[i + 1]) == 0)))
 		{
 			err_msg(SYNTAX_ERR, "`newline'", NULL);
 			return (1);

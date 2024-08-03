@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 16:18:09 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/03 17:11:59 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 17:29:31 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,6 @@ void	pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
 		exit(1);
 	ft_all_lower(&cmd[i]);
 	if (check_builtin(minishell, cmd, args, &i) == 1)
-		exit(0);
+		exit(minishell->exit_code);
 	fork_exec(minishell, args, cmd, i);
 }
