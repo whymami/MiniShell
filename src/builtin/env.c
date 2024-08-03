@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:37:13 by halozdem          #+#    #+#             */
-/*   Updated: 2024/08/03 13:30:32 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 22:44:06 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	print_env(t_minishell *minishell)
 	t_dlist	*env_data;
 
 	env_data = minishell->env;
-	while (env_data && printf("%s\n", env_data->data))
+	while (env_data && printf("%s\n", (char *)env_data->data))
 		env_data = env_data->next;
 }
 
