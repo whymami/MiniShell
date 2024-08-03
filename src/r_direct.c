@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   r_direct.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 18:55:19 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/02 18:28:01 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/03 02:12:55 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static int	check_syntax_errors(char **args)
+int	check_syntax_errors(char **args)
 {
 	int	i;
 
-	i = 0;
-	while (args[i])
+	i = -1;
+	while (args[++i])
 	{
 		if ((strcmp(args[i], "<>") == 0) || (strcmp(args[i], "><") == 0))
 		{
@@ -31,7 +31,11 @@ static int	check_syntax_errors(char **args)
 			err_msg(SYNTAX_ERR, "`newline'", NULL);
 			return (1);
 		}
-		i++;
+		if ((ft_strcmp(args[i], "<<") == 0) && (!args[i + 1] || (args[i + 1]
+					&& strlen(args[i + 1]) == 0)))
+			return (err_msg(SYNTAX_ERR, "`newline'", NULL), 1);
+		if ((ft_strcmp(args[i], ">>>") == 0) || (ft_strcmp(args[i], "<<<") == 0))
+			return (err_msg(SYNTAX_ERR, "`>'", NULL), 1);
 	}
 	return (0);
 }
@@ -128,8 +132,8 @@ int	check_direct(t_minishell *mini, char **args)
 	int	j;
 
 	j = -1;
-	if (check_syntax_errors(args))
-		return (mini->exit_code = 2, FAILURE);
+	// if (check_syntax_errors(args))
+	// 	return (mini->exit_code = 2, FAILURE);
 	while ((args)[++j])
 	{
 		if ((!ft_strcmp((args)[j], ">") || !ft_strcmp((args)[j], "<")

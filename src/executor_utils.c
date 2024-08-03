@@ -3,20 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:11:34 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/02 13:00:24 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/03 10:41:15 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include <dirent.h>
 
+void	ft_all_lower(char **str)
+{
+	int	i;
+
+	i = -1;
+	while ((*str)[++i])
+		if ((*str)[i] >= 'A' && (*str)[i] <= 'Z')
+			(*str)[i] = (*str)[i] + 32;
+}
+
 int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 {
 	if (cmd[*i] == NULL)
 		return (1);
+	ft_all_lower(&cmd[*i]);
 	if (ft_strcmp(cmd[*i], "env") == 0)
 	{
 		minishell->exit_code = 0;
@@ -68,7 +79,7 @@ void	check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
 	int		j;
 
 	envs = env(minishell);
-	j = 0;	
+	j = 0;
 	if ((*pid) == 0)
 	{
 		if (execve(minishell->path, (*args), envs) == -1)

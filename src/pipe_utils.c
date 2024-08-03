@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 16:18:09 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/02 23:51:28 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 10:37:40 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ void	pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
 	handle_pipe_dup(minishell, i);
 	if (check_direct(minishell, args[i]))
 		exit(1);
+	if (check_builtin(minishell, cmd, args, &i) == 1)
+		exit(0);
 	if (strcmp(cmd[i], "export") != 0)
 	{
 		minishell->path = find_path(minishell, cmd[i]);

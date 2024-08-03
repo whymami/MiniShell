@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 03:46:08 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/30 16:13:24 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/03 02:35:09 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ int	parser(t_minishell *minishell)
 	int		quote;
 
 	line = ft_strtrim(minishell->line, " ");
+	if (ft_strcmp(line, "") == 0)
+		return (free(line), FAILURE);
 	quote = check_quote(line, ft_strlen(line));
 	if (quote)
 		return (free(line), ft_putstr_fd(SYNTAX_ERR " ` ", 2),

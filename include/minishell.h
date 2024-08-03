@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/02 22:07:24 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 13:22:22 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,6 @@ typedef struct s_fd
 	int		std_out;
 }			t_fd;
 
-typedef enum e_meta_type
-{
-	NONE,
-	L_RED,
-	R_RED,
-	HEREDOC,
-	DR_RED,
-	DOLLAR,
-}			t_meta_type;
-
 typedef struct s_minishell
 {
 	t_dlist	*env;
@@ -74,7 +64,7 @@ typedef struct s_minishell
 # define SUCCESS 0
 # define FAILURE 1
 # define ERR_TITLE "minishell: "
-# define SYNTAX_ERR "syntax error near unexpected token"
+# define SYNTAX_ERR "syntax error near unexpected token "
 
 int			parser(t_minishell *minishell);
 int			check_quote(char *line, int value_i);
@@ -134,4 +124,5 @@ void		dup_fd(t_minishell *mini);
 void		free_n_null(char **args, int *j);
 int			close_fd(t_minishell *minishell);
 void		handle_signals(void);
+int			check_syntax_errors(char **args);
 #endif

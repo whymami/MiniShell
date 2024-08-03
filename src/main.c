@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 10:46:21 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/02 23:57:32 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 02:31:38 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,25 +52,24 @@ int	shell_loop(t_minishell *minishell)
 		if (ft_strlen(minishell->line) != 0)
 		{
 			add_history(minishell->line);
-			if (!parser(minishell))
+			if (!parser(minishell))       
 			{
 				dollar(minishell, 0);
 				lexer(minishell);
 				if (cpy_arg(minishell))
 					return (FAILURE);
-				if (minishell->hrd_count > 0)
-					if (heredoc(minishell))
-					{
-						if (minishell->args)
-							free_args(minishell->args);
-						if (minishell->args_with_quotes)
-							free_args(minishell->args_with_quotes);
-						if (minishell->tokens)
-							dlist_clear(&minishell->tokens, del);
-						if (minishell->line)
-							free(minishell->line);
-						continue ;
-					}
+				if (heredoc(minishell))
+				{
+					if (minishell->args)
+						free_args(minishell->args);
+					if (minishell->args_with_quotes)
+						free_args(minishell->args_with_quotes);
+					if (minishell->tokens)
+						dlist_clear(&minishell->tokens, del);
+					if (minishell->line)
+						free(minishell->line);
+					continue ;
+				}
 				execute_command(minishell);
 			}
 		}
@@ -86,7 +85,7 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	handle_signals();
+	// handle_signals();
 	minishell = malloc(sizeof(t_minishell));
 	if (!minishell)
 		return (ft_putstr_fd("Error: Memory allocation error\n", 2),

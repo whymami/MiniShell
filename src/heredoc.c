@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 00:03:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 01:25:49 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 13:24:11 by muguveli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	check_heredoc_syntax_errors(char **args)
 	int	i;
 	int	len;
 
+	if (check_syntax_errors(args))
+		return (1);
 	i = 0;
 	while (args[i])
 	{
@@ -129,6 +131,8 @@ int	heredoc(t_minishell *mini)
 			return (FAILURE);
 		}
 	}
+	if (mini->hrd_count == 0)
+		return(SUCCESS);
 	delimiters = (char ***)malloc(sizeof(char **) * (mini->pipe_count + 1));
 	if (!delimiters)
 		return (0);
