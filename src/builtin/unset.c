@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 00:22:45 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/27 02:18:55 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/03 13:23:09 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	unset(t_minishell *mini, char **key)
 	{
 		if (key_validation(key[i]))
 		{
-			ft_printf("%sunset: `%s': not a valid identifier\n", ERR_TITLE,
+			printf("%sunset: `%s': not a valid identifier\n", ERR_TITLE,
 				key[i]);
 			continue ;
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 00:03:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 13:24:11 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/08/03 13:37:07 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int	heredoc(t_minishell *mini)
 	if (!delimiters)
 		return (0);
 	if (!process_delimiters(mini, delimiters) || !delimiters)
-		return (ft_printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR),
+		return (printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR),
 			mini->exit_code = 2, 1);
 	i = 0;
 	mini->heredoc_fd = (int *)malloc(sizeof(int) * (mini->pipe_count + 1));
