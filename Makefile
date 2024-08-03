@@ -73,5 +73,11 @@ clean:
 
 re: fclean all
 
+test: 
+	cd minishell_tester && ./tester > results.txt
+	cd minishell_tester && ./tester ./manual_tests/heredoc >> results.txt
+	cd minishell_tester && ./tester ./manual_tests/mandatory >> results.txt
+	cd minishell_tester && ./tester ./manual_tests/not_mandatory >> results.txt
+	cd minishell_tester && ./tester ./manual_tests/signals >> results.txt
 
 .PHONY: all fclean clean re

@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:31:12 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/03 15:09:34 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 15:54:42 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,14 +120,4 @@ char	**env(t_minishell *minishell)
 	}
 	env[i] = NULL;
 	return (env);
-}
-
-void	ft_all_lower(char **str)
-{
-	int	i;
-
-	i = -1;
-	while ((*str)[++i])
-		if ((*str)[i] >= 'A' && (*str)[i] <= 'Z')
-			(*str)[i] = (*str)[i] + 32;
 }

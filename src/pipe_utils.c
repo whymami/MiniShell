@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 16:18:09 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/03 14:55:04 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 17:11:59 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,8 @@ int	create_pipe(t_minishell *minishell)
 	return (SUCCESS);
 }
 
-void	handle_pipe_dup(t_minishell *minishell, int i)
+void	handle_heredoc_dup(t_minishell *minishell, int i)
 {
-	int	j;
-
-	j = -1;
 	if (minishell->hrd_count && minishell->heredoc_fd[i] != -1)
 	{
 		if (dup2(minishell->heredoc_fd[i], STDIN_FILENO) == -1)
@@ -51,6 +48,14 @@ void	handle_pipe_dup(t_minishell *minishell, int i)
 			exit(1);
 		}
 	}
+}
+
+void	handle_pipe_dup(t_minishell *minishell, int i)
+{
+	int	j;
+
+	j = -1;
+	handle_heredoc_dup(minishell, i);
 	if (i != minishell->pipe_count)
 	{
 		if (dup2(minishell->pipe_fd[i * 2 + 1], STDOUT_FILENO) == -1)
@@ -63,6 +68,23 @@ void	handle_pipe_dup(t_minishell *minishell, int i)
 		close(minishell->pipe_fd[j]);
 }
 
+static void	fork_exec(t_minishell *minishell, char ***args, char **cmd, int i)
+{
+	minishell->path = find_path(minishell, cmd[i]);
+	if (execve(minishell->path, args[i], env(minishell)) == -1)
+	{
+		type_control(minishell, args, env(minishell), &i);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(args[i][0], STDERR_FILENO);
+		if (minishell->sign)
+			free(minishell->path);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		exit(127);
+	}
+	if (minishell->sign)
+		free(minishell->path);
+}
+
 void	pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
 {
 	handle_pipe_dup(minishell, i);
@@ -71,25 +93,5 @@ void	pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
 	ft_all_lower(&cmd[i]);
 	if (check_builtin(minishell, cmd, args, &i) == 1)
 		exit(0);
-	if (strcmp(cmd[i], "export") != 0)
-	{
-		minishell->path = find_path(minishell, cmd[i]);
-		if (execve(minishell->path, args[i], env(minishell)) == -1)
-		{
-			type_control(minishell, args, env(minishell), &i);
-			ft_putstr_fd("minishell: ", STDERR_FILENO);
-			ft_putstr_fd(args[i][0], STDERR_FILENO);
-			if (minishell->sign)
-				free(minishell->path);
-			ft_putstr_fd(": command not found\n", STDERR_FILENO);
-			exit(127);
-		}
-		if (minishell->sign)
-			free(minishell->path);
-	}
-	else
-	{
-		type_control(minishell, args, env(minishell), &i);
-		exit(0);
-	}
+	fork_exec(minishell, args, cmd, i);
 }

@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 20:17:02 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/03 15:00:10 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 16:48:56 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ int	ft_pipe(t_minishell *minishell, char **cmd, char ***args)
 		else if (minishell->pid[i] == 0)
 			pipe_fork(minishell, i, cmd, args);
 	}
-	free(minishell->heredoc_fd);
+	if (minishell->hrd_count > 0 && minishell->heredoc_fd)
+		free(minishell->heredoc_fd);
 	return (close_fd(minishell));
 }
 

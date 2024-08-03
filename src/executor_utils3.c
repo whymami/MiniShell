@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 14:57:05 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 15:01:02 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 15:54:45 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,14 @@ void	reset_fd(t_minishell *minishell)
 		dup2(minishell->g_fd.std_in, STD_INPUT);
 		minishell->g_fd.change = 0;
 	}
+}
+
+void	ft_all_lower(char **str)
+{
+	int	i;
+
+	i = -1;
+	while ((*str)[++i])
+		if ((*str)[i] >= 'A' && (*str)[i] <= 'Z')
+			(*str)[i] = (*str)[i] + 32;
 }

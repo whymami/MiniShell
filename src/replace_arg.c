@@ -6,40 +6,39 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 20:21:21 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/03 14:46:21 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 15:54:02 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	if_should(char **input, char **buffer, int *i, int *j)
+void	if_should(char **in, char **buf, int *i, int *j)
 {
-	if (((*input)[(*i)] == '>' || (*input)[(*i)] == '<')
-		&& check_quote((*input), (*i)) == 0)
+	if (((*in)[(*i)] == '>' || (*in)[(*i)] == '<') && check_quote(*in, *i) == 0)
 	{
-		if ((*i) > 0 && (*input)[(*i) - 1] != ' ' && (*input)[(*i) - 1] != '>'
-			&& (*input)[(*i) - 1] != '<')
-			(*buffer)[(*j)++] = ' ';
-		if ((*input)[(*i)] == '>' && (*input)[(*i) + 1] == '>' && ((*i)++)
-			&& ((*i)++))
+		if ((*i) > 0 && (*in)[(*i) - 1] != ' ' && (*in)[(*i) - 1] != '>'
+			&& (*in)[(*i) - 1] != '<')
+			(*buf)[(*j)++] = ' ';
+		if ((*in)[(*i)] == '>' && (*in)[(*i) + 1] == '>')
 		{
-			(*buffer)[(*j)++] = '>';
-			(*buffer)[(*j)++] = '>';
+			(*buf)[(*j)++] = '>';
+			(*buf)[(*j)++] = '>';
+			(*i) += 2;
 		}
-		else if ((*input)[(*i)] == '<' && (*input)[(*i) + 1] == '<' && ((*i)++)
-			&& ((*i)++))
+		else if ((*in)[(*i)] == '<' && (*in)[(*i) + 1] == '<')
 		{
-			(*buffer)[(*j)++] = '<';
-			(*buffer)[(*j)++] = '<';
+			(*buf)[(*j)++] = '<';
+			(*buf)[(*j)++] = '<';
+			(*i) += 2;
 		}
 		else
-			(*buffer)[(*j)++] = (*input)[(*i)++];
-		if ((*i) < (int)ft_strlen(*input) && (*input)[(*i)] != ' '
-			&& (*input)[(*i)] != '>' && (*input)[(*i)] != '<')
-			(*buffer)[(*j)++] = ' ';
+			(*buf)[(*j)++] = (*in)[(*i)++];
+		if ((*i) < (int)ft_strlen(*in) && (*in)[(*i)] != ' '
+			&& (*in)[(*i)] != '>' && (*in)[(*i)] != '<')
+			(*buf)[(*j)++] = ' ';
 	}
 	else
-		(*buffer)[(*j)++] = (*input)[(*i)++];
+		(*buf)[(*j)++] = (*in)[(*i)++];
 }
 
 int	replace_arg(char **args)
