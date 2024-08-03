@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/02 22:07:24 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 13:26:34 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "dlist.h"
 # include "fcntl.h"
-# include "ft_printf.h"
 # include "libft.h"
 # include "signal.h"
 # include "stdio.h"

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:55:17 by halozdem          #+#    #+#             */
-/*   Updated: 2024/08/01 17:02:47 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/03 13:23:23 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	export(t_minishell *minishell, char **args, int *j)
 	{
 		if (arg_check(minishell->args_with_quotes[*j][i]))
 		{
-			ft_printf("minishell: export: `%s':", args[i]);
+			printf("minishell: export: `%s':", args[i]);
 			ft_putstr_fd(" not a valid identifier\n", 2);
 			minishell->exit_code = 1;
 			continue ;

@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 00:03:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 01:25:49 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 13:22:52 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int	heredoc(t_minishell *mini)
 	if (!delimiters)
 		return (0);
 	if (!process_delimiters(mini, delimiters) || !delimiters)
-		return (ft_printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR),
+		return (printf("%s%s `newline'\n", ERR_TITLE, SYNTAX_ERR),
 			mini->exit_code = 2, 1);
 	i = 0;
 	mini->heredoc_fd = (int *)malloc(sizeof(int) * (mini->pipe_count + 1));

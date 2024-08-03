@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   r_direct.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 18:55:19 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/02 18:28:01 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/03 13:29:16 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	check_syntax_errors(char **args)
 		}
 		if ((strcmp(args[i], ">") == 0 || strcmp(args[i], "<") == 0
 				|| strcmp(args[i], ">>") == 0) && (!args[i + 1] || (args[i + 1]
-					&& strlen(args[i + 1]) == 0)))
+					&& ft_strlen(args[i + 1]) == 0)))
 		{
 			err_msg(SYNTAX_ERR, "`newline'", NULL);
 			return (1);

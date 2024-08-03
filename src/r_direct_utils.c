@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   r_direct_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 20:18:41 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/28 20:41:30 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/08/03 13:29:16 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*handle_quotes(const char *str)
 	j = 0;
 	if (!str)
 		return (NULL);
-	result = malloc(strlen(str) + 1);
+	result = malloc(ft_strlen(str) + 1);
 	if (!result)
 		return (NULL);
 	while (str[i])

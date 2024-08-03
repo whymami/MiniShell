@@ -9,7 +9,6 @@ SRC = src/main.c src/parser.c src/lexer.c src/builtin/env.c src/builtin/pwd.c \
 
 CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address # MallocStackLogging=1
 LIBFT = lib/libft/libft.a
-PRINTF = lib/ft_printf/libftprintf.a
 DLIST = lib/dlist/dlist.a
 READLINE = lib/readline/lib/libreadline.a
 
@@ -24,7 +23,7 @@ YELLOW = \033[33m
 GREEN = \033[32m
 RED = \033[31m
 
-all: $(READLINE) $(NAME) $(LIBFT) $(PRINTF) $(DLIST)
+all: $(READLINE) $(NAME) $(LIBFT) $(DLIST)
 
 $(READLINE):
 	@echo "$(BOLD)$(YELLOW)[DOWNLOADING READLINE...]$(RESET)"
@@ -35,10 +34,10 @@ $(READLINE):
 	@cd readline-8.2 && make install
 	@$(RM) readline-8.2
 
-$(NAME): $(LIBFT) $(PRINTF) $(DLIST) $(OBJS)
+$(NAME): $(LIBFT) $(DLIST) $(OBJS)
 	@echo "$(BOLD)$(YELLOW)[COMPILING...]$(RESET)"
 	@sleep 0.5
-	@$(CC) -o $(NAME) $(OBJS) $(CFLAGS) $(LIBFT) $(PRINTF) $(DLIST) -I${PWD}/lib/readline/include/ -lreadline -L${PWD}/lib/readline/lib
+	@$(CC) -o $(NAME) $(OBJS) $(CFLAGS) $(LIBFT) $(DLIST) -I${PWD}/lib/readline/include/ -lreadline -L${PWD}/lib/readline/lib
 	@clear
 	@echo "$(BOLD)$(YELLOW)[COMPILATION COMPLETE]$(RESET)"
 
@@ -46,11 +45,6 @@ $(LIBFT):
 	@echo "$(BOLD)$(GREEN)[BUILDING LIBFT...]$(RESET)"
 	@sleep 0.5
 	@make -C lib/libft
-
-$(PRINTF):
-	@echo "$(BOLD)$(GREEN)[BUILDING FT_PRINTF...]$(RESET)"
-	@sleep 0.5
-	@make -C lib/ft_printf
 
 $(DLIST):
 	@echo "$(BOLD)$(GREEN)[BUILDING DLIST...]$(RESET)"
@@ -65,7 +59,6 @@ fclean: clean
 	@sleep 0.5
 	@$(RM) $(NAME)
 	@make -C lib/libft/ fclean
-	@make -C lib/ft_printf/ fclean
 	@make -C lib/dlist/ fclean
 	@echo "$(BOLD)$(RED)[ALL FİLE DELETED]$(RESET)"
 
@@ -74,7 +67,6 @@ clean:
 	@sleep 0.5
 	@$(RM) $(OBJS)
 	@make -C lib/libft/ clean
-	@make -C lib/ft_printf/ clean
 	@make -C lib/dlist/ clean
 	@echo "$(BOLD)$(RED)[ALL OBJECTS DELETED]$(RESET)"
 

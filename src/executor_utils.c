@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:11:34 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/02 13:00:24 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/03 13:21:49 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
 		{
 			if (!type_control(minishell, args, envs, i))
 				exit(1);
+			ft_putstr_fd("minishell: ", STDOUT_FILENO);
 			ft_putstr_fd(minishell->path, STDERR_FILENO);
 			ft_putstr_fd(": command not found\n", STDERR_FILENO);
 			exit(127);

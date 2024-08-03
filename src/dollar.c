@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:25:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/02 14:03:24 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/03 01:34:46 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	replace_dollar(t_minishell *mini, int *i, char **result)
 	char	*str;
 
 	str = mini->line;
-	if (str[*i] == '$' && str[*i - 1] == '\"' && str[*i + 1] == '\"')
+	if (str[*i] == '$' && str[*i + 1] == '\"')
 	{
 		tmp = *result;
 		*result = ft_strjoin_char(tmp, str[(*i)++]);

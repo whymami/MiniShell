@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:48:57 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/30 15:37:22 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/03 13:23:18 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int	cd(t_minishell *mini, char *av)
 		return (err_msg("cd: ", NULL, "Getcwd error"), EXIT_FAILURE);
 	change_pwd(mini, pwd);
 	if (av && ft_strncmp(av, "-", 1) == 0)
-		ft_printf("%s\n", pwd);
+		printf("%s\n", pwd);
 	if (target_dir != av)
 		free(target_dir);
 	return (EXIT_SUCCESS);

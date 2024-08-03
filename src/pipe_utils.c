@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 16:18:09 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/02 23:51:28 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 13:28:48 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
 	handle_pipe_dup(minishell, i);
 	if (check_direct(minishell, args[i]))
 		exit(1);
-	if (strcmp(cmd[i], "export") != 0)
+	if (ft_strcmp(cmd[i], "export") != 0)
 	{
 		minishell->path = find_path(minishell, cmd[i]);
 		if (execve(minishell->path, args[i], env(minishell)) == -1)

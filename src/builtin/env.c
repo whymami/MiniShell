@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:37:13 by halozdem          #+#    #+#             */
-/*   Updated: 2024/07/28 20:33:32 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/08/03 13:30:32 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	print_env(t_minishell *minishell)
 	t_dlist	*env_data;
 
 	env_data = minishell->env;
-	while (env_data && ft_printf("%s\n", env_data->data))
+	while (env_data && printf("%s\n", env_data->data))
 		env_data = env_data->next;
 }
 
@@ -70,7 +70,7 @@ void	parse_env(t_minishell *minishell, char **env)
 	int	i;
 
 	i = 0;
-	minishell->env = dlist_new(strdup(env[i]));
+	minishell->env = dlist_new(ft_strdup(env[i]));
 	while (env[++i])
-		dlist_add_back(&minishell->env, dlist_new(strdup(env[i])));
+		dlist_add_back(&minishell->env, dlist_new(ft_strdup(env[i])));
 }
