@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 13:36:02 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 15:08:05 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,4 +124,9 @@ void		free_n_null(char **args, int *j);
 int			close_fd(t_minishell *minishell);
 void		handle_signals(void);
 int			check_syntax_errors(char **args);
+void		change_oldpwd(t_dlist *oldpwd_env, t_dlist *pwd_env, char *value);
+void		change_pwd(t_minishell *mini, char *pwd);
+void		ft_all_lower(char **str);
+void	init_cmd(char ***args, char **cmd);
+
 #endif

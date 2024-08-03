@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 15:36:16 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/30 19:35:08 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/03 14:11:03 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,24 +34,25 @@ void	get_ext_code(int *i, t_minishell *mini, char **result)
 	free(num);
 }
 
-void get_env(int *i, t_minishell *mini, char **str, char **result)
+void	get_env(int *i, t_minishell *mini, char **str, char **result)
 {
-    t_dlist *value;
-    int start;
-    char *tmp;
-    char *var;
+	t_dlist	*value;
+	int		start;
+	char	*tmp;
+	char	*var;
+	char	*new_result;
 
-    start = ++(*i);
-    while ((*str)[*i] && ft_isalnum((*str)[*i]))
-        (*i)++;
-    var = ft_substr(*str, start, (*i) - start);
-    value = search_env(mini, var);
-    free(var); 
-    if (!value)
-        return;
-    tmp = get_value(value->data);
-    char *new_result = ft_strjoin(*result, tmp);
-    free(tmp);
-    free(*result);
-    *result = new_result;
+	start = ++(*i);
+	while ((*str)[*i] && ft_isalnum((*str)[*i]))
+		(*i)++;
+	var = ft_substr(*str, start, (*i) - start);
+	value = search_env(mini, var);
+	free(var);
+	if (!value)
+		return ;
+	tmp = get_value(value->data);
+	new_result = ft_strjoin(*result, tmp);
+	free(tmp);
+	free(*result);
+	*result = new_result;
 }

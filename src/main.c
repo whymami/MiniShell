@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 10:46:21 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 13:37:17 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 14:50:56 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	shell_loop(t_minishell *minishell)
 		if (ft_strlen(minishell->line) != 0)
 		{
 			add_history(minishell->line);
-			if (!parser(minishell))       
+			if (!parser(minishell))
 			{
 				dollar(minishell, 0);
 				lexer(minishell);
@@ -85,7 +85,6 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	// handle_signals();
 	// handle_signals();
 	minishell = malloc(sizeof(t_minishell));
 	if (!minishell)

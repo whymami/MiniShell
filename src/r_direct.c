@@ -6,44 +6,17 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 18:55:19 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/03 13:38:07 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 14:48:32 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	check_syntax_errors(char **args)
-{
-	int	i;
-
-	i = -1;
-	while (args[++i])
-	{
-		if ((strcmp(args[i], "<>") == 0) || (strcmp(args[i], "><") == 0))
-		{
-			err_msg(SYNTAX_ERR, "`newline'", NULL);
-			return (1);
-		}
-		if ((strcmp(args[i], ">") == 0 || strcmp(args[i], "<") == 0
-				|| strcmp(args[i], ">>") == 0) && (!args[i + 1] || (args[i + 1]
-					&& ft_strlen(args[i + 1]) == 0)))
-		{
-			err_msg(SYNTAX_ERR, "`newline'", NULL);
-			return (1);
-		}
-		if ((ft_strcmp(args[i], "<<") == 0) && (!args[i + 1] || (args[i + 1]
-					&& strlen(args[i + 1]) == 0)))
-			return (err_msg(SYNTAX_ERR, "`newline'", NULL), 1);
-		if ((ft_strcmp(args[i], ">>>") == 0) || (ft_strcmp(args[i], "<<<") == 0))
-			return (err_msg(SYNTAX_ERR, "`>'", NULL), 1);
-	}
-	return (0);
-}
-
 static int	rdirect_out(char *file, int *j, int append)
 {
 	int		fd;
 	char	*clean_file;
+
 	(void)*j;
 	clean_file = handle_quotes(file);
 	if (append)
@@ -65,6 +38,7 @@ static int	rdirect_in(char *file, int *j)
 {
 	int		fd;
 	char	*clean_file;
+
 	(void)*j;
 	clean_file = handle_quotes(file);
 	fd = open(clean_file, O_RDONLY);
@@ -79,9 +53,8 @@ static int	rdirect_in(char *file, int *j)
 	return (close(fd), 0);
 }
 
-int	find_exec(t_minishell *mini, char **args, int *j, int *i, char **file)
+int	find_exec(char **args, int *j, int *i, char **file)
 {
-	(void)mini;
 	if ((ft_strcmp(args[(*j)], ">") == 0 && args[(*j) + 1])
 		|| (ft_strcmp(args[(*j)], ">>") == 0 && args[(*j) + 1]))
 	{
@@ -103,9 +76,7 @@ int	find_exec(t_minishell *mini, char **args, int *j, int *i, char **file)
 		free_n_null(args, j);
 	}
 	else
-	{
 		args[(*i)++] = args[(*j)++];
-	}
 	return (SUCCESS);
 }
 
@@ -120,7 +91,7 @@ static int	ft_rdirect(t_minishell *mini, char **args)
 	dup_fd(mini);
 	while (args[j])
 	{
-		if (find_exec(mini, args, &j, &i, &file))
+		if (find_exec(args, &j, &i, &file))
 			return (FAILURE);
 	}
 	args[i] = NULL;
@@ -132,8 +103,6 @@ int	check_direct(t_minishell *mini, char **args)
 	int	j;
 
 	j = -1;
-	// if (check_syntax_errors(args))
-	// 	return (mini->exit_code = 2, FAILURE);
 	while ((args)[++j])
 	{
 		if ((!ft_strcmp((args)[j], ">") || !ft_strcmp((args)[j], "<")

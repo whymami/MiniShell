@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:25:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 01:34:46 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 14:10:44 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,27 +37,23 @@ static int	empty_dollar(char *str)
 	int	i;
 	int	sign;
 
-	i = 0;
+	i = -1;
 	sign = 0;
-	while ((str)[i])
-	{
+	while ((str)[++i])
 		if (str[i] == '$')
 			sign = 1;
-		i++;
-	}
 	if (sign == 0)
 		return (1);
-	i = 0;
-	while (str[i])
+	i = -1;
+	while (str[++i])
 	{
 		if (str[i] == '$')
 		{
 			if ((!ft_isalnum(str[i + 1]) && (str[i + 1] != '?') && (str[i
-						+ 1] != '$') && (str[i + 1] != '\'') && (str[i
-						+ 1] != '\"')))
+							+ 1] != '$') && (str[i + 1] != '\'') && (str[i
+							+ 1] != '\"')))
 				return (1);
 		}
-		i++;
 	}
 	return (0);
 }

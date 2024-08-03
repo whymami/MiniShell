@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   replace_arg.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 20:21:21 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/29 11:03:04 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/03 14:46:21 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ void	if_should(char **input, char **buffer, int *i, int *j)
 		if ((*i) > 0 && (*input)[(*i) - 1] != ' ' && (*input)[(*i) - 1] != '>'
 			&& (*input)[(*i) - 1] != '<')
 			(*buffer)[(*j)++] = ' ';
-		if ((*input)[(*i)] == '>' && (*input)[(*i) + 1] == '>')
+		if ((*input)[(*i)] == '>' && (*input)[(*i) + 1] == '>' && ((*i)++)
+			&& ((*i)++))
 		{
 			(*buffer)[(*j)++] = '>';
 			(*buffer)[(*j)++] = '>';
-			(*i) += 2;
 		}
-		else if ((*input)[(*i)] == '<' && (*input)[(*i) + 1] == '<')
+		else if ((*input)[(*i)] == '<' && (*input)[(*i) + 1] == '<' && ((*i)++)
+			&& ((*i)++))
 		{
 			(*buffer)[(*j)++] = '<';
 			(*buffer)[(*j)++] = '<';
-			(*i) += 2;
 		}
 		else
 			(*buffer)[(*j)++] = (*input)[(*i)++];

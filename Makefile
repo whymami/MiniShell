@@ -4,8 +4,9 @@ SRC = src/main.c src/parser.c src/lexer.c src/builtin/env.c src/builtin/pwd.c \
 	src/builtin/unset.c src/builtin/export.c src/builtin/cd.c src/builtin/echo.c \
 	src/builtin/exit.c src/executor.c src/pipe.c src/signal.c src/r_direct.c \
 	src/heredoc.c src/dollar.c src/utils.c src/executor_quotes.c src/executor_utils.c \
-	src/executor_utils2.c src/dollar_utils.c src/heredoc_utils.c src/pipe_utils.c \
-	src/utils1.c src/mini_split.c src/r_direct_utils.c src/replace_arg.c
+	src/executor_utils2.c src/executor_utils3.c src/dollar_utils.c src/heredoc_utils.c src/pipe_utils.c \
+	src/utils1.c src/mini_split.c src/r_direct_utils.c src/replace_arg.c \
+	src/builtin/cd_utils.c
 
 CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address # MallocStackLogging=1
 LIBFT = lib/libft/libft.a

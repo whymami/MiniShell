@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 03:46:08 by halozdem          #+#    #+#             */
-/*   Updated: 2024/08/03 02:35:09 by muguveli         ###   ########.fr       */
+/*   Updated: 2024/08/03 14:50:19 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	pass_space(char *line, int *i)
 static int	check_pipe(char *line, int i)
 {
 	if (line[i] == '|' && !check_quote(line, i) && line[i + 1] && line[i
-		+ 1] == '|')
+			+ 1] == '|')
 		return (err_msg(SYNTAX_ERR, " `||\'", NULL), FAILURE);
 	else if (line[0] == '|' && !check_quote(line, i))
 		return (err_msg(SYNTAX_ERR, " `|\'", NULL), FAILURE);

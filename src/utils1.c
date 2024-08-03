@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 17:48:35 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/30 19:23:38 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/03 14:42:59 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,27 +55,27 @@ void	free_args(char ***args)
 	free(args);
 }
 
-char *ft_strjoin_char(char *s1, char c)
+char	*ft_strjoin_char(char *s1, char c)
 {
-    char *result;
-    int len;
+	char	*result;
+	int		len;
 
-    if (!s1)
-    {
-        result = malloc(2);
-        if (!result)
-            return (NULL);
-        result[0] = c;
-        result[1] = '\0';
-        return (result);
-    }
-    len = ft_strlen(s1);
-    result = malloc(len + 2);
-    if (!result)
-        return (NULL);
-    ft_strlcpy(result, s1, len + 1);
-    result[len] = c;
-    result[len + 1] = '\0';
+	if (!s1)
+	{
+		result = malloc(2);
+		if (!result)
+			return (NULL);
+		result[0] = c;
+		result[1] = '\0';
+		return (result);
+	}
+	len = ft_strlen(s1);
+	result = malloc(len + 2);
+	if (!result)
+		return (NULL);
+	ft_strlcpy(result, s1, len + 1);
+	result[len] = c;
+	result[len + 1] = '\0';
 	free(s1);
-    return (result);
+	return (result);
 }

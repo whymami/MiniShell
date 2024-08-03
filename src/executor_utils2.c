@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
+/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:31:12 by muguveli          #+#    #+#             */
-/*   Updated: 2024/07/30 19:04:44 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/03 15:09:34 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,22 +58,11 @@ int	cpy_arg(t_minishell *minishell)
 	return (SUCCESS);
 }
 
-char	*find_path(t_minishell *minishell, char *cmd)
+char	*search_path(char **path_split, char *temp, t_minishell *minishell)
 {
-	char	*temp;
-	char	**path_split;
 	int		i;
-	t_dlist	*path_list;
 	char	*path_cmd;
 
-	temp = ft_strjoin("/", cmd);
-	path_list = search_env(minishell, "PATH");
-	if (!path_list)
-	{
-		minishell->sign = 0;
-		return (free(temp), cmd);
-	}
-	path_split = ft_split(path_list->data + 5, ':');
 	i = -1;
 	while (path_split[++i])
 	{
@@ -87,6 +76,27 @@ char	*find_path(t_minishell *minishell, char *cmd)
 		}
 		free(path_cmd);
 	}
+	return (NULL);
+}
+
+char	*find_path(t_minishell *minishell, char *cmd)
+{
+	char	*temp;
+	char	**path_split;
+	t_dlist	*path_list;
+	char	*path_cmd;
+
+	temp = ft_strjoin("/", cmd);
+	path_list = search_env(minishell, "PATH");
+	if (!path_list)
+	{
+		minishell->sign = 0;
+		return (free(temp), cmd);
+	}
+	path_split = ft_split(path_list->data + 5, ':');
+	path_cmd = search_path(path_split, temp, minishell);
+	if (path_cmd != NULL)
+		return (path_cmd);
 	free_split(path_split);
 	minishell->sign = 0;
 	return (free(temp), cmd);
@@ -110,4 +120,14 @@ char	**env(t_minishell *minishell)
 	}
 	env[i] = NULL;
 	return (env);
+}
+
+void	ft_all_lower(char **str)
+{
+	int	i;
+
+	i = -1;
+	while ((*str)[++i])
+		if ((*str)[i] >= 'A' && (*str)[i] <= 'Z')
+			(*str)[i] = (*str)[i] + 32;
 }

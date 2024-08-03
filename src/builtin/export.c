@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:55:17 by halozdem          #+#    #+#             */
-/*   Updated: 2024/08/03 13:23:23 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 14:40:32 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,7 @@ void	export(t_minishell *minishell, char **args, int *j)
 	{
 		if (arg_check(minishell->args_with_quotes[*j][i]))
 		{
-			printf("minishell: export: `%s':", args[i]);
-			ft_putstr_fd(" not a valid identifier\n", 2);
+			err_msg("export: `", args[i], "': not a valid identifier");
 			minishell->exit_code = 1;
 			continue ;
 		}

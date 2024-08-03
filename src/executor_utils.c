@@ -6,50 +6,17 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:11:34 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/03 13:36:41 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 15:01:43 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include <dirent.h>
 
-void	ft_all_lower(char **str)
+int	check_other_builtins(t_minishell *minishell, char **cmd, char ***args,
+		int *i)
 {
-	int	i;
-
-	i = -1;
-	while ((*str)[++i])
-		if ((*str)[i] >= 'A' && (*str)[i] <= 'Z')
-			(*str)[i] = (*str)[i] + 32;
-}
-
-int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
-{
-	if (cmd[*i] == NULL)
-		return (1);
-	ft_all_lower(&cmd[*i]);
-	if (ft_strcmp(cmd[*i], "env") == 0)
-	{
-		minishell->exit_code = 0;
-		print_env(minishell);
-	}
-	else if (ft_strcmp(cmd[*i], "export") == 0)
-	{
-		export(minishell, (*args), i);
-		if (minishell->exit_code != 1)
-			minishell->exit_code = 0;
-	}
-	else if (ft_strcmp(cmd[*i], "pwd") == 0)
-	{
-		get_pwd();
-		minishell->exit_code = 0;
-	}
-	else if (ft_strcmp(cmd[*i], "unset") == 0)
-	{
-		unset(minishell, (*args));
-		minishell->exit_code = 0;
-	}
-	else if (ft_strcmp(cmd[*i], "cd") == 0)
+	if (ft_strcmp(cmd[*i], "cd") == 0)
 	{
 		cd(minishell, (*args)[1]);
 		if (minishell->exit_code != 1)
@@ -60,16 +27,46 @@ int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 		echo(args[*i]);
 		minishell->exit_code = 0;
 	}
-	else if (ft_strcmp(cmd[*i], "exit") == 0)
+	else if (ft_strcmp(cmd[*i], "unset") == 0)
 	{
-		ft_exit(minishell, (*args));
-		minishell->exit_code = 0;
+		unset(minishell, (*args));
+		if (minishell->exit_code != 1)
+			minishell->exit_code = 0;
 	}
 	else
 		return (0);
 	reset_fd(minishell);
 	if (args)
 		free_args(args);
+	return (1);
+}
+
+int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
+{
+	if (cmd[*i] == NULL)
+		return (1);
+	if (ft_strcmp(cmd[*i], "env") == 0)
+	{
+		print_env(minishell);
+		minishell->exit_code = 0;
+	}
+	else if (ft_strcmp(cmd[*i], "export") == 0)
+	{
+		minishell->exit_code = 0;
+		export(minishell, (*args), i);
+	}
+	else if (ft_strcmp(cmd[*i], "pwd") == 0)
+	{
+		get_pwd();
+		minishell->exit_code = 0;
+	}
+	else if (ft_strcmp(cmd[*i], "exit") == 0)
+	{
+		ft_exit(minishell, (*args));
+		minishell->exit_code = 0;
+	}
+	else
+		return (check_other_builtins(minishell, cmd, args, i));
 	return (1);
 }
 
@@ -99,16 +96,6 @@ void	check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
 		reset_fd(minishell);
 		free(envs);
 		free_args(args);
-	}
-}
-
-void	reset_fd(t_minishell *minishell)
-{
-	if (minishell->g_fd.change)
-	{
-		dup2(minishell->g_fd.std_out, STD_OUTPUT);
-		dup2(minishell->g_fd.std_in, STD_INPUT);
-		minishell->g_fd.change = 0;
 	}
 }
 
@@ -142,6 +129,7 @@ int	type_control(t_minishell *minishell, char ***args, char **envs, int *i)
 {
 	if (ft_strncmp((*args)[0], "./", 2) == 0 || ft_strncmp((*args)[0], "/",
 			1) == 0)
+	{
 		if (execve((*args)[0], args[*i], envs) == -1)
 		{
 			arg_type(minishell, (*args)[0]);
@@ -149,5 +137,6 @@ int	type_control(t_minishell *minishell, char ***args, char **envs, int *i)
 				free(minishell->path);
 			return (exit(minishell->exit_code), 0);
 		}
+	}
 	return (FAILURE);
 }

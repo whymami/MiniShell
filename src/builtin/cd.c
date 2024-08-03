@@ -6,44 +6,24 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:48:57 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 13:23:18 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 13:56:30 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	change_pwd(t_minishell *mini, char *pwd)
+int	change_dir(t_minishell *mini, char *target_dir, char *av, char *pwd)
 {
-	t_dlist	*pwd_env;
-	t_dlist	*oldpwd_env;
-	char	*value;
-
-	pwd_env = search_env(mini, "PWD");
-	oldpwd_env = search_env(mini, "OLDPWD");
-	value = NULL;
-	if (oldpwd_env && pwd_env)
-	{
-		value = get_value(pwd_env->data);
-		if (value)
-		{
-			free(oldpwd_env->data);
-			oldpwd_env->data = ft_strjoin("OLDPWD=", value);
-			free(value);
-		}
-	}
-	if (pwd_env)
-	{
-		if (!oldpwd_env)
-		{
-			char *oldpwd_str = ft_strjoin("OLDPWD=", mini->oldpwd);
-			dlist_add_back(&mini->env, dlist_new(oldpwd_str));
-			free(oldpwd_str);
-			if (mini->oldpwd)
-				free(mini->oldpwd);
-		}
-		free(pwd_env->data);
-		pwd_env->data = ft_strjoin("PWD=", pwd);
-	}
+	if (chdir(target_dir) == -1)
+		return (perror("minishell: cd"), mini->exit_code = 1, EXIT_FAILURE);
+	if (!getcwd(pwd, 4096))
+		return (err_msg("cd: ", NULL, "Getcwd error"), EXIT_FAILURE);
+	change_pwd(mini, pwd);
+	if (av && ft_strncmp(av, "-", 1) == 0)
+		printf("%s\n", pwd);
+	if (target_dir != av)
+		free(target_dir);
+	return (SUCCESS);
 }
 
 static int	check_meta(char *av, t_minishell *mini, t_dlist **path)
@@ -108,15 +88,7 @@ int	cd(t_minishell *mini, char *av)
 	err = get_target_directory(mini, av, &target_dir);
 	if (err == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (chdir(target_dir) == -1)
-		return (perror("minishell: cd"),
-			mini->exit_code = 1, EXIT_FAILURE);
-	if (!getcwd(pwd, 4096))
-		return (err_msg("cd: ", NULL, "Getcwd error"), EXIT_FAILURE);
-	change_pwd(mini, pwd);
-	if (av && ft_strncmp(av, "-", 1) == 0)
-		printf("%s\n", pwd);
-	if (target_dir != av)
-		free(target_dir);
+	if (change_dir(mini, target_dir, av, pwd))
+		return (FAILURE);
 	return (EXIT_SUCCESS);
 }

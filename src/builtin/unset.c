@@ -6,7 +6,7 @@
 /*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 00:22:45 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 13:23:09 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 14:41:24 by eyasa            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	unset(t_minishell *mini, char **key)
 	{
 		if (key_validation(key[i]))
 		{
-			printf("%sunset: `%s': not a valid identifier\n", ERR_TITLE,
-				key[i]);
+			err_msg("unset: `", key[i], "': not a valid identifier");
+			mini->exit_code = 1;
 			continue ;
 		}
 		if (!ft_strcmp(key[i], "_"))
