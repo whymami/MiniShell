@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   r_direct_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 20:18:41 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/03 17:31:01 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 18:23:30 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,11 @@ int	check_syntax_errors(char **args)
 
 void	dup_fd(t_minishell *mini)
 {
-	if (mini->g_fd.change == 0)
+	if (mini->fd_handler.change == 0)
 	{
-		mini->g_fd.std_in = dup(0);
-		mini->g_fd.std_out = dup(1);
-		mini->g_fd.change = 1;
+		mini->fd_handler.std_in = dup(0);
+		mini->fd_handler.std_out = dup(1);
+		mini->fd_handler.change = 1;
 	}
 }
 

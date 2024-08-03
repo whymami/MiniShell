@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 18:55:17 by halozdem          #+#    #+#             */
-/*   Updated: 2024/08/03 17:30:33 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 17:46:13 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	print_export(char **args, t_minishell *minishell)
 		dlist_sort(&new, ft_strcmp);
 		while (new)
 		{
-			write(1, "declare -x ", 12);
+			ft_putstr_fd("declare -x ", 1);
 			write(1, (char *)new->data, get_key(new->data));
 			value = get_value(new->data);
 			if (value && write(1, "=\"", 2) && write(1, value,

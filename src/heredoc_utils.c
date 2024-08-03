@@ -3,14 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 16:00:18 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/02 23:26:33 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 18:31:03 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+int	check_heredoc_syntax_errors(char **args)
+{
+	int	i;
+	int	len;
+
+	if (check_syntax_errors(args))
+		return (1);
+	i = -1;
+	while (args[++i])
+	{
+		len = ft_strlen(args[i]);
+		if (len >= 2 && ft_strncmp(args[i], "<<", 2) == 0)
+		{
+			if (len > 2)
+				return (err_msg(SYNTAX_ERR, "`<<'", NULL), 1);
+			if (args[i + 1] && ft_strncmp(args[i + 1], ">>", 2) == 0)
+				return (err_msg(SYNTAX_ERR, "`>>'", NULL), 1);
+			if (args[i + 1] && ft_strncmp(args[i + 1], "<<", 2) == 0)
+				return (err_msg(SYNTAX_ERR, "`<<'", NULL), 1);
+		}
+	}
+	return (0);
+}
 
 char	**get_delimiters(t_minishell *mini, char **args)
 {

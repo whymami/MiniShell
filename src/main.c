@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 10:46:21 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 16:45:56 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 18:38:56 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	init_data(t_minishell *minishell, int i)
 	minishell->hrd_count = 0;
 	minishell->sign = 0;
 	minishell->in_heredoc = 0;
-	minishell->g_fd.change = 0;
+	minishell->fd_handler.change = 0;
 }
 
 int	minishell_routine(t_minishell *minishell)

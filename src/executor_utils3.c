@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils3.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 14:57:05 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 15:54:45 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 18:23:30 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ void	init_cmd(char ***args, char **cmd)
 
 void	reset_fd(t_minishell *minishell)
 {
-	if (minishell->g_fd.change)
+	if (minishell->fd_handler.change)
 	{
-		dup2(minishell->g_fd.std_out, STD_OUTPUT);
-		dup2(minishell->g_fd.std_in, STD_INPUT);
-		minishell->g_fd.change = 0;
+		dup2(minishell->fd_handler.std_out, STD_OUTPUT);
+		dup2(minishell->fd_handler.std_in, STD_INPUT);
+		minishell->fd_handler.change = 0;
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:11:34 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/03 15:38:58 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 18:20:19 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,8 @@ int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 		minishell->exit_code = 0;
 		export(minishell, (*args), i);
 	}
-	else if (ft_strcmp(cmd[*i], "pwd") == 0)
-	{
-		get_pwd();
+	else if (ft_strcmp(cmd[*i], "pwd") == 0 && get_pwd())
 		minishell->exit_code = 0;
-	}
 	else if (ft_strcmp(cmd[*i], "exit") == 0)
 	{
 		ft_exit(minishell, (*args));
@@ -67,7 +64,9 @@ int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 	}
 	else
 		return (check_other_builtins(minishell, cmd, args, i));
-	return (1);
+	if (args)
+		free_args(args);
+	return (reset_fd(minishell), 1);
 }
 
 void	check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)

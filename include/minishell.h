@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 15:08:05 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 18:31:14 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ typedef struct s_minishell
 	char	***args_with_quotes;
 	t_dlist	*tokens;
 	t_dlist	*hrd_cmd;
-	t_fd	g_fd;
+	t_fd	fd_handler;
 	int		in_heredoc;
 	int		exit_code;
 	int		status;
@@ -127,6 +127,7 @@ int			check_syntax_errors(char **args);
 void		change_oldpwd(t_dlist *oldpwd_env, t_dlist *pwd_env, char *value);
 void		change_pwd(t_minishell *mini, char *pwd);
 void		ft_all_lower(char **str);
-void	init_cmd(char ***args, char **cmd);
+void		init_cmd(char ***args, char **cmd);
+int			check_heredoc_syntax_errors(char **args);
 
 #endif

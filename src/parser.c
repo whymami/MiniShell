@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/05 03:46:08 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 16:29:47 by eyasa            ###   ########.fr       */
+/*   Updated: 2024/08/03 18:37:19 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	pass_space(char *line, int *i)
 static int	check_pipe(char *line, int i)
 {
 	if (line[i] == '|' && !check_quote(line, i) && line[i + 1] && line[i
-			+ 1] == '|')
+		+ 1] == '|')
 		return (err_msg(SYNTAX_ERR, " `||\'", NULL), FAILURE);
 	else if (line[0] == '|' && !check_quote(line, i))
 		return (err_msg(SYNTAX_ERR, " `|\'", NULL), FAILURE);
@@ -90,8 +90,11 @@ int	parser(t_minishell *minishell)
 		return (free(line), FAILURE);
 	quote = check_quote(line, ft_strlen(line));
 	if (quote)
+	{
+		minishell->exit_code = 2;
 		return (free(line), ft_putstr_fd(SYNTAX_ERR " ` ", 2),
 			ft_putchar_fd(quote, 2), ft_putstr_fd("\'\n", 2), FAILURE);
+	}
 	if (check_line(minishell, line))
 		return (FAILURE);
 	return (SUCCESS);
