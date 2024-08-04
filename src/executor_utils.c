@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:11:34 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/03 22:45:39 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/03 18:20:19 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,10 @@ int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 void	check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
 {
 	char	**envs;
+	int		j;
 
 	envs = env(minishell);
+	j = 0;
 	if ((*pid) == 0)
 	{
 		if (execve(minishell->path, (*args), envs) == -1)

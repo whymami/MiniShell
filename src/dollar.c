@@ -5,24 +5,25 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 16:25:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 23:25:26 by btanir           ###   ########.fr       */
+/*   Created: 2024/07/16 16:25:44 by muguveli          #+#    #+#             */
+/*   Updated: 2024/08/04 10:10:13 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void replace_dollar(t_minishell *mini, int *i, char **result)
+static void	replace_dollar(t_minishell *mini, int *i, char **result)
 {
-	char *tmp;
-	char *str;
+	char	*tmp;
+	char	*str;
 
 	str = mini->line;
-	if (str[*i] == '$' && str[*i - 1] && str[*i - 1] == '\"' && str[*i + 1] == '\"' && check_quote(str, *i))
+	if (str[*i] == '$' && str[*i - 1] && str[*i - 1] == '\"' && str[*i
+			+ 1] == '\"' && check_quote(str, *i))
 	{
 		tmp = *result;
 		*result = ft_strjoin_char(tmp, str[(*i)++]);
-		return;
+		return ;
 	}
 	if (str[*i] == '$' && str[(*i) + 1] && str[(*i) + 1] == '?')
 		return (get_ext_code(i, mini, result));
@@ -32,10 +33,10 @@ static void replace_dollar(t_minishell *mini, int *i, char **result)
 	*result = ft_strjoin_char(tmp, str[(*i)++]);
 }
 
-static int empty_dollar(char *str)
+static int	empty_dollar(char *str)
 {
-	int i;
-	int sign;
+	int	i;
+	int	sign;
 
 	i = -1;
 	sign = 0;
@@ -49,22 +50,24 @@ static int empty_dollar(char *str)
 	{
 		if (str[i] == '$')
 		{
-			if ((!ft_isalnum(str[i + 1]) && str[i + 1] != '\0' && (str[i + 1] != '?') && (str[i + 1] != '$') && (str[i + 1] != '\'') && (str[i + 1] != '\"')))
+			if ((!ft_isalnum(str[i + 1]) && str[i + 1] != '\0' && (str[i
+							+ 1] != '?') && (str[i + 1] != '$') && (str[i
+							+ 1] != '\'') && (str[i + 1] != '\"')))
 				return (1);
 		}
 	}
 	return (0);
 }
 
-void dollar(t_minishell *mini, int i)
+void	dollar(t_minishell *mini, int i)
 {
-	char *result;
-	char *tmp;
-	char quote;
+	char	*result;
+	char	*tmp;
+	char	quote;
 
 	quote = 0;
 	if (empty_dollar(mini->line))
-		return;
+		return ;
 	result = ft_strdup("");
 	while (mini->line[i])
 	{

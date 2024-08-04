@@ -8,7 +8,7 @@ SRC = src/main.c src/parser.c src/lexer.c src/builtin/env.c src/builtin/pwd.c \
 	src/utils1.c src/mini_split.c src/r_direct_utils.c src/replace_arg.c \
 	src/builtin/cd_utils.c
 
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address # MallocStackLogging=1
+CFLAGS = -Wall -Wextra -Werror
 LIBFT = lib/libft/libft.a
 DLIST = lib/dlist/dlist.a
 READLINE = lib/readline/lib/libreadline.a
@@ -72,12 +72,5 @@ clean:
 	@echo "$(BOLD)$(RED)[ALL OBJECTS DELETED]$(RESET)"
 
 re: fclean all
-
-test: 
-	cd minishell_tester && ./tester > results.txt
-	cd minishell_tester && ./tester ./manual_tests/heredoc >> results.txt
-	cd minishell_tester && ./tester ./manual_tests/mandatory >> results.txt
-	cd minishell_tester && ./tester ./manual_tests/not_mandatory >> results.txt
-	cd minishell_tester && ./tester ./manual_tests/signals >> results.txt
 
 .PHONY: all fclean clean re

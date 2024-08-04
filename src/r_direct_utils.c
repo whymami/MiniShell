@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 20:18:41 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/03 18:23:30 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/04 11:25:09 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,19 @@ int	check_syntax_errors(char **args)
 	while (args[++i])
 	{
 		if ((ft_strcmp(args[i], "<>") == 0) || (ft_strcmp(args[i], "><") == 0))
-		{
-			err_msg(SYNTAX_ERR, "`newline'", NULL);
-			return (1);
-		}
+			return (err_msg(SYNTAX_ERR, "`newline'", NULL), 1);
 		if ((ft_strcmp(args[i], ">") == 0 || ft_strcmp(args[i], "<") == 0
-				|| ft_strcmp(args[i], ">>") == 0) && (!args[i + 1] || (args[i
-						+ 1] && ft_strlen(args[i + 1]) == 0)))
+				|| ft_strcmp(args[i], ">>") == 0))
 		{
-			err_msg(SYNTAX_ERR, "`newline'", NULL);
-			return (1);
+			if ((!args[i + 1] || (args[i + 1] && ft_strlen(args[i + 1]) == 0)))
+				return (err_msg(SYNTAX_ERR, "`newline'", NULL), 1);
+			if (args[i + 1] && (!ft_strcmp(args[i + 1], "<")
+					|| !ft_strcmp(args[i + 1], ">") || !ft_strcmp(args[i + 1],
+						">>")))
+				return (err_msg(SYNTAX_ERR, "`newline'", NULL), 1);
 		}
 		if ((ft_strcmp(args[i], "<<") == 0) && (!args[i + 1] || (args[i + 1]
-					&& strlen(args[i + 1]) == 0)))
+					&& ft_strlen(args[i + 1]) == 0)))
 			return (err_msg(SYNTAX_ERR, "`newline'", NULL), 1);
 		if ((ft_strcmp(args[i], ">>>") == 0) || (ft_strcmp(args[i],
 					"<<<") == 0))

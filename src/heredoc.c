@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/23 00:03:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 18:30:56 by btanir           ###   ########.fr       */
+/*   Created: 2024/07/23 00:03:44 by btanir            #+#    #+#             */
+/*   Updated: 2024/08/04 12:38:15 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,15 @@ int	heredoc_loop(t_minishell *mini, char **delimiters, int *j, int *fd)
 	while (1)
 	{
 		line = readline("> ");
+		if (!line)
+			return (FAILURE);
 		if (g_sig == 1)
 		{
 			if (mini->pipe_count == 0)
 				reset_fd(mini);
 			return (free(line), FAILURE);
 		}
-		if (!line || ft_strcmp(line, delimiters[(*j)]) == 0)
+		if (ft_strcmp(line, delimiters[(*j)]) == 0)
 		{
 			free(line);
 			(*j)++;
