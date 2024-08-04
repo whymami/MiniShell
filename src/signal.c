@@ -29,10 +29,15 @@ void	ctrl_d(int sig)
 void	ctrl_c(int sig)
 {
 	(void)sig;
-	if (g_sig == 2)
+	if (g_sig == IN_HEREDOC)
 	{
 		write(1, "\033[A", 3);
 		ioctl(0, TIOCSTI, "\n");
+	}
+	else if (g_sig == IN_CMD)
+	{
+		rl_on_new_line();
+		g_sig = AFTER_CMD;
 	}
 	else
 	{

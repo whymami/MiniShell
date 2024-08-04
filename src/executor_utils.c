@@ -94,6 +94,7 @@ void	check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
 		free(envs);
 		free_args(args);
 	}
+	g_sig = AFTER_CMD;
 }
 
 static void	arg_type(t_minishell *minishell, char *arg)

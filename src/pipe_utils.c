@@ -90,6 +90,8 @@ void	pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
 	handle_pipe_dup(minishell, i);
 	if (check_direct(minishell, args[i]))
 		exit(1);
+	if (args[i][0] == NULL)
+		exit(0);
 	ft_all_lower(&cmd[i]);
 	if (check_builtin(minishell, cmd, args, &i) == 1)
 		exit(minishell->exit_code);

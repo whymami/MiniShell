@@ -21,6 +21,7 @@ int	create_fork(t_minishell *minishell, char **cmd, char ***args, int *i)
 		minishell->path = find_path(minishell, cmd[*i]);
 	else
 		minishell->path = cmd[*i];
+	g_sig = IN_CMD;
 	pid = fork();
 	if (pid < 0)
 	{

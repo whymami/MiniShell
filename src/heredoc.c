@@ -52,8 +52,11 @@ int	heredoc_loop(t_minishell *mini, char **delimiters, int *j, int *fd)
 			(*j)++;
 			break ;
 		}
-		ft_putstr_fd(line, fd[1]);
-		ft_putchar_fd('\n', fd[1]);
+		if (delimiters[(*j) +1] == NULL)
+		{
+			ft_putstr_fd(line, fd[1]);
+			ft_putchar_fd('\n', fd[1]);
+		}
 		free(line);
 	}
 	return (SUCCESS);

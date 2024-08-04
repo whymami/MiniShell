@@ -62,6 +62,9 @@ typedef struct s_minishell
 
 # define SUCCESS 0
 # define FAILURE 1
+# define IN_HEREDOC 2
+# define IN_CMD 4
+# define AFTER_CMD 5
 # define ERR_TITLE "minishell: "
 # define SYNTAX_ERR "syntax error near unexpected token "
 
@@ -89,7 +92,6 @@ int			create_fork(t_minishell *minishell, char **cmd, char ***args,
 int			multiple_command(t_minishell *minishell);
 char		**env(t_minishell *minishell);
 char		*find_path(t_minishell *minishell, char *cmd);
-void		signal_handler(int signo);
 int			heredoc(t_minishell *mini);
 int			check_direct(t_minishell *minishell, char **args);
 void		dollar(t_minishell *mini, int i);
@@ -113,7 +115,6 @@ void		get_ext_code(int *i, t_minishell *mini, char **result);
 void		get_env(int *i, t_minishell *mini, char **str, char **result);
 char		**get_delimiters(t_minishell *mini, char **args);
 void		null_heredoc_args(char **args);
-char		**merge_delimiters(char **delimiters, char **temp_delimiters);
 int			create_pipe(t_minishell *minishell);
 void		handle_pipe_dup(t_minishell *minishell, int i);
 void		pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args);
