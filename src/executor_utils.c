@@ -72,10 +72,8 @@ int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 void	check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
 {
 	char	**envs;
-	int		j;
 
 	envs = env(minishell);
-	j = 0;
 	if ((*pid) == 0)
 	{
 		if (execve(minishell->path, (*args), envs) == -1)

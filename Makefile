@@ -38,7 +38,7 @@ $(READLINE):
 $(NAME): $(LIBFT) $(DLIST) $(OBJS)
 	@echo "$(BOLD)$(YELLOW)[COMPILING...]$(RESET)"
 	@sleep 0.5
-	@$(CC) -o $(NAME) $(OBJS) $(CFLAGS) $(LIBFT) $(DLIST) -I${PWD}/lib/readline/include/ -lreadline -L${PWD}/lib/readline/lib
+	@$(CC) -o $(NAME) $(OBJS) $(CFLAGS) $(LIBFT) $(DLIST) -I${PWD}/lib/readline/include/ -lreadline -L${PWD}/lib/readline/lib -lncurses
 	@clear
 	@echo "$(BOLD)$(YELLOW)[COMPILATION COMPLETE]$(RESET)"
 
