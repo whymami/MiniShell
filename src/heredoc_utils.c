@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 16:00:18 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/03 18:49:14 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/05 19:10:06 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,13 @@ void	null_heredoc_args(char **args)
 		}
 	}
 	args[j] = NULL;
+}
+
+void	print_hrd_fd(int *j, char **delimiters, char *line, int *fd)
+{
+	if (delimiters[(*j) + 1] == NULL)
+	{
+		ft_putstr_fd(line, fd[1]);
+		ft_putchar_fd('\n', fd[1]);
+	}
 }

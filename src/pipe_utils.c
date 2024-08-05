@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 16:18:09 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/05 15:40:31 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/05 19:09:40 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ static void	fork_exec(t_minishell *minishell, char ***args, char **cmd, int i)
 
 void	pipe_fork(t_minishell *minishell, int i, char **cmd, char ***args)
 {
-	char * cmd_lower;
+	char	*cmd_lower;
+
 	handle_pipe_dup(minishell, i);
 	if (check_direct(minishell, args[i]))
 		exit(1);

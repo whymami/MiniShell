@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by btanir            #+#    #+#             */
-/*   Updated: 2024/08/05 15:34:58 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/05 19:05:21 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,5 +130,6 @@ void		change_pwd(t_minishell *mini, char *pwd);
 char		*ft_all_lower(char *str);
 void		init_cmd(char ***args, char **cmd);
 int			check_heredoc_syntax_errors(char **args);
+void	print_hrd_fd(int *j, char **delimiters, char *line, int *fd);
 
 #endif

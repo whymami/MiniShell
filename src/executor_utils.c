@@ -6,15 +6,15 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:11:34 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/05 15:36:00 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/05 19:10:19 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include <dirent.h>
 
-int check_other_builtins(t_minishell *minishell, char *cmd, char ***args,
-						 int *i)
+int	check_other_builtins(t_minishell *minishell, char *cmd, char ***args,
+		int *i)
 {
 	if (ft_strcmp(cmd, "cd") == 0)
 	{
@@ -41,7 +41,7 @@ int check_other_builtins(t_minishell *minishell, char *cmd, char ***args,
 	return (free(cmd), 1);
 }
 
-int check_builtin(t_minishell *minishell, char *cmd, char ***args, int *i)
+int	check_builtin(t_minishell *minishell, char *cmd, char ***args, int *i)
 {
 	if (cmd == NULL)
 		return (1);
@@ -69,9 +69,9 @@ int check_builtin(t_minishell *minishell, char *cmd, char ***args, int *i)
 	return (free(cmd), reset_fd(minishell), 1);
 }
 
-void check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
+void	check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
 {
-	char **envs;
+	char	**envs;
 
 	envs = env(minishell);
 	if ((*pid) == 0)
@@ -97,9 +97,9 @@ void check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
 	g_sig = AFTER_CMD;
 }
 
-static void arg_type(t_minishell *minishell, char *arg)
+static void	arg_type(t_minishell *minishell, char *arg)
 {
-	DIR *dir;
+	DIR	*dir;
 
 	dir = opendir(arg);
 	if ((dir) != NULL)
@@ -123,10 +123,10 @@ static void arg_type(t_minishell *minishell, char *arg)
 	}
 }
 
-int type_control(t_minishell *minishell, char ***args, char **envs, int *i)
+int	type_control(t_minishell *minishell, char ***args, char **envs, int *i)
 {
 	if (ft_strncmp((*args)[0], "./", 2) == 0 || ft_strncmp((*args)[0], "/",
-														   1) == 0)
+			1) == 0)
 	{
 		if (execve((*args)[0], args[*i], envs) == -1)
 		{

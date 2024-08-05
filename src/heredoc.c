@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 00:03:44 by btanir            #+#    #+#             */
-/*   Updated: 2024/08/04 12:38:15 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/05 19:05:50 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,7 @@ int	heredoc_loop(t_minishell *mini, char **delimiters, int *j, int *fd)
 			(*j)++;
 			break ;
 		}
-		if (delimiters[(*j) +1] == NULL)
-		{
-			ft_putstr_fd(line, fd[1]);
-			ft_putchar_fd('\n', fd[1]);
-		}
+		print_hrd_fd(j, delimiters, line, fd);
 		free(line);
 	}
 	return (SUCCESS);
