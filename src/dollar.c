@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eyasa <eyasa@student.42istanbul.com.tr>    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/16 16:25:44 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 14:10:44 by eyasa            ###   ########.fr       */
+/*   Created: 2024/07/16 16:25:44 by muguveli          #+#    #+#             */
+/*   Updated: 2024/08/04 10:10:13 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static void	replace_dollar(t_minishell *mini, int *i, char **result)
 	char	*str;
 
 	str = mini->line;
-	if (str[*i] == '$' && str[*i + 1] == '\"')
+	if (str[*i] == '$' && str[*i - 1] && str[*i - 1] == '\"' && str[*i
+			+ 1] == '\"' && check_quote(str, *i))
 	{
 		tmp = *result;
 		*result = ft_strjoin_char(tmp, str[(*i)++]);
@@ -49,9 +50,9 @@ static int	empty_dollar(char *str)
 	{
 		if (str[i] == '$')
 		{
-			if ((!ft_isalnum(str[i + 1]) && (str[i + 1] != '?') && (str[i
-							+ 1] != '$') && (str[i + 1] != '\'') && (str[i
-							+ 1] != '\"')))
+			if ((!ft_isalnum(str[i + 1]) && str[i + 1] != '\0' && (str[i
+							+ 1] != '?') && (str[i + 1] != '$') && (str[i
+							+ 1] != '\'') && (str[i + 1] != '\"')))
 				return (1);
 		}
 	}

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/05 03:46:08 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 18:37:19 by btanir           ###   ########.fr       */
+/*   Created: 2024/07/05 03:46:08 by btanir            #+#    #+#             */
+/*   Updated: 2024/08/03 19:01:58 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	pass_space(char *line, int *i)
 static int	check_pipe(char *line, int i)
 {
 	if (line[i] == '|' && !check_quote(line, i) && line[i + 1] && line[i
-		+ 1] == '|')
+			+ 1] == '|')
 		return (err_msg(SYNTAX_ERR, " `||\'", NULL), FAILURE);
 	else if (line[0] == '|' && !check_quote(line, i))
 		return (err_msg(SYNTAX_ERR, " `|\'", NULL), FAILURE);

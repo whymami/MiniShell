@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dlist_sort.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: muguveli <muguveli@student.42istanbul.c    +#+  +:+       +#+        */
+/*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/20 19:42:32 by eyasa             #+#    #+#             */
-/*   Updated: 2024/07/28 20:46:17 by muguveli         ###   ########.fr       */
+/*   Created: 2024/07/20 19:42:32 by muguveli          #+#    #+#             */
+/*   Updated: 2024/08/03 18:45:21 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/20 10:46:21 by eyasa             #+#    #+#             */
-/*   Updated: 2024/08/03 18:38:56 by btanir           ###   ########.fr       */
+/*   Created: 2024/07/20 10:46:21 by muguveli          #+#    #+#             */
+/*   Updated: 2024/08/04 12:33:32 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ int	minishell_routine(t_minishell *minishell)
 				dlist_clear(&minishell->tokens, del);
 			if (minishell->line)
 				free(minishell->line);
+			if (minishell->heredoc_fd)
+				free(minishell->heredoc_fd);
 			return (2);
 		}
 		execute_command(minishell);
