@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 16:56:37 by btanir            #+#    #+#             */
-/*   Updated: 2024/08/03 18:43:06 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/05 15:34:58 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ int			execute_command(t_minishell *minishell);
 char		*get_value(char *line);
 void		ft_exit(t_minishell *mini, char **av);
 int			cpy_arg(t_minishell *minishell);
-int			check_builtin(t_minishell *minishell, char **cmd, char ***args,
-				int *i);
+int			check_builtin(t_minishell *minishell, char *cmd, char ***args,
+			 int *i);
 int			create_fork(t_minishell *minishell, char **cmd, char ***args,
 				int *i);
 int			multiple_command(t_minishell *minishell);
@@ -127,7 +127,7 @@ void		handle_signals(void);
 int			check_syntax_errors(char **args);
 void		change_oldpwd(t_dlist *oldpwd_env, t_dlist *pwd_env, char *value);
 void		change_pwd(t_minishell *mini, char *pwd);
-void		ft_all_lower(char **str);
+char		*ft_all_lower(char *str);
 void		init_cmd(char ***args, char **cmd);
 int			check_heredoc_syntax_errors(char **args);
 

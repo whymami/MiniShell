@@ -6,16 +6,16 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 14:57:05 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/03 18:49:07 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/05 15:32:18 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	init_cmd(char ***args, char **cmd)
+void init_cmd(char ***args, char **cmd)
 {
-	int	a;
-	int	b;
+	int a;
+	int b;
 
 	a = -1;
 	b = 0;
@@ -24,7 +24,7 @@ void	init_cmd(char ***args, char **cmd)
 			cmd[b++] = args[a][0];
 }
 
-void	reset_fd(t_minishell *minishell)
+void reset_fd(t_minishell *minishell)
 {
 	if (minishell->fd_handler.change)
 	{
@@ -34,12 +34,14 @@ void	reset_fd(t_minishell *minishell)
 	}
 }
 
-void	ft_all_lower(char **str)
+char *ft_all_lower(char *str)
 {
-	int	i;
+	int i;
+	char *cmd;
 
+	cmd = ft_strdup(str);
 	i = -1;
-	while ((*str)[++i])
-		if ((*str)[i] >= 'A' && (*str)[i] <= 'Z')
-			(*str)[i] = (*str)[i] + 32;
+	while (cmd[++i])
+		cmd[i] = ft_tolower(cmd[i]);
+	return (cmd);
 }

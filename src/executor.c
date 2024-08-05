@@ -6,7 +6,7 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/07 13:20:14 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/03 18:49:11 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/05 15:34:28 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static int	single_command(t_minishell *minishell)
 	char	**cmd;
 	char	***args;
 	int		i;
+	char	*cmd_lower;
 
 	i = 0;
 	args = minishell->args;
@@ -54,8 +55,8 @@ static int	single_command(t_minishell *minishell)
 		return (FAILURE);
 	remove_quotes(args);
 	init_cmd(args, cmd);
-	ft_all_lower(&cmd[i]);
-	if (check_builtin(minishell, cmd, args, &i) == 1)
+	cmd_lower = ft_all_lower(cmd[i]);
+	if (check_builtin(minishell, cmd_lower, args, &i) == 1)
 		return (free(cmd), free_args(minishell->args_with_quotes), SUCCESS);
 	free_args(minishell->args_with_quotes);
 	if (create_fork(minishell, cmd, args, &i))

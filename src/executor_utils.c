@@ -6,58 +6,58 @@
 /*   By: btanir <btanir@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 14:11:34 by muguveli          #+#    #+#             */
-/*   Updated: 2024/08/03 18:20:19 by btanir           ###   ########.fr       */
+/*   Updated: 2024/08/05 15:36:00 by btanir           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include <dirent.h>
 
-int	check_other_builtins(t_minishell *minishell, char **cmd, char ***args,
-		int *i)
+int check_other_builtins(t_minishell *minishell, char *cmd, char ***args,
+						 int *i)
 {
-	if (ft_strcmp(cmd[*i], "cd") == 0)
+	if (ft_strcmp(cmd, "cd") == 0)
 	{
 		cd(minishell, (*args)[1]);
 		if (minishell->exit_code != 1)
 			minishell->exit_code = 0;
 	}
-	else if (ft_strcmp(cmd[*i], "echo") == 0)
+	else if (ft_strcmp(cmd, "echo") == 0)
 	{
 		echo(args[*i]);
 		minishell->exit_code = 0;
 	}
-	else if (ft_strcmp(cmd[*i], "unset") == 0)
+	else if (ft_strcmp(cmd, "unset") == 0)
 	{
 		unset(minishell, (*args));
 		if (minishell->exit_code != 1)
 			minishell->exit_code = 0;
 	}
 	else
-		return (0);
+		return (free(cmd), 0);
 	reset_fd(minishell);
 	if (args)
 		free_args(args);
-	return (1);
+	return (free(cmd), 1);
 }
 
-int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
+int check_builtin(t_minishell *minishell, char *cmd, char ***args, int *i)
 {
-	if (cmd[*i] == NULL)
+	if (cmd == NULL)
 		return (1);
-	if (ft_strcmp(cmd[*i], "env") == 0)
+	if (ft_strcmp(cmd, "env") == 0)
 	{
 		print_env(minishell);
 		minishell->exit_code = 0;
 	}
-	else if (ft_strcmp(cmd[*i], "export") == 0)
+	else if (ft_strcmp(cmd, "export") == 0)
 	{
 		minishell->exit_code = 0;
 		export(minishell, (*args), i);
 	}
-	else if (ft_strcmp(cmd[*i], "pwd") == 0 && get_pwd())
+	else if (ft_strcmp(cmd, "pwd") == 0 && get_pwd())
 		minishell->exit_code = 0;
-	else if (ft_strcmp(cmd[*i], "exit") == 0)
+	else if (ft_strcmp(cmd, "exit") == 0)
 	{
 		ft_exit(minishell, (*args));
 		minishell->exit_code = 0;
@@ -66,12 +66,12 @@ int	check_builtin(t_minishell *minishell, char **cmd, char ***args, int *i)
 		return (check_other_builtins(minishell, cmd, args, i));
 	if (args)
 		free_args(args);
-	return (reset_fd(minishell), 1);
+	return (free(cmd), reset_fd(minishell), 1);
 }
 
-void	check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
+void check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
 {
-	char	**envs;
+	char **envs;
 
 	envs = env(minishell);
 	if ((*pid) == 0)
@@ -97,9 +97,9 @@ void	check_pid(pid_t *pid, t_minishell *minishell, char ***args, int *i)
 	g_sig = AFTER_CMD;
 }
 
-static void	arg_type(t_minishell *minishell, char *arg)
+static void arg_type(t_minishell *minishell, char *arg)
 {
-	DIR	*dir;
+	DIR *dir;
 
 	dir = opendir(arg);
 	if ((dir) != NULL)
@@ -123,10 +123,10 @@ static void	arg_type(t_minishell *minishell, char *arg)
 	}
 }
 
-int	type_control(t_minishell *minishell, char ***args, char **envs, int *i)
+int type_control(t_minishell *minishell, char ***args, char **envs, int *i)
 {
 	if (ft_strncmp((*args)[0], "./", 2) == 0 || ft_strncmp((*args)[0], "/",
-			1) == 0)
+														   1) == 0)
 	{
 		if (execve((*args)[0], args[*i], envs) == -1)
 		{
